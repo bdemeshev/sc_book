@@ -1,0 +1,1700 @@
+\documentclass[pdftex, 12pt, a4paper]{article}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%  Загрузка пакетов  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[british,russian]{babel} % выбор языка для документа
+\usepackage[utf8]{inputenc} % задание utf8 кодировки исходного tex файла
+
+%\usepackage{showkeys} % показывать метки в готовом pdf
+
+\usepackage{etex} % расширение классического tex
+% в частности позволяет подгружать гораздо больше пакетов, чем мы и займёмся далее
+
+%\usepackage{mathtext} % русские буквы в формулах? (и без нее работает)
+% Например, $x_{\text{один}}$
+
+%\usepackage{cmap} % для поиска русских слов в pdf --- теперь устарело?
+
+\usepackage{verbatim} % для многострочных комментариев
+\usepackage{makeidx} % для создания предметных указателей
+\usepackage[X2,T2A]{fontenc}
+\usepackage{setspace}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{mathrsfs} % sudo yum install texlive-rsfs
+\usepackage{dsfont} % sudo yum install texlive-doublestroke
+\usepackage{array,multicol,multirow,bigstrut} % sudo yum install texlive-multirow
+\usepackage{indentfirst} % установка отступа в первом абзаце главы
+\usepackage{bm}
+\usepackage{bbm} % шрифт с двойными буквами
+\usepackage[perpage]{footmisc}
+
+\usepackage{dcolumn} % центрирование по разделителю для apsrtable
+
+% создание гиперссылок в pdf
+\usepackage[pdftex,unicode,colorlinks=true,urlcolor=blue,hyperindex,breaklinks]{hyperref}
+
+
+
+\usepackage[backend = biber]{biblatex}
+%\addbibresource{sc_biblio.bib}
+
+
+
+
+% свешиваем пунктуацию
+% теперь знаки пунктуации могут вылезать за правую границу текста, при этом текст выглядит ровнее
+%\usepackage{microtype}     %этот пакет выдает фатальную ошибку
+
+
+
+
+
+
+
+
+
+
+
+
+\usepackage{textcomp}  %  Чтобы в формулах можно было русские буквы писать через \text{}
+
+% размер листа бумаги
+\usepackage[paper=a4paper,top=13.5mm, bottom=13.5mm,left=16.5mm,right=13.5mm,includefoot]{geometry}
+
+\usepackage{xcolor}
+
+
+\usepackage{float,longtable}
+\usepackage{soulutf8}
+
+\usepackage{enumitem} % дополнительные плюшки для списков
+%  например \begin{enumerate}[resume] позволяет продолжить нумерацию в новом списке
+
+\usepackage{mathtools}
+\usepackage{cancel,xspace} % sudo yum install texlive-cancel
+
+%\usepackage{minted} % display program code with syntax highlighting
+% требует установки pygments и python
+
+\usepackage{numprint} % sudo yum install texlive-numprint
+\npthousandsep{,}\npthousandthpartsep{}\npdecimalsign{.}
+
+\usepackage{embedfile} % Чтобы код LaTeXа включился как приложение в PDF-файл
+
+\usepackage{subfigure} % для создания нескольких рисунков внутри одного
+
+\usepackage{tikz, pgfplots} % язык для рисования графики из latex'a
+\usetikzlibrary{trees} % tikz-прибамбас для рисовки деревьев
+\usepackage{tikz-qtree} % альтернативный tikz-прибамбас для рисовки деревьев
+\usetikzlibrary{arrows} % tikz-прибамбас для рисовки стрелочек подлиннее
+
+
+
+
+\usepackage{amscd}  %Пакеты для рисования
+\usepackage[matrix,arrow,curve]{xy} %комунитативных диаграмм
+
+
+%%% Работа с картинками
+\usepackage{graphicx}  % Для вставки рисунков
+\graphicspath{{images/}{images2/}}  % папки с картинками
+\setlength\fboxsep{3pt} % Отступ рамки \fbox{} от рисунка
+\setlength\fboxrule{1pt} % Толщина линий рамки \fbox{}
+\usepackage{wrapfig} % Обтекание рисунков и таблиц текстом
+
+
+
+\usepackage{todonotes} % для вставки в документ заметок о том, что осталось сделать
+% \todo{Здесь надо коэффициенты исправить}
+% \missingfigure{Здесь будет Последний день Помпеи}
+% \listoftodos --- печатает все поставленные \todo'шки
+
+
+% более красивые таблицы
+\usepackage{booktabs}
+% заповеди из докупентации
+% 1. Не используйте вертикальные линни
+% 2. Не используйте двойные линии
+% 3. Единицы измерения - в шапку таблицы
+% 4. Не сокращайте .1 вместо 0.1
+% 5. Повторяющееся значение повторяйте, а не говорите "то же"
+
+
+
+%\usepackage{asymptote} % пакет для рисовки графики, должен идти после graphics
+% но мы переходим на tikz :)
+
+%\usepackage{sagetex} % для интеграции с Sage (вероятно тоже должен идти после graphics)
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%  Внедрение tex исходников в pdf файл  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\embedfile[desc={Main tex file}]{\jobname.tex} % Включение кода в выходной файл
+%\embedfile[desc={title_bor}]{title_bor.tex}
+% отменено в силу явной ссылки на репозиторий
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%  ПАРАМЕТРЫ  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setstretch{1}                          % Межстрочный интервал
+\flushbottom                            % Эта команда заставляет LaTeX чуть растягивать строки, чтобы получить идеально прямоугольную страницу
+\righthyphenmin=2                       % Разрешение переноса двух и более символов
+\pagestyle{plain}                       % Нумерация страниц снизу по центру.
+\widowpenalty=300                     % Небольшое наказание за вдовствующую строку (одна строка абзаца на этой странице, остальное --- на следующей)
+\clubpenalty=3000                     % Приличное наказание за сиротствующую строку (омерзительно висящая одинокая строка в начале страницы)
+\setlength{\parindent}{1.5em}           % Красная строка.
+%\captiondelim{. }
+\setlength{\topsep}{0pt}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%% Это окружение, которое выравнивает по центру без отступа, как у простого center
+\newenvironment{center*}{%
+  \setlength\topsep{0pt}
+  \setlength\parskip{0pt}
+  \begin{center}
+}{%
+  \end{center}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Правила переноса  слов
+\hyphenation{ }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\emergencystretch=2em
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%  DEFS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def \mbf{\mathbf}
+\def \msf{\mathsf}
+\def \mbb{\mathbb}
+\def \tbf{\textbf}
+\def \tsf{\textsf}
+\def \ttt{\texttt}
+\def \tbb{\textbb}
+
+\def \wh{\widehat}
+\def \wt{\widetilde}
+\def \ni{\noindent}
+\def \ol{\overline}
+\def \cd{\cdot}
+\def \fr{\frac}
+\def \bs{\backslash}
+\def \lims{\limits}
+
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\VC}{VCdim}
+\DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\sgn}{sign}
+\DeclareMathOperator{\Tr}{\mbf{Tr}}
+\DeclareMathOperator{\tr}{tr}
+
+
+\def \xfs{(x_1,\ldots,x_{n-1})}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\amn}{arg\,min}
+\DeclareMathOperator*{\amx}{arg\,max}
+\DeclareMathOperator{\trace}{tr}
+
+
+\DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator{\sCorr}{sCorr}
+\DeclareMathOperator{\sCov}{sCov}
+\DeclareMathOperator{\sVar}{sVar}
+
+\DeclareMathOperator{\argmax}{argmax}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\corr}{Corr}
+\DeclareMathOperator{\cov}{Cov}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\bin}{Bin}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\rang}{rang}
+\DeclareMathOperator*{\plim}{plim}
+\DeclareMathOperator{\MSE}{MSE}
+
+
+\providecommand{\iff}{\Leftrightarrow}
+\providecommand{\hence}{\Rightarrow}
+
+\def \ti{\tilde}
+\def \wti{\widetilde}
+
+\def \mA{\mathcal{A}}
+\def \mB{\mathcal{B}}
+\def \mC{\mathcal{C}}
+\def \mE{\mathcal{E}}
+\def \mF{\mathcal{F}}
+\def \mH{\mathcal{H}}
+\def \mL{\mathcal{L}}
+\def \mN{\mathcal{N}}
+\def \mU{\mathcal{U}}
+\def \mV{\mathcal{V}}
+\def \mW{\mathcal{W}}
+
+
+\def \RR{\mbb R}
+\def \NN{\mbb N}
+\def \N{\mbb N}
+\def \ZZ{\mbb Z}
+\def \Z{\mbb Z}
+\def \PP{\mbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\def \D{\msf{D}}
+\def \I{\mbf{I}}
+\def \Q{\mbb Q}
+
+
+\def\R{\ensuremath{\mathbb{R}}} % достало уже!
+\def\F{\ensuremath{\mathcal{F}}} % аналогично!
+\def\B{\ensuremath{\mathcal{B}}} % аналогично!
+
+
+
+\newcommand{\tP}{\tilde{\mathbb{P}}}
+\newcommand{\tW}{\tilde{W}}
+
+\def \lra{\leftrightarrow} % сокращение для стрелки влево-вправо (туда-сюда), для соответствий
+
+\def\s{\ensuremath{\sigma}}
+\def \a{\alpha}
+\def \b{\beta}
+\def \t{\tau}
+\def \dt{\delta}
+\newcommand{\e}{\varepsilon}
+\def \ga{\gamma}
+\def \kp{\varkappa}
+\def \la{\lambda}
+\def \sg{\sigma}
+\def \sgm{\sigma}
+\def \tt{\theta}
+\def \ve{\varepsilon}
+\def \Dt{\Delta}
+\def \La{\Lambda}
+\def \Sgm{\Sigma}
+\def \Sg{\Sigma}
+\def \Tt{\Theta}
+\def \Om{\Omega}
+\def \om{\omega}
+
+%%\newcommand{\p}{\partial}
+
+\def \ni{\noindent}
+\def \lq{\glqq}
+\def \rq{\grqq}
+\def \lbr{\linebreak}
+\def \vsi{\vspace{0.1cm}}
+\def \vsii{\vspace{0.2cm}}
+\def \vsiii{\vspace{0.3cm}}
+\def \vsiv{\vspace{0.4cm}}
+\def \vsv{\vspace{0.5cm}}
+\def \vsvi{\vspace{0.6cm}}
+\def \vsvii{\vspace{0.7cm}}
+\def \vsviii{\vspace{0.8cm}}
+\def \vsix{\vspace{0.9cm}}
+\def \VSI{\vspace{1cm}}
+\def \VSII{\vspace{2cm}}
+\def \VSIII{\vspace{3cm}}
+
+\newcommand{\grad}{\mathrm{grad}}
+\newcommand{\bls}[1]{\boldsymbol{#1}}
+\newcommand{\bsA}{\boldsymbol{A}}
+\newcommand{\bsH}{\boldsymbol{H}}
+\newcommand{\bsI}{\boldsymbol{I}}
+\newcommand{\bsP}{\boldsymbol{P}}
+\newcommand{\bsR}{\boldsymbol{R}}
+\newcommand{\bsS}{\boldsymbol{S}}
+\newcommand{\bsX}{\boldsymbol{X}}
+\newcommand{\bsY}{\boldsymbol{Y}}
+\newcommand{\bsZ}{\boldsymbol{Z}}
+\newcommand{\bse}{\boldsymbol{e}}
+\newcommand{\bsq}{\boldsymbol{q}}
+\newcommand{\bsy}{\boldsymbol{y}}
+\newcommand{\bsbeta}{\boldsymbol{\beta}}
+\newcommand{\fish}{\mathrm{F}}
+\newcommand{\Fish}{\mathrm{F}}
+\renewcommand{\phi}{\varphi}
+\newcommand{\ind}{\mathds{1}}
+\newcommand{\inds}[1]{\mathds{1}_{\{#1\}}}
+\renewcommand{\to}{\rightarrow}
+\newcommand{\sumin}{\sum\limits_{i=1}^n}
+\newcommand{\ofbr}[1]{\bigl( \{ #1 \} \bigr)}     % Например, вероятность события. Большие круглые, нормальные фигурные скобки вокруг аргумента
+\newcommand{\Ofbr}[1]{\Bigl( \bigl\{ #1 \bigr\} \Bigr)} % Например, вероятность события. Больше больших круглые, большие фигурные скобки вокруг аргумента
+\newcommand{\oeq}{{}\textcircled{\raisebox{-0.4pt}{{}={}}}{}} % Равно в кружке
+\newcommand{\og}{\textcircled{\raisebox{-0.4pt}{>}}}  % Знак больше в кружке
+
+% вместо горизонтальной делаем косую черточку в нестрогих неравенствах
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+
+\newcommand{\figb}[1]{\bigl\{ #1  \bigr\}} % большие фигурные скобки вокруг аргумента
+\newcommand{\figB}[1]{\Bigl\{ #1  \Bigr\}} % Больше больших фигурные скобки вокруг аргумента
+\newcommand{\parb}[1]{\bigl( #1  \bigr)}   % большие скобки вокруг аргумента
+\newcommand{\parB}[1]{\Bigl( #1  \Bigr)}   % Больше больших круглые скобки вокруг аргумента
+\newcommand{\parbb}[1]{\biggl( #1  \biggr)} % большие-большие круглые скобки вокруг аргумента
+\newcommand{\br}[1]{\left( #1  \right)}    % круглые скобки, подгоняемые по размеру аргумента
+\newcommand{\fbr}[1]{\left\{ #1  \right\}} % фигурные скобки, подгоняемые по размеру аргумента
+\newcommand{\eqdef}{\mathrel{\stackrel{\rm def}=}} % знак равно по определению
+\newcommand{\const}{\mathrm{const}}        % const прямым начертанием
+\newcommand{\zdt}[1]{\textit{#1}}
+\newcommand{\ENG}[1]{\foreignlanguage{british}{#1}}
+\newcommand{\ENGs}{\selectlanguage{british}}
+\newcommand{\RUSs}{\selectlanguage{russian}}
+\newcommand{\iid}{\text{i.\hspace{1pt}i.\hspace{1pt}d.}}
+
+\newdimen\theoremskip
+\theoremskip=0pt
+\newenvironment{note}{\par\vskip\theoremskip\textbf{Замечание.\xspace}}{\par\vskip\theoremskip}
+\newenvironment{hint}{\par\vskip\theoremskip\textbf{Подсказка.\xspace}}{\par\vskip\theoremskip}
+\newenvironment{ist}{\par\vskip\theoremskip Источник:\xspace}{\par\vskip\theoremskip}
+
+\newcommand*{\tabvrulel}[1]{\multicolumn{1}{|c}{#1}}
+\newcommand*{\tabvruler}[1]{\multicolumn{1}{c|}{#1}}
+
+\newcommand{\II}{{\fontencoding{X2}\selectfont\CYRII}}   % I десятеричное (английская i неуместна)
+\newcommand{\ii}{{\fontencoding{X2}\selectfont\cyrii}}   % i десятеричное
+\newcommand{\XX}{{\fontencoding{X2}\selectfont\CYRII}} 
+
+\newcommand{\EE}{{\fontencoding{X2}\selectfont\CYRYAT}}  % ЯТЬ
+\newcommand{\ee}{{\fontencoding{X2}\selectfont\cyryat}}  % ять
+\newcommand{\FF}{{\fontencoding{X2}\selectfont\CYROTLD}} % ФИТА
+\newcommand{\ff}{{\fontencoding{X2}\selectfont\cyrotld}} % фита
+\newcommand{\YY}{{\fontencoding{X2}\selectfont\CYRIZH}}  % ИЖИЦА
+\newcommand{\yy}{{\fontencoding{X2}\selectfont\cyrizh}}  % ижица
+
+%%%%%%%%%%%%%%%%%%%%% Определение разрядки разреженного текста и задание красивых многоточий
+\sodef\so{}{.15em}{1em plus1em}{.3em plus.05em minus.05em}
+\newcommand{\ldotst}{\so{...}}
+\newcommand{\ldotsq}{\so{?\hbox{\hspace{-0.61ex}}..}}
+\newcommand{\ldotse}{\so{!..}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Команда для переноса символов бинарных операций
+\def\hm#1{#1\nobreak\discretionary{}{\hbox{$#1$}}{}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setlist[enumerate,1]{label=\arabic*., ref=\arabic*, partopsep=0pt plus 2pt, topsep=0pt plus 1.5pt,itemsep=0pt plus .5pt,parsep=0pt plus .5pt}
+\setlist[itemize,1]{partopsep=0pt plus 2pt, topsep=0pt plus 1.5pt,itemsep=0pt plus .5pt,parsep=0pt plus .5pt}
+
+%% Эти парни затем, если вдруг не захочется управлять списками из-под уютненького enumitem
+% или если будет жизненно важно, чтобы в списках были именно русские буквы.
+%\setlength{\partopsep}{0pt plus 3pt}
+%\setlength{\topsep}{0pt plus 2pt}
+%\setlength{\itemsep}{0 plus 1pt}
+%\setlength{\parsep}{0 plus 1pt}
+
+%на всякий случай пока есть
+%теоремы без нумерации и имени
+\newtheorem*{theor}{Теорема}
+
+%"Определения","Замечания"
+%и "Гипотезы" не нумеруются
+\theoremstyle{definition} % убирает курсив и что-то еще наверное делает ;)
+\newtheorem*{mydef}{Определение}
+\newtheorem*{rem}{Замечание}
+\newtheorem*{conj}{Гипотеза}
+\newtheorem{myex}{Пример}
+
+%"Теоремы" и "Леммы" нумеруются
+%по главам и согласованно м/у собой
+\newtheorem{myth}{Теорема}
+\newtheorem{lemma}[myth]{Лемма}
+
+% Утверждения нумеруются по главам
+%независимо от Лемм и Теорем
+\newtheorem{prop}{Утверждение}
+\newtheorem{cor}{Следствие}
+
+
+
+%\numberwithin{equation}{page} % уравнения нумеруются на каждой стр. отдельно
+%\newtheorem{myth}[equation]{Теорема} % нумерация сквозная с уравнениями
+
+%\theoremstyle{definition} % убирает курсив и что-то еще наверное делает ;)
+%\newtheorem{mydef}[equation]{Определение}
+
+%\theoremstyle{definition}
+%\newtheorem{myex}[equation]{Пример}
+
+%\newtheorem{assertion}{Утверждение}
+%\newtheorem{lemma}{Лемма}
+
+%\theoremstyle{definition}
+%\newtheorem*{myproof}{Доказательство}
+
+%\theoremstyle{definition}
+
+\newtheorem{problem}{Задача}
+\numberwithin{problem}{section}
+
+\usepackage{answers}
+\Newassociation{sol}{solution}{sols_chap_02}
+% sol --- имя окружения внутри задач
+% solution --- имя окружения внутри solution_file
+% solution_file --- имя файла в который будет идти запись решений
+% можно изменить далее по ходу
+
+
+\newcommand{\indef}[1]{\textbf{#1}}
+% выделение ключевого слова в определениях
+
+\makeindex % команда для создания предметного указателя
+
+
+
+\newtheorem{blits}{Блиц-вопрос}
+\numberwithin{blits}{section}
+
+\Newassociation{blitssol}{solution}{blits_solution_file}
+% sol --- имя окружения внутри задач
+% solution --- имя окружения внутри solution_file
+% solution_file --- имя файла в который будет идти запись решений
+% можно изменить далее по ходу
+
+
+
+\addbibresource{sc_biblio.bib}
+
+
+\usetikzlibrary{arrows}
+
+\newcommand{\RNumb}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
+
+
+\begin{document}
+
+\Opensolutionfile{solution_file}[sols_chap_02]
+
+%\Opensolutionfile{solution_file}[sols_blits_chap_02]
+
+% в квадратных скобках фактическое имя файла
+
+
+
+\section{Списки событий и сигма-алгебры}
+
+\subsection{Наделённость информацией и определение}
+
+Рассмотрим простой случайный эксперимент: игральный кубик подбрасывают два раза. Множество $\Om$ исходов данного эксперимента содержит $36$ элементов. Вася знает результат подбрасываний, и сообщает Пете значение случайной величины $Z$ --- произведения очков на выпавших гранях.
+
+Всегда ли сможет Петя, владея своей информацией, определить произошли ли события:
+
+$A$ --- оба раза выпала единица,
+
+$B$ --- хотя бы раз выпала пятерка,
+
+$C$ --- хотя бы раз выпала шестерка?
+
+Про события $A$ и $B$ Петя всегда сможет сказать произошли ли они: в первом случае достаточно сравнить $Z$ с единицей, во втором --- определить, делится ли $Z$ на 5. Однако может сложиться такая ситуация, что Петя не будет уверен, произошло ли $C$: например, если $Z$ окажется равным шести, то, может быть, это была пара $(6,1)$ и тогда $C$ произошло, а может это была пара $(2,3)$ и тогда $C$ не произошло.
+
+Можно составить список событий, про которые Петя, зная $Z$, всегда сможет сказать, произошли ли они. Обозначим этот список событий буквой $\F$. В отличие от Пети Вася может уверенно сказать произошло ли любое событие и аналогичный список событий для него --- все подмножества множества $\Om$.
+
+\begin{blits}
+Приведите примеры еще трёх событий, входящих в список \F, и еще трёх событий не входящих в список \F.
+\begin{blitssol}
+В список \F войдут следующие события:
+
+$D_1$ --- выпало две шестерки. Если выпадет две шестерки, то $Z=36$. Нельзя подобрать пару, кроме $(6,6)$, чтобы получить $36$.
+
+$D_2$ --- сумма очков на кубиках равна $10$. Если $Z=25$, то гарантированно выпала пара $(5,5)$ и сумма очков на кубиках равна $10$.
+
+В список \F не войдут следующие события:
+
+$D_3$ --- два раза подряд выпала двойка. В этом случае $Z=4$, нельзя быть уверенным, что выпала пара $(2,2)$. Точно такое же значение для $Z$ дает пара $(1,4)$.
+
+$D_4$ --- хотя бы раз выпала тройка. Если $Z$ делится на 3, то это вовсе не означает что на одной из граней выпала тройка. Например, вполне могла выпасть пара $(6,4)$. В этом случае $Z=24$, а $24$ делится на $3$.
+
+\end{blitssol}
+\end{blits}
+
+В список $\F$ входят довольно много событий, а сам список обладает рядом важных свойств, а именно:
+
+\begin{enumerate}
+\item  Множество $\Om \in \F$ --- даже ничего не зная, можно быть уверенным, что событие $\Om$ произошло.
+
+\item  Множество $\varnothing \in \mathcal{F}$ --- даже ничего не зная, можно быть уверенным, что событие $\varnothing$ не произошло.
+
+\item  Если множества $A$ и $B$ входят в список $\F$, то $A\cup B$ и $A\cap B$ входят в список $\F$. Если Петя способен определить, произошли ли $A$ и $B$ по отдельности, то он путем простых логических заключений способен определить, произошли ли $A\cup B$ и $A\cap B$.
+
+\end{enumerate}
+
+Подобные списки событий являются очень важными для нас и называются сигма-алгебрами ($\sigma$-алгебрами).
+
+\begin{mydef} Набор подмножеств множества $\Omega$ называется \indef{$\sigma$-алгеброй}\footnote{Правильный английский термин \s-algebra. В некоторых текстах встречается устаревшее $\sigma$-field. Для знающих определения поля и алгебры отметим, что \s-алгебра действительно будет полем, только если $\mathcal{F}=\{\varnothing,\Omega\}$. Вопрос для знатоков: относительно каких операций и над чем \s-алгебра будет алгеброй? }, \index{$\s$-алгебра} \index{«сигма-алгебра»} если обладает следующими тремя свойствами:
+
+\begin{enumerate}
+\item[SA1] Множество $\Omega \in \mathcal{F}$
+
+\item[SA2] Из того, что множество $A\in \mathcal{F}$ следует, что $A^{c}\in \mathcal{F}$
+
+\item[SA3] Если $A_{1}\in\mathcal{F}$, $A_{2}\in\mathcal{F}$, $A_{3}\in\mathcal{F}$, и т.д., то $\cup_{i=1}^{\infty} A_{i} \in\mathcal{F}$.
+\end{enumerate}
+\end{mydef}
+
+\begin{myex}
+Маша смотрит за тем, как подбрасывается монетка. В этом случае $\Om = \{O,P\}$. Сигма-алгеброй для Маши будет множество $\F = \{ \varnothing, \{O\},\{P\},\{O,P\}\}$.
+
+Действительно, Маша видит какой стороной выпала монетка, то есть $\{O\} \in \F$ и $\{P\} \in \F$, следовательно $\{O\} \cup \{P\} = \{O,P\}=\Om \in \F$. 
+
+Если множество $\Om$ принадлежит сигма-алгебре $\F$, то множество $\Om^{c} = \varnothing$ также принадлежит $\F$.  
+
+\end{myex}
+
+Сигма-алгебры нужны для того, чтобы моделировать наделенность информацией рационального индивида. Также они нужны для некоторых технических целей в различных теоремах. 
+
+Сигма-алгебры помогают моделировать ситуации, когда в сознании наблюдателя несколько событий по каким-то причинам «слипаются», и наблюдатель не может отличить их друг от друга. 
+
+\begin{myex}
+Миша внимательно следить за подбрасыванием двух монеток: зелёной и красной. К сожалению, Миша страдает дальтонизмом и не может отличить красной монетки от зелёной. Как будет выглядеть множество $\Om$ и список событий $\F$, которые различает Миша?
+
+Множество $\Om$ будет состоять из исходов $\{OO,OP,PO,PP\}$.
+
+Если на монетах выпадает два орла, то Миша, даже при своем дальтонизме, может уверенно сказать, что и на красной и на зелёной монете выпал орёл. Если на одной монете выпадает орёл,а на другой решка, то Миша из-за дальтонизма не может сказать на монете какого цвета выпал орёл, то есть Миша не может отличить событие $OP$ от события $PO$. Эти два события в $\sg$-алгебре Миши «слипаются» между собой. 
+
+Миша различает между собой события $ OO, PP, \{OP, PO\}$. Сигма-алгебра Миши имеет вид
+
+ \[\F = \{OO, PP, \{OP, PO\}, \{OO,OP,PO\}, \{PP,OP,PO\}, \{OO,PP\}, \Om, \varnothing\}.\]  
+\end{myex}
+
+Почему в определении $\sigma$-алгебры мы не потребовали, чтобы выполнялись другие свойства? Оказывается, неупомянутые свойства следуют из свойств SA1-SA3.
+
+\begin{myex} Применив SA1, а затем SA2 можно понять, что в любую $\sigma$-алгебру входит пустое множество.
+\end{myex}
+
+\begin{myex} Пересечение множеств можно заменить на несколько объединений и дополнений, $\cap_{i=1}^{\infty} A_{i}=\left(\cup_{i=1}^{\infty}A_{i}^{c} \right)^{c}$. А значит из свойств SA2, SA3 следует также, что:
+
+Если $A_{1}\in\mathcal{F}$, $A_{2}\in\mathcal{F}$, $A_{3}\in\mathcal{F}$, и т.д., то $\cap_{i=1}^{\infty} A_{i} \in\mathcal{F}$.
+
+Например, если изобразить множества $A$ и $B$ на диаграмме Эйлера и заштриховать дополнение к каждому из них, то их пересечение останется незаштрихованным. Это означает, что пересечение множеств $A$ и $B$ является дополнением к объединению их дополнений.
+
+\begin{center}
+\definecolor{ffqqtt}{rgb}{1.,0.,0.2}
+\definecolor{qqqqcc}{rgb}{0.,0.,0.8}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=2.0cm,y=2.0cm]
+\clip(0.05380734967223857,-1.0134406294795129) rectangle (5.431769100760223,2.9344264237536226);
+\fill[color=qqqqcc,fill=qqqqcc,fill opacity=0.1] (0.5,2.5) -- (0.5,-0.5) -- (5.,-0.5) -- (5.,2.5) -- (2.7216711658839388,2.5) -- (2.75,1.6614378277661477) -- (2.9124725913273664,1.4091378375026207) -- (2.9787491846779086,1.2050610482084037) -- (3.,1.) -- (2.973640928158944,0.771913737779343) -- (2.8931824727166973,0.5503055810534381) -- (2.75,0.3385621722338523) -- (2.6251440403604174,0.2194905965961378) -- (2.4223327035888493,0.09355910977089454) -- (2.1357192621050824,0.009252664957582701) -- (1.8793069695474003,0.007310122747205661) -- (1.5964570822154065,0.08503928308047193) -- (1.3464627094504094,0.24310568118058917) -- (1.1372539041995013,0.4943626060297788) -- (1.020122920602867,0.8003981230745945) -- (1.0027274243452142,1.073806570485759) -- (1.1026030652668752,1.4412241397879222) -- (1.2853637568991618,1.6994962759348469) -- (1.5874774833779384,1.9109474042335268) -- (1.7833180151581027,1.9762422432188518) -- (2.,2.) -- (2.2510046309845753,1.9679858858600663) -- (2.4840608681266154,1.8750343284400377) -- (2.6412555242463607,1.7673274090136002) -- (2.7293157593522235,1.6841772600433966) -- (2.746570669208989,1.6653061219294787) -- (2.723526177861242,2.5) -- cycle;
+\fill[dash pattern=on 2pt off 2pt,color=ffqqtt,fill=ffqqtt,fill opacity=0.15] (5.,-0.5) -- (5.,2.5) -- (0.5,2.5) -- (0.5,-0.5) -- (3.001459105220735,-0.5) -- (2.75,0.3385621722338523) -- (2.6467080728031807,0.47856650761507646) -- (2.5463836895312473,0.6989751963575701) -- (2.502243607720866,0.9330509024248499) -- (2.5107755710573776,1.1464070667117632) -- (2.5624755777658255,1.3479194701572146) -- (2.666033280674463,1.5518147434215588) -- (2.8363822107814087,1.7480718079386692) -- (2.996520526824617,1.8640071875227884) -- (3.203474029614693,1.9550247896714785) -- (3.417497763481234,1.9965908794331813) -- (3.650167096211217,1.988660630962663) -- (3.891716194245615,1.9200860955180943) -- (4.0734369852332275,1.8192496713253092) -- (4.194269400526536,1.7197152211066018) -- (4.32284244893972,1.568269570030707) -- (4.416438399565784,1.400175786125677) -- (4.484031279099038,1.1779956228526745) -- (4.5,1.) -- (4.440442852391593,0.6600481778463831) -- (4.338762094362025,0.45550192923993793) -- (4.248475468662722,0.336837521560426) -- (4.139767405048979,0.23143141656915522) -- (3.958519151554613,0.11131547349037418) -- (3.7314797039986263,0.027160266725958504) -- (3.5,0.) -- (3.2881998748761823,0.022686996404153503) -- (3.1203783370876588,0.07485817679251539) -- (2.910781650807185,0.1920261532855818) -- (2.757988300248781,0.3296130688682043) -- (2.9992448800134386,-0.5) -- cycle;
+\draw [line width=1.2pt,color=qqqqcc] (2.,1.) circle (2.cm);
+\draw [line width=1.2pt,color=qqqqcc] (3.5,1.) circle (2.cm);
+\draw (0.6580727149630234,2.1388103594540877) node[anchor=north west] {$\mathbf{A}$};
+\draw (4.444802337451942,2.1388103594540877) node[anchor=north west] {$\mathbf{B}$};
+\draw (0.5,-0.5)-- (0.5,2.5)-- (5.,2.5)-- (5.,-0.5);
+\draw (0.5,-0.5)-- (5.,-0.5);
+\end{tikzpicture}
+\end{center}
+\end{myex}
+
+Можно показать, что любые операции со множествами можно свести к объединениям и дополнениям. В упражнении \ref{simraz} показывается как это можно сделать на примере симметрической разности.
+
+Проще говоря, $\sigma$-алгебра --- это набор событий замкнутый относительно любых операций с множествами ($\cup$, $\cap$, $()^{c}$, $\Delta$) взятых в счетном количестве.
+
+
+Самое время упомянуть три не совсем обычных множества, которые точно находятся в $\sigma$-алгебре $\mathcal{F}$, если известно, что все $A_{i}$ лежат в $\mathcal{F}$:
+
+\begin{itemize}
+
+\item $\limsup\limits_{n \to \infty} A_{n}$ --- те исходы $w\in\Omega$, которые входят в бесконечное количество $A_{n}$. Почему это множество обязательно лежит в $\F$? Легко заметить, что $\displaystyle B_{n}=\cup_{k\geq n} A_{k}$ - это те исходы $w$, которые входят хотя бы в один $A_{k}$ при $k\geq n$. Чтобы $w$ входил в бесконечное количество $A_{n}$ необходимо и достаточно того, чтобы исход $w$ входил во все $B_{n}$. Значит, $\displaystyle \limsup_{n \to \infty} A_{n}= \cap_{n}\cup_{k\geq n} A_{k}$. 
+
+\item $\displaystyle \liminf_{n \to \infty} A_{n}$ --- те исходы $w\in\Omega$, которые входят во все $A_{n}$, начиная с некоторого. Рассуждая аналогично, $C_{n}=\cap_{k\geq n} A_{k}$ --- это те исходы $w$, которые входят во все $A_{k}$ при $k\geq n$. И, получается, что $\displaystyle \liminf_{n \to \infty} A_{n}=\cup_{n}\cap_{k\geq n}A_{k}$.
+
+\item Если существуют $\limsup\limits_{n \to \infty} A_{n}$ и $\displaystyle \liminf_{n \to \infty} A_{n}$ и они равны, то говорят что существует $\displaystyle \lim_{n \to \infty} A_n$ --- предел последовательности множеств $(A_n)_{n=1}^\infty$. 
+\end{itemize}
+
+\begin{myex}
+Для последовательности множеств, изображенной ниже, не существует предела.
+
+\begin{center}
+\definecolor{qqqqff}{rgb}{0.,0.,1.}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+\clip(-1.2373012428248018,-0.08669921138277922) rectangle (16.777301892654542,4.182013114265743);
+\draw (11.3,1.2353273670829943) node[anchor=north west] {\Large{$\mathbf{\dots}$}};
+\draw [rotate around={90.:(-0.039029340306575455,1.6357261571386281)}] (-0.039029340306575455,1.6357261571386281) ellipse (1.3726607989639943cm and 0.9403178553087632cm);
+\draw [rotate around={90.:(1.988587323609288,1.6829875821760862)}] (1.988587323609288,1.6829875821760862) ellipse (1.372660798963995cm and 0.9403178553087639cm);
+\draw [rotate around={90.:(4.140878689214043,1.6337872861388705)}] (4.140878689214043,1.6337872861388705) ellipse (1.3726607989639958cm and 0.9403178553087643cm);
+\draw [rotate around={90.:(6.245072747192243,1.6207775060366785)}] (6.245072747192243,1.6207775060366785) ellipse (1.3726607989640045cm and 0.9403178553087703cm);
+\draw [rotate around={90.:(8.385457321105461,1.630396967561994)}] (8.385457321105461,1.630396967561994) ellipse (1.3726607989639938cm and 0.9403178553087626cm);
+\draw [rotate around={90.:(10.421212159995818,1.63717760471575)}] (10.421212159995818,1.63717760471575) ellipse (1.3726607989639938cm and 0.9403178553087626cm);
+\draw (-0.6320360623224012,2.8281304736682635) node[anchor=north west] {$\mathbf{\omega_1}$};
+\draw (1.3908238830408852,2.812202442602411) node[anchor=north west] {$\mathbf{\omega_1}$};
+\draw (3.572964139062698,2.8281304736682635) node[anchor=north west] {$\mathbf{\omega_1}$};
+\draw (5.6913922708211,2.796274411536558) node[anchor=north west] {$\mathbf{\omega_1}$};
+\draw (7.825748433645355,2.7484903183390004) node[anchor=north west] {$\mathbf{\omega_1}$};
+\draw (9.84860837900864,2.8440585047341163) node[anchor=north west] {$\mathbf{\omega_1}$};
+\draw (-0.6479640933882539,2.127297106770745) node[anchor=north west] {$\mathbf{\omega_2}$};
+\draw (1.3430397898433273,2.0954410446390397) node[anchor=north west] {$\mathbf{\omega_2}$};
+\draw (3.4614679216017294,2.1113690757048924) node[anchor=north west] {$\mathbf{\omega_2}$};
+\draw (5.643608177623542,2.0635849825073342) node[anchor=north west] {$\mathbf{\omega_2}$};
+\draw (7.841676464711208,2.0158008893097765) node[anchor=north west] {$\mathbf{\omega_2}$};
+\draw (9.816752316876935,2.1113690757048924) node[anchor=north west] {$\mathbf{\omega_2}$};
+\draw (-0.6638921244541065,1.314967522412258) node[anchor=north west] {$\mathbf{\omega_3}$};
+\draw (1.4226799451725904,1.3308955534781104) node[anchor=north west] {$\mathbf{\omega_3}$};
+\draw (3.6207482322602558,1.2990394913464052) node[anchor=north west] {$\mathbf{\omega_3}$};
+\draw (5.643608177623542,1.2831114602805525) node[anchor=north west] {$\mathbf{\omega_3}$};
+\draw (7.905388588974619,1.2990394913464052) node[anchor=north west] {$\mathbf{\omega_3}$};
+\draw (9.84860837900864,1.3308955534781104) node[anchor=north west] {$\mathbf{\omega_3}$};
+\draw [rotate around={90.:(13.126704366018913,1.710052921121535)}] (13.126704366018913,1.710052921121535) ellipse (1.3726607989640016cm and 0.9403178553087735cm);
+\draw (-0.13826709928096909,3.8) node[anchor=north west] {$\mathbf{A_1}$};
+\draw (1.9483049703457278,3.8) node[anchor=north west] {$\mathbf{A_2}$};
+\draw (3.891524760379751,3.8) node[anchor=north west] {$\mathbf{A_3}$};
+\draw (6.073665016401564,3.8) node[anchor=north west] {$\mathbf{A_4}$};
+\draw (8.192093148159966,3.8) node[anchor=north west] {$\mathbf{A_5}$};
+\draw (10.230881124589104,3.8) node[anchor=north west] {$\mathbf{A_6}$};
+\draw (12.142244852491421,4) node[anchor=north west] {$\mathbf{\limsup\limits_{n \to \infty} A_n}$};
+\draw [rotate around={90.:(15.422718181088978,1.726453019800615)}] (15.422718181088978,1.726453019800615) ellipse (1.3726607989640223cm and 0.9403178553087888cm);
+\draw (14.65887376089614,4.) node[anchor=north west] {$\mathbf{\liminf\limits_{n \to \infty} A_n}$};
+\draw (12.55637366020359,1.3308955534781104) node[anchor=north west] {$\mathbf{\omega_3}$};
+\draw (14.834082102620519,1.3786796466756686) node[anchor=north west] {$\mathbf{\omega_3}$};
+\draw (12.444877442742623,2.079513013573187) node[anchor=north west] {$\mathbf{\omega_2}$};
+\draw (14.802226040488815,2.0954410446390397) node[anchor=north west] {$\mathbf{\omega_2}$};
+\draw (12.524517598071885,2.780346380470706) node[anchor=north west] {$\mathbf{\omega_1}$};
+\draw (14.818154071554668,2.764418349404853) node[anchor=north west] {$\mathbf{\omega_1}$};
+\begin{scriptsize}
+\draw [fill=qqqqff] (0.2526269029474682,2.4968516382936006) circle (2.5pt);
+\draw [fill=qqqqff] (6.615865190427367,2.4476513422563846) circle (2.5pt);
+\draw [fill=qqqqff] (4.582252954222451,1.808047493772579) circle (2.5pt);
+\draw [fill=qqqqff] (8.764278117385786,1.7260470003772193) circle (2.5pt);
+\draw [fill=qqqqff] (10.748690057553485,1.775247296414435) circle (2.5pt);
+\draw [fill=qqqqff] (0.3182272976637558,1.0044426584980537) circle (2.5pt);
+\draw [fill=qqqqff] (4.565852855543379,0.9880425598189818) circle (2.5pt);
+\draw [fill=qqqqff] (8.813478413423,1.0044426584980537) circle (2.5pt);
+\draw [color=qqqqff] (0.3674275937009715,1.808047493772579) circle (2.5pt);
+\draw [color=qqqqff] (2.450240125943103,1.758847197735363) circle (2.5pt);
+\draw [color=qqqqff] (2.450240125943103,1.0044426584980537) circle (2.5pt);
+\draw [color=qqqqff] (2.401039829905887,2.4476513422563846) circle (2.5pt);
+\draw [color=qqqqff] (4.549452756864307,2.5132517369726726) circle (2.5pt);
+\draw [color=qqqqff] (6.665065486464582,1.7424470990562912) circle (2.5pt);
+\draw [color=qqqqff] (6.714265782501798,0.9716424611399098) circle (2.5pt);
+\draw [color=qqqqff] (8.79707831474393,2.4968516382936006) circle (2.5pt);
+\draw [color=qqqqff] (10.748690057553485,2.562452033009888) circle (2.5pt);
+\draw [color=qqqqff] (10.748690057553485,0.9552423624608379) circle (2.5pt);
+\draw [color=qqqqff] (13.438306240921277,2.4968516382936006) circle (2.5pt);
+\draw [color=qqqqff] (15.799920450707631,2.4968516382936006) circle (2.5pt);
+\draw [fill=qqqqff] (13.536706832995709,1.7424470990562912) circle (2.5pt);
+\draw [fill=qqqqff] (15.849120746744846,1.775247296414435) circle (2.5pt);
+\draw [fill=qqqqff] (13.503906635637565,0.9880425598189818) circle (2.5pt);
+\draw [color=qqqqff] (15.816320549386703,1.0536429545352695) circle (2.5pt);
+\end{scriptsize}
+\end{tikzpicture}
+\end{center}
+
+Элемент $\om_1$ поначалу входит в какие-то множества $A_n$, а после не входит ни в одно. Элемент $\om_1$ не может состоять ни в верхнем пределе последовательности множеств $A_n$, ни в нижнем.
+
+Элемент $\om_2$ поначалу не входит в какие-то множества, но, начиная с какого-то определенного момента входит во все. Значит, элемент $\om_2$ содержится и в верхнем пределе, так как он войдёт в бесконечное число членов последовательности, и в нижнем. 
+
+Элемент $\om_3$ входит во все множества с нечётными индексами и не входит во все множества с чётными индексами. Это означает, что $\om_3$ входит в бесконечное количество множеств $A_n$, но не входит во все множества $A_n$, начиная с некоторого момента.  
+
+У последовательности $(A_n)_{n=1}^{\infty}$ не существует предела, так как множества $\limsup \limits_{n \to \infty} A_n$ и $\liminf \limits_{n \to \infty} A_n$ отличаются друг от друга.
+\end{myex}
+
+
+
+\begin{myex} При заданном наборе $\Omega$ исходов случайного эксперимента самая «подробная» $\sigma$-алгебра - это $2^{\Omega}$, множество всех подмножеств $\Omega$; а самая «бедная» $\sigma$-алгебра --- это набор $\{\varnothing,\Omega\}$.
+
+\begin{blits}
+Убедитесь, что аксиомы SA1-SA3 выполнены для обоих случаев!
+\begin{blitssol}
+Для сигма-алгебры $\F = \{\varnothing, \Om \}$. Множество $\Om \in \F$, SA1 выполняется. Из того, что $\Om \in \F$ следует, что $\Om^c = \varnothing \in \F$. Аксиома SA2 выполняется. $\Om \cup \varnothing = \Om \in \F$. Аксиома SA3 выполняется.
+
+Для сигма-алгебры $2^{\Om}$. Подмножество всех множеств непустого множества включает в себя $\Om$. Аксиома SA1 выполнена. Если множество $2^{\Om}$ содержит $A$, то оно будет содержать и $A^c$, так как  множество $2^{\Om}$ включает в себя все подмножества множества $\Om$, значит аксиома SA2 выполнена. Если объединить любые два подмножества множества $\Om$, то снова получится подмножество множества $\Om$. Значит абсолютно любое объединение войдет в сигма-алгебру. Аксиома SA3 выполняется.
+\end{blitssol}
+\end{blits}
+\end{myex}
+
+
+\begin{myth} Пересечение произвольного количества $\sigma$-алгебр является $\sigma$-алгеброй.
+\end{myth}
+
+Доказательству этого факта посвящено упражнение \ref{cap}. 
+
+В силу этой теоремы корректно говорить о минимальной $\sigma$-алгебре, порождаемой данным набором событий.
+
+\begin{mydef} Пусть $\mathcal{H}$ --- произвольный набор событий, не обязательно $\sigma$-алгебра. Сигма-алгебра $\mathcal{F}$ называется \indef{минимальной} $\sigma$-алгеброй \indef{порождённой} \index{минимальная сигма-алгебра} набором $\mathcal{H}$, если
+
+\begin{itemize}
+\item Список $\mathcal{F}$ содержит набор $\mathcal{H}$.
+
+\item Любая другая $\sigma$-алгебра $\mathcal{F}'$, содержащая набор $\mathcal{H}$, содержит в себе $\mathcal{F}$.
+\end{itemize}
+ Обозначается порождённая $\sigma$-алгебра так $\sigma(\mathcal{H})$.
+\end{mydef}
+
+Другими словами, чтобы найти минимальную $\sigma$-алгебру, содержащую заданный набор событий, можно рассмотреть все $\sigma$-алгебры, содержащие заданный набор событий, и взять их пересечение.
+
+\begin{blits}
+Миша внимательно следит за подбрасыванием двух монеток: зелёной и красной. К сожалению, Миша страдает дальтонизмом и не может отличить красной монетки от зелёной. Как будет выглядеть минимальная $\sigma$-алгебра Миши?
+\begin{blitssol}
+$\sg(OO,PP,\{OP,PO\})$
+\end{blitssol}
+\end{blits}
+
+Заметим, что объединение даже двух $\sigma$-алгебр может не быть $\sigma$-алгеброй!
+
+\begin{myex} Пусть $\mathcal{F}_{1}=\{\mathbb{R},\varnothing,(-\infty;1),[1;+\infty)\}$, $\mathcal{F}_{2}=\{\mathbb{R},\varnothing,(-\infty;2),[2;+\infty)\}$ --- две $\sigma$-алгебры. Тогда, $\mathcal{F}_{1}\cup \mathcal{F}_{2}=\{\mathbb{R},\varnothing,(-\infty;1),[1;+\infty),(-\infty;2),[2;+\infty)\}$ --- не $\sigma$-алгебра.
+\end{myex}
+
+
+В качестве небольшого итога: \s-алгебра, это список событий различимых рациональным индивидом. Т.е. список событий, про каждое из которых рациональный индивид, умеющий делать простые логические заключения, может гарантированно сказать, произошло они или нет. Забежим немного вперед и скажем, что именно для событий из \s-алгебры мы будем определять вероятность. У каждого события из данной \s-алгебры будет определена вероятность, число от 0 до 1. А у событий не входящих в \s-алгебру вероятности не будет вообще.
+
+
+\subsubsection*{Задачи}
+
+\begin{problem}\label{simraz}
+Пусть множества $A$ и $B$ входят в сигма-алгебру $\F$. Войдет ли в сигма-алгебру симметрическая разность множеств $A$ и $B$, т.е. множество $A \Delta B = (A \setminus B) \cup (B \setminus A)$?
+\begin{sol}
+Если у нас получится выразить симметрическую разность через объединения и дополнения, то множество $A \Dt B$ войдет в сигма-алгебру $\F$.
+
+Выразим через объединение и дополнение разность множеств $A \setminus B$. По определению, в множество $A \setminus B$ входят вся элементы, которые принадлежат множеству $A$, но при этом не принадлежат множеству $B$. Изобразим эти три множества с помощью диаграммы Эйлера.
+
+\begin{center}
+\definecolor{qqqqcc}{rgb}{0.,0.,0.8}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+\clip(-1.5515005939701398,-2.6167780114204127) rectangle (8.871237944429023,5.034370878190924);
+\fill[color=qqqqcc,fill=qqqqcc,fill opacity=0.1] (0.01183501690629285,1.) -- (0.017188864877489385,0.8541918985989374) -- (0.03994889861539641,0.6668338553198969) -- (0.07505014758173001,0.502638898108345) -- (0.13171122915057487,0.3200756889785856) -- (0.19223116529347894,0.17249057995462813) -- (0.25078033529989563,0.054997055757784796) -- (0.32715218631618415,-0.07442086365319533) -- (0.40792750363139074,-0.19084220881971814) -- (0.4920997535476066,-0.2957765419812213) -- (0.577570160246085,-0.38906204000312816) -- (0.672819155069103,-0.480334761075518) -- (0.8014385529398398,-0.5862693521659728) -- (0.9283624824966181,-0.6746322077038858) -- (1.038219935913201,-0.7400514671483698) -- (1.1644917991876218,-0.8040859309842379) -- (1.292899078068272,-0.8581733735589101) -- (1.4246435069754577,-0.9030935095087946) -- (1.5478045752559906,-0.9360576690379308) -- (1.6955008698349965,-0.9647087009856594) -- (1.8501429185791158,-0.9825092320460995) -- (2.,-0.9881649830937071) -- (2.173587588192904,-0.9805724801747024) -- (2.332121473050938,-0.9602283864740035) -- (2.480953094054214,-0.9291148543618855) -- (2.642141323010884,-0.8816095560136361) -- (2.75610387465196,-0.8387786519144425) -- (2.8776060269727046,-0.7839864521405944) -- (2.987187952004877,-0.7257635838713299) -- (3.092763287690735,-0.6609239588480071) -- (3.216901423914279,-0.5722439137981745) -- (3.3458019894125144,-0.463426460500602) -- (3.412698649052656,-0.3989576573166189) -- (3.492732065885265,-0.31322160333963045) -- (3.3561177359983243,-0.13914489951925102) -- (3.2679216548482986,4.769800927839629E-5) -- (3.190796053152826,0.147485437829589) -- (3.1297270806429713,0.2914245226373293) -- (3.0883289107111156,0.41219591156827606) -- (3.0397264476407515,0.6033545664943905) -- (3.0124999423778718,0.7767433742258963) -- (3.,1.) -- (3.0085565725475343,1.184805506563999) -- (3.0319002448927517,1.3557855448817293) -- (3.0681669371087583,1.5177074628786444) -- (3.121081540865406,1.6853214019153953) -- (3.1710739940099684,1.809339029463766) -- (3.226910490117657,1.9252856801794747) -- (3.2955047856603663,2.0462772406457503) -- (3.384935518014318,2.1796468620007943) -- (3.4921333333333333,2.3139018667904985) -- (3.344688832741391,2.46444936515422) -- (3.2169395973824964,2.572214367165791) -- (3.0908758888691716,2.6621641901701216) -- (2.970546407134429,2.7351771297474077) -- (2.793243909741086,2.8230644803897302) -- (2.6082359975484186,2.892841507175464) -- (2.420199908729227,2.9432529523209143) -- (2.217419839979867,2.976241031145525) -- (2.,2.988164983093707) -- (1.7425902796133532,2.9714310121965894) -- (1.517799163150017,2.9288033473999304) -- (1.3759755091040824,2.8876952706308536) -- (1.198011311298127,2.8192344937347276) -- (1.0296638680982293,2.7352947274529216) -- (0.9036450637033102,2.658555351400092) -- (0.7886402870473588,2.576517569148944) -- (0.6449291576519258,2.4548481062358647) -- (0.4962229486737455,2.30055933348099) -- (0.3764851737236288,2.1476060338203196) -- (0.2871777005306011,2.0094749974320125) -- (0.18158325378644702,1.803841114331754) -- (0.09045369991027874,1.553563842581556) -- (0.03336643119146698,1.291808851879812) -- cycle;
+\fill[color=qqqqcc,fill=qqqqcc,fill opacity=0.1] (13.,4.) -- (9.,4.) -- (9.,-2.) -- (13.,-2.) -- (18.,-2.) -- (18.,1.) -- (16.988164983093707,1.) -- (16.932334255578148,0.5321492495258247) -- (16.772669479136734,0.0997539682191858) -- (16.600564477406465,-0.17940381280737516) -- (16.411195597025745,-0.4004738437168869) -- (16.16885701094904,-0.6082827139390876) -- (15.954760596774952,-0.7439129000170683) -- (15.666713452412885,-0.8730438255341741) -- (15.249660519939779,-0.972427343347126) -- (15.,-0.9881649830937076) -- (14.520183100222988,-0.9293977668403111) -- (14.129738779302276,-0.7875808814567549) -- (13.855559072387074,-0.6257475090568236) -- (13.585575367263843,-0.39721256733153854) -- (13.350960881038409,-0.11061693852308108) -- (13.197042240351173,0.1620600755888979) -- (13.066455403711801,0.5371768219236295) -- (13.011835016906293,1.) -- (13.066910574358255,1.4647206391716119) -- (13.177082065219645,1.7935806216485672) -- (13.338527833450106,2.091929594699222) -- (13.5,2.30491379025589) -- (13.668007211562417,2.476006507963387) -- (13.926884481334405,2.6736854792938463) -- (14.211868870597742,2.825280614828066) -- (14.484788392125095,2.920249202346132) -- (14.738171790700527,2.9708490527726963) -- (15.,2.9881649830937076) -- (15.355862957208661,2.956057656534364) -- (15.688160762710098,2.865270694742792) -- (16.05780305391125,2.6834050906231797) -- (16.,4.) -- cycle;
+\fill[color=qqqqcc,fill=qqqqcc,fill opacity=0.1] (16.,4.) -- (18.,4.) -- (18.,1.) -- (16.988164983093707,1.) -- (16.953595579915863,1.3691399600872334) -- (16.84227579012265,1.747542582819181) -- (16.661790032779084,2.091445778294137) -- (16.43420961499963,2.376896067335009) -- (16.05780305391125,2.6834050906231797) -- cycle;
+\draw [line width=1.2pt,color=qqqqcc] (2.,1.) circle (1.9881649830937071cm);
+\draw [line width=1.2pt,color=qqqqcc] (5.,1.) circle (2.cm);
+\draw (-0.7317346415117787,3.0044742340083257) node[anchor=north west] {$\mathbf{A}$};
+\draw (7.036523669879358,3.0044742340083257) node[anchor=north west] {$\mathbf{B}$};
+\draw (0.810206078588472,1.5015699878346702) node[anchor=north west] {$\mathbf{A \setminus B}$};
+\draw [line width=1.2pt,color=qqqqcc] (12.,1.) circle (1.9881649830937076cm);
+\draw [line width=1.2pt,color=qqqqcc] (15.,1.) circle (1.9881649830937076cm);
+\draw (13.0676588915373,5.014852641227631) node[anchor=north west] {$\mathbf{B^{c}}$};
+\draw (-1.,-2.)-- (-1.,4.)-- (8.,4.)-- (8.,-2.);
+\draw (9.,4.)-- (18.,4.)-- (18.,-2.)-- (9.,-2.);
+\draw (-1.,-2.)-- (8.,-2.);
+\draw [color=qqqqcc] (0.01183501690629285,1.)-- (0.017188864877489385,0.8541918985989374);
+\draw [color=qqqqcc] (0.017188864877489385,0.8541918985989374)-- (0.03994889861539641,0.6668338553198969);
+\draw [color=qqqqcc] (0.03994889861539641,0.6668338553198969)-- (0.07505014758173001,0.502638898108345);
+\draw [color=qqqqcc] (0.07505014758173001,0.502638898108345)-- (0.13171122915057487,0.3200756889785856);
+\draw [color=qqqqcc] (0.13171122915057487,0.3200756889785856)-- (0.19223116529347894,0.17249057995462813);
+\draw [color=qqqqcc] (0.19223116529347894,0.17249057995462813)-- (0.25078033529989563,0.054997055757784796);
+\draw [color=qqqqcc] (0.25078033529989563,0.054997055757784796)-- (0.32715218631618415,-0.07442086365319533);
+\draw [color=qqqqcc] (0.32715218631618415,-0.07442086365319533)-- (0.40792750363139074,-0.19084220881971814);
+\draw [color=qqqqcc] (0.40792750363139074,-0.19084220881971814)-- (0.4920997535476066,-0.2957765419812213);
+\draw [color=qqqqcc] (0.4920997535476066,-0.2957765419812213)-- (0.577570160246085,-0.38906204000312816);
+\draw [color=qqqqcc] (0.577570160246085,-0.38906204000312816)-- (0.672819155069103,-0.480334761075518);
+\draw [color=qqqqcc] (0.672819155069103,-0.480334761075518)-- (0.8014385529398398,-0.5862693521659728);
+\draw [color=qqqqcc] (0.8014385529398398,-0.5862693521659728)-- (0.9283624824966181,-0.6746322077038858);
+\draw [color=qqqqcc] (0.9283624824966181,-0.6746322077038858)-- (1.038219935913201,-0.7400514671483698);
+\draw [color=qqqqcc] (1.038219935913201,-0.7400514671483698)-- (1.1644917991876218,-0.8040859309842379);
+\draw [color=qqqqcc] (1.1644917991876218,-0.8040859309842379)-- (1.292899078068272,-0.8581733735589101);
+\draw [color=qqqqcc] (1.292899078068272,-0.8581733735589101)-- (1.4246435069754577,-0.9030935095087946);
+\draw [color=qqqqcc] (1.4246435069754577,-0.9030935095087946)-- (1.5478045752559906,-0.9360576690379308);
+\draw [color=qqqqcc] (1.5478045752559906,-0.9360576690379308)-- (1.6955008698349965,-0.9647087009856594);
+\draw [color=qqqqcc] (1.6955008698349965,-0.9647087009856594)-- (1.8501429185791158,-0.9825092320460995);
+\draw [color=qqqqcc] (1.8501429185791158,-0.9825092320460995)-- (2.,-0.9881649830937071);
+\draw [color=qqqqcc] (2.,-0.9881649830937071)-- (2.173587588192904,-0.9805724801747024);
+\draw [color=qqqqcc] (2.173587588192904,-0.9805724801747024)-- (2.332121473050938,-0.9602283864740035);
+\draw [color=qqqqcc] (2.332121473050938,-0.9602283864740035)-- (2.480953094054214,-0.9291148543618855);
+\draw [color=qqqqcc] (2.480953094054214,-0.9291148543618855)-- (2.642141323010884,-0.8816095560136361);
+\draw [color=qqqqcc] (2.642141323010884,-0.8816095560136361)-- (2.75610387465196,-0.8387786519144425);
+\draw [color=qqqqcc] (2.75610387465196,-0.8387786519144425)-- (2.8776060269727046,-0.7839864521405944);
+\draw [color=qqqqcc] (2.8776060269727046,-0.7839864521405944)-- (2.987187952004877,-0.7257635838713299);
+\draw [color=qqqqcc] (2.987187952004877,-0.7257635838713299)-- (3.092763287690735,-0.6609239588480071);
+\draw [color=qqqqcc] (3.092763287690735,-0.6609239588480071)-- (3.216901423914279,-0.5722439137981745);
+\draw [color=qqqqcc] (3.216901423914279,-0.5722439137981745)-- (3.3458019894125144,-0.463426460500602);
+\draw [color=qqqqcc] (3.3458019894125144,-0.463426460500602)-- (3.412698649052656,-0.3989576573166189);
+\draw [color=qqqqcc] (3.412698649052656,-0.3989576573166189)-- (3.492732065885265,-0.31322160333963045);
+\draw [color=qqqqcc] (3.492732065885265,-0.31322160333963045)-- (3.3561177359983243,-0.13914489951925102);
+\draw [color=qqqqcc] (3.3561177359983243,-0.13914489951925102)-- (3.2679216548482986,4.769800927839629E-5);
+\draw [color=qqqqcc] (3.2679216548482986,4.769800927839629E-5)-- (3.190796053152826,0.147485437829589);
+\draw [color=qqqqcc] (3.190796053152826,0.147485437829589)-- (3.1297270806429713,0.2914245226373293);
+\draw [color=qqqqcc] (3.1297270806429713,0.2914245226373293)-- (3.0883289107111156,0.41219591156827606);
+\draw [color=qqqqcc] (3.0883289107111156,0.41219591156827606)-- (3.0397264476407515,0.6033545664943905);
+\draw [color=qqqqcc] (3.0397264476407515,0.6033545664943905)-- (3.0124999423778718,0.7767433742258963);
+\draw [color=qqqqcc] (3.0124999423778718,0.7767433742258963)-- (3.,1.);
+\draw [color=qqqqcc] (3.,1.)-- (3.0085565725475343,1.184805506563999);
+\draw [color=qqqqcc] (3.0085565725475343,1.184805506563999)-- (3.0319002448927517,1.3557855448817293);
+\draw [color=qqqqcc] (3.0319002448927517,1.3557855448817293)-- (3.0681669371087583,1.5177074628786444);
+\draw [color=qqqqcc] (3.0681669371087583,1.5177074628786444)-- (3.121081540865406,1.6853214019153953);
+\draw [color=qqqqcc] (3.121081540865406,1.6853214019153953)-- (3.1710739940099684,1.809339029463766);
+\draw [color=qqqqcc] (3.1710739940099684,1.809339029463766)-- (3.226910490117657,1.9252856801794747);
+\draw [color=qqqqcc] (3.226910490117657,1.9252856801794747)-- (3.2955047856603663,2.0462772406457503);
+\draw [color=qqqqcc] (3.2955047856603663,2.0462772406457503)-- (3.384935518014318,2.1796468620007943);
+\draw [color=qqqqcc] (3.384935518014318,2.1796468620007943)-- (3.4921333333333333,2.3139018667904985);
+\draw [color=qqqqcc] (3.4921333333333333,2.3139018667904985)-- (3.344688832741391,2.46444936515422);
+\draw [color=qqqqcc] (3.344688832741391,2.46444936515422)-- (3.2169395973824964,2.572214367165791);
+\draw [color=qqqqcc] (3.2169395973824964,2.572214367165791)-- (3.0908758888691716,2.6621641901701216);
+\draw [color=qqqqcc] (3.0908758888691716,2.6621641901701216)-- (2.970546407134429,2.7351771297474077);
+\draw [color=qqqqcc] (2.970546407134429,2.7351771297474077)-- (2.793243909741086,2.8230644803897302);
+\draw [color=qqqqcc] (2.793243909741086,2.8230644803897302)-- (2.6082359975484186,2.892841507175464);
+\draw [color=qqqqcc] (2.6082359975484186,2.892841507175464)-- (2.420199908729227,2.9432529523209143);
+\draw [color=qqqqcc] (2.420199908729227,2.9432529523209143)-- (2.217419839979867,2.976241031145525);
+\draw [color=qqqqcc] (2.217419839979867,2.976241031145525)-- (2.,2.988164983093707);
+\draw [color=qqqqcc] (2.,2.988164983093707)-- (1.7425902796133532,2.9714310121965894);
+\draw [color=qqqqcc] (1.7425902796133532,2.9714310121965894)-- (1.517799163150017,2.9288033473999304);
+\draw [color=qqqqcc] (1.517799163150017,2.9288033473999304)-- (1.3759755091040824,2.8876952706308536);
+\draw [color=qqqqcc] (1.3759755091040824,2.8876952706308536)-- (1.198011311298127,2.8192344937347276);
+\draw [color=qqqqcc] (1.198011311298127,2.8192344937347276)-- (1.0296638680982293,2.7352947274529216);
+\draw [color=qqqqcc] (1.0296638680982293,2.7352947274529216)-- (0.9036450637033102,2.658555351400092);
+\draw [color=qqqqcc] (0.9036450637033102,2.658555351400092)-- (0.7886402870473588,2.576517569148944);
+\draw [color=qqqqcc] (0.7886402870473588,2.576517569148944)-- (0.6449291576519258,2.4548481062358647);
+\draw [color=qqqqcc] (0.6449291576519258,2.4548481062358647)-- (0.4962229486737455,2.30055933348099);
+\draw [color=qqqqcc] (0.4962229486737455,2.30055933348099)-- (0.3764851737236288,2.1476060338203196);
+\draw [color=qqqqcc] (0.3764851737236288,2.1476060338203196)-- (0.2871777005306011,2.0094749974320125);
+\draw [color=qqqqcc] (0.2871777005306011,2.0094749974320125)-- (0.18158325378644702,1.803841114331754);
+\draw [color=qqqqcc] (0.18158325378644702,1.803841114331754)-- (0.09045369991027874,1.553563842581556);
+\draw [color=qqqqcc] (0.09045369991027874,1.553563842581556)-- (0.03336643119146698,1.291808851879812);
+\draw [color=qqqqcc] (0.03336643119146698,1.291808851879812)-- (0.01183501690629285,1.);
+\draw [color=qqqqcc] (13.,4.)-- (9.,4.);
+\draw [color=qqqqcc] (9.,4.)-- (9.,-2.);
+\draw [color=qqqqcc] (16.988164983093707,1.)-- (16.932334255578148,0.5321492495258247);
+\draw [color=qqqqcc] (16.932334255578148,0.5321492495258247)-- (16.772669479136734,0.0997539682191858);
+\draw [color=qqqqcc] (16.772669479136734,0.0997539682191858)-- (16.600564477406465,-0.17940381280737516);
+\draw [color=qqqqcc] (16.600564477406465,-0.17940381280737516)-- (16.411195597025745,-0.4004738437168869);
+\draw [color=qqqqcc] (16.411195597025745,-0.4004738437168869)-- (16.16885701094904,-0.6082827139390876);
+\draw [color=qqqqcc] (16.16885701094904,-0.6082827139390876)-- (15.954760596774952,-0.7439129000170683);
+\draw [color=qqqqcc] (15.954760596774952,-0.7439129000170683)-- (15.666713452412885,-0.8730438255341741);
+\draw [color=qqqqcc] (15.666713452412885,-0.8730438255341741)-- (15.249660519939779,-0.972427343347126);
+\draw [color=qqqqcc] (15.249660519939779,-0.972427343347126)-- (15.,-0.9881649830937076);
+\draw [color=qqqqcc] (15.,-0.9881649830937076)-- (14.520183100222988,-0.9293977668403111);
+\draw [color=qqqqcc] (14.520183100222988,-0.9293977668403111)-- (14.129738779302276,-0.7875808814567549);
+\draw [color=qqqqcc] (14.129738779302276,-0.7875808814567549)-- (13.855559072387074,-0.6257475090568236);
+\draw [color=qqqqcc] (13.855559072387074,-0.6257475090568236)-- (13.585575367263843,-0.39721256733153854);
+\draw [color=qqqqcc] (13.585575367263843,-0.39721256733153854)-- (13.350960881038409,-0.11061693852308108);
+\draw [color=qqqqcc] (13.350960881038409,-0.11061693852308108)-- (13.197042240351173,0.1620600755888979);
+\draw [color=qqqqcc] (13.197042240351173,0.1620600755888979)-- (13.066455403711801,0.5371768219236295);
+\draw [color=qqqqcc] (13.066455403711801,0.5371768219236295)-- (13.011835016906293,1.);
+\draw [color=qqqqcc] (13.011835016906293,1.)-- (13.066910574358255,1.4647206391716119);
+\draw [color=qqqqcc] (13.066910574358255,1.4647206391716119)-- (13.177082065219645,1.7935806216485672);
+\draw [color=qqqqcc] (13.177082065219645,1.7935806216485672)-- (13.338527833450106,2.091929594699222);
+\draw [color=qqqqcc] (13.338527833450106,2.091929594699222)-- (13.5,2.30491379025589);
+\draw [color=qqqqcc] (13.5,2.30491379025589)-- (13.668007211562417,2.476006507963387);
+\draw [color=qqqqcc] (13.668007211562417,2.476006507963387)-- (13.926884481334405,2.6736854792938463);
+\draw [color=qqqqcc] (13.926884481334405,2.6736854792938463)-- (14.211868870597742,2.825280614828066);
+\draw [color=qqqqcc] (14.211868870597742,2.825280614828066)-- (14.484788392125095,2.920249202346132);
+\draw [color=qqqqcc] (14.484788392125095,2.920249202346132)-- (14.738171790700527,2.9708490527726963);
+\draw [color=qqqqcc] (14.738171790700527,2.9708490527726963)-- (15.,2.9881649830937076);
+\draw [color=qqqqcc] (15.,2.9881649830937076)-- (15.355862957208661,2.956057656534364);
+\draw [color=qqqqcc] (15.355862957208661,2.956057656534364)-- (15.688160762710098,2.865270694742792);
+\draw [color=qqqqcc] (15.688160762710098,2.865270694742792)-- (16.05780305391125,2.6834050906231797);
+\draw [color=qqqqcc] (16.,4.)-- (13.,4.);
+\draw [color=qqqqcc] (16.,4.)-- (18.,4.);
+\draw [color=qqqqcc] (16.988164983093707,1.)-- (16.953595579915863,1.3691399600872334);
+\draw [color=qqqqcc] (16.953595579915863,1.3691399600872334)-- (16.84227579012265,1.747542582819181);
+\draw [color=qqqqcc] (16.84227579012265,1.747542582819181)-- (16.661790032779084,2.091445778294137);
+\draw [color=qqqqcc] (16.661790032779084,2.091445778294137)-- (16.43420961499963,2.376896067335009);
+\draw [color=qqqqcc] (16.43420961499963,2.376896067335009)-- (16.05780305391125,2.6834050906231797);
+\end{tikzpicture}
+\end{center}
+
+Дополнение к множеству $B$ можно изобразить на той же диаграмме следующим образом. 
+
+\begin{center}
+\definecolor{qqqqcc}{rgb}{0.,0.,0.8}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+\clip(8.266172598566902,-2.8509968549799414) rectangle (18.688911136966066,4.800152034631395);
+\fill[color=qqqqcc,fill=qqqqcc,fill opacity=0.1] (0.01183501690629285,1.) -- (0.017188864877489385,0.8541918985989374) -- (0.03994889861539641,0.6668338553198969) -- (0.07505014758173001,0.502638898108345) -- (0.13171122915057487,0.3200756889785856) -- (0.19223116529347894,0.17249057995462813) -- (0.25078033529989563,0.054997055757784796) -- (0.32715218631618415,-0.07442086365319533) -- (0.40792750363139074,-0.19084220881971814) -- (0.4920997535476066,-0.2957765419812213) -- (0.577570160246085,-0.38906204000312816) -- (0.672819155069103,-0.480334761075518) -- (0.8014385529398398,-0.5862693521659728) -- (0.9283624824966181,-0.6746322077038858) -- (1.038219935913201,-0.7400514671483698) -- (1.1644917991876218,-0.8040859309842379) -- (1.292899078068272,-0.8581733735589101) -- (1.4246435069754577,-0.9030935095087946) -- (1.5478045752559906,-0.9360576690379308) -- (1.6955008698349965,-0.9647087009856594) -- (1.8501429185791158,-0.9825092320460995) -- (2.,-0.9881649830937071) -- (2.173587588192904,-0.9805724801747024) -- (2.332121473050938,-0.9602283864740035) -- (2.480953094054214,-0.9291148543618855) -- (2.642141323010884,-0.8816095560136361) -- (2.75610387465196,-0.8387786519144425) -- (2.8776060269727046,-0.7839864521405944) -- (2.987187952004877,-0.7257635838713299) -- (3.092763287690735,-0.6609239588480071) -- (3.216901423914279,-0.5722439137981745) -- (3.3458019894125144,-0.463426460500602) -- (3.412698649052656,-0.3989576573166189) -- (3.492732065885265,-0.31322160333963045) -- (3.3561177359983243,-0.13914489951925102) -- (3.2679216548482986,4.769800927839629E-5) -- (3.190796053152826,0.147485437829589) -- (3.1297270806429713,0.2914245226373293) -- (3.0883289107111156,0.41219591156827606) -- (3.0397264476407515,0.6033545664943905) -- (3.0124999423778718,0.7767433742258963) -- (3.,1.) -- (3.0085565725475343,1.184805506563999) -- (3.0319002448927517,1.3557855448817293) -- (3.0681669371087583,1.5177074628786444) -- (3.121081540865406,1.6853214019153953) -- (3.1710739940099684,1.809339029463766) -- (3.226910490117657,1.9252856801794747) -- (3.2955047856603663,2.0462772406457503) -- (3.384935518014318,2.1796468620007943) -- (3.4921333333333333,2.3139018667904985) -- (3.344688832741391,2.46444936515422) -- (3.2169395973824964,2.572214367165791) -- (3.0908758888691716,2.6621641901701216) -- (2.970546407134429,2.7351771297474077) -- (2.793243909741086,2.8230644803897302) -- (2.6082359975484186,2.892841507175464) -- (2.420199908729227,2.9432529523209143) -- (2.217419839979867,2.976241031145525) -- (2.,2.988164983093707) -- (1.7425902796133532,2.9714310121965894) -- (1.517799163150017,2.9288033473999304) -- (1.3759755091040824,2.8876952706308536) -- (1.198011311298127,2.8192344937347276) -- (1.0296638680982293,2.7352947274529216) -- (0.9036450637033102,2.658555351400092) -- (0.7886402870473588,2.576517569148944) -- (0.6449291576519258,2.4548481062358647) -- (0.4962229486737455,2.30055933348099) -- (0.3764851737236288,2.1476060338203196) -- (0.2871777005306011,2.0094749974320125) -- (0.18158325378644702,1.803841114331754) -- (0.09045369991027874,1.553563842581556) -- (0.03336643119146698,1.291808851879812) -- cycle;
+\fill[color=qqqqcc,fill=qqqqcc,fill opacity=0.1] (13.,4.) -- (9.,4.) -- (9.,-2.) -- (13.,-2.) -- (18.,-2.) -- (18.,1.) -- (16.988164983093707,1.) -- (16.932334255578148,0.5321492495258247) -- (16.772669479136734,0.0997539682191858) -- (16.600564477406465,-0.17940381280737516) -- (16.411195597025745,-0.4004738437168869) -- (16.16885701094904,-0.6082827139390876) -- (15.954760596774952,-0.7439129000170683) -- (15.666713452412885,-0.8730438255341741) -- (15.249660519939779,-0.972427343347126) -- (15.,-0.9881649830937076) -- (14.520183100222988,-0.9293977668403111) -- (14.129738779302276,-0.7875808814567549) -- (13.855559072387074,-0.6257475090568236) -- (13.585575367263843,-0.39721256733153854) -- (13.350960881038409,-0.11061693852308108) -- (13.197042240351173,0.1620600755888979) -- (13.066455403711801,0.5371768219236295) -- (13.011835016906293,1.) -- (13.066910574358255,1.4647206391716119) -- (13.177082065219645,1.7935806216485672) -- (13.338527833450106,2.091929594699222) -- (13.5,2.30491379025589) -- (13.668007211562417,2.476006507963387) -- (13.926884481334405,2.6736854792938463) -- (14.211868870597742,2.825280614828066) -- (14.484788392125095,2.920249202346132) -- (14.738171790700527,2.9708490527726963) -- (15.,2.9881649830937076) -- (15.355862957208661,2.956057656534364) -- (15.688160762710098,2.865270694742792) -- (16.05780305391125,2.6834050906231797) -- (16.,4.) -- cycle;
+\fill[color=qqqqcc,fill=qqqqcc,fill opacity=0.1] (16.,4.) -- (18.,4.) -- (18.,1.) -- (16.988164983093707,1.) -- (16.953595579915863,1.3691399600872334) -- (16.84227579012265,1.747542582819181) -- (16.661790032779084,2.091445778294137) -- (16.43420961499963,2.376896067335009) -- (16.05780305391125,2.6834050906231797) -- cycle;
+\draw [line width=1.2pt,color=qqqqcc] (2.,1.) circle (1.9881649830937071cm);
+\draw [line width=1.2pt,color=qqqqcc] (5.,1.) circle (2.cm);
+\draw (-0.7317346415117776,3.004474234008327) node[anchor=north west] {$\mathbf{A}$};
+\draw (7.036523669879359,3.004474234008327) node[anchor=north west] {$\mathbf{B}$};
+\draw (0.8102060785884732,1.5015699878346713) node[anchor=north west] {$\mathbf{A \setminus B}$};
+\draw [line width=1.2pt,color=qqqqcc] (12.,1.) circle (1.9881649830937076cm);
+\draw [line width=1.2pt,color=qqqqcc] (15.,1.) circle (1.9881649830937076cm);
+\draw (9.456785053327854,-0.5478448933112225) node[anchor=north west] {$\mathbf{B^{c}}$};
+\draw (-1.,-2.)-- (-1.,4.)-- (8.,4.)-- (8.,-2.);
+\draw (9.,4.)-- (18.,4.)-- (18.,-2.)-- (9.,-2.);
+\draw (-1.,-2.)-- (8.,-2.);
+\draw [color=qqqqcc] (0.01183501690629285,1.)-- (0.017188864877489385,0.8541918985989374);
+\draw [color=qqqqcc] (0.017188864877489385,0.8541918985989374)-- (0.03994889861539641,0.6668338553198969);
+\draw [color=qqqqcc] (0.03994889861539641,0.6668338553198969)-- (0.07505014758173001,0.502638898108345);
+\draw [color=qqqqcc] (0.07505014758173001,0.502638898108345)-- (0.13171122915057487,0.3200756889785856);
+\draw [color=qqqqcc] (0.13171122915057487,0.3200756889785856)-- (0.19223116529347894,0.17249057995462813);
+\draw [color=qqqqcc] (0.19223116529347894,0.17249057995462813)-- (0.25078033529989563,0.054997055757784796);
+\draw [color=qqqqcc] (0.25078033529989563,0.054997055757784796)-- (0.32715218631618415,-0.07442086365319533);
+\draw [color=qqqqcc] (0.32715218631618415,-0.07442086365319533)-- (0.40792750363139074,-0.19084220881971814);
+\draw [color=qqqqcc] (0.40792750363139074,-0.19084220881971814)-- (0.4920997535476066,-0.2957765419812213);
+\draw [color=qqqqcc] (0.4920997535476066,-0.2957765419812213)-- (0.577570160246085,-0.38906204000312816);
+\draw [color=qqqqcc] (0.577570160246085,-0.38906204000312816)-- (0.672819155069103,-0.480334761075518);
+\draw [color=qqqqcc] (0.672819155069103,-0.480334761075518)-- (0.8014385529398398,-0.5862693521659728);
+\draw [color=qqqqcc] (0.8014385529398398,-0.5862693521659728)-- (0.9283624824966181,-0.6746322077038858);
+\draw [color=qqqqcc] (0.9283624824966181,-0.6746322077038858)-- (1.038219935913201,-0.7400514671483698);
+\draw [color=qqqqcc] (1.038219935913201,-0.7400514671483698)-- (1.1644917991876218,-0.8040859309842379);
+\draw [color=qqqqcc] (1.1644917991876218,-0.8040859309842379)-- (1.292899078068272,-0.8581733735589101);
+\draw [color=qqqqcc] (1.292899078068272,-0.8581733735589101)-- (1.4246435069754577,-0.9030935095087946);
+\draw [color=qqqqcc] (1.4246435069754577,-0.9030935095087946)-- (1.5478045752559906,-0.9360576690379308);
+\draw [color=qqqqcc] (1.5478045752559906,-0.9360576690379308)-- (1.6955008698349965,-0.9647087009856594);
+\draw [color=qqqqcc] (1.6955008698349965,-0.9647087009856594)-- (1.8501429185791158,-0.9825092320460995);
+\draw [color=qqqqcc] (1.8501429185791158,-0.9825092320460995)-- (2.,-0.9881649830937071);
+\draw [color=qqqqcc] (2.,-0.9881649830937071)-- (2.173587588192904,-0.9805724801747024);
+\draw [color=qqqqcc] (2.173587588192904,-0.9805724801747024)-- (2.332121473050938,-0.9602283864740035);
+\draw [color=qqqqcc] (2.332121473050938,-0.9602283864740035)-- (2.480953094054214,-0.9291148543618855);
+\draw [color=qqqqcc] (2.480953094054214,-0.9291148543618855)-- (2.642141323010884,-0.8816095560136361);
+\draw [color=qqqqcc] (2.642141323010884,-0.8816095560136361)-- (2.75610387465196,-0.8387786519144425);
+\draw [color=qqqqcc] (2.75610387465196,-0.8387786519144425)-- (2.8776060269727046,-0.7839864521405944);
+\draw [color=qqqqcc] (2.8776060269727046,-0.7839864521405944)-- (2.987187952004877,-0.7257635838713299);
+\draw [color=qqqqcc] (2.987187952004877,-0.7257635838713299)-- (3.092763287690735,-0.6609239588480071);
+\draw [color=qqqqcc] (3.092763287690735,-0.6609239588480071)-- (3.216901423914279,-0.5722439137981745);
+\draw [color=qqqqcc] (3.216901423914279,-0.5722439137981745)-- (3.3458019894125144,-0.463426460500602);
+\draw [color=qqqqcc] (3.3458019894125144,-0.463426460500602)-- (3.412698649052656,-0.3989576573166189);
+\draw [color=qqqqcc] (3.412698649052656,-0.3989576573166189)-- (3.492732065885265,-0.31322160333963045);
+\draw [color=qqqqcc] (3.492732065885265,-0.31322160333963045)-- (3.3561177359983243,-0.13914489951925102);
+\draw [color=qqqqcc] (3.3561177359983243,-0.13914489951925102)-- (3.2679216548482986,4.769800927839629E-5);
+\draw [color=qqqqcc] (3.2679216548482986,4.769800927839629E-5)-- (3.190796053152826,0.147485437829589);
+\draw [color=qqqqcc] (3.190796053152826,0.147485437829589)-- (3.1297270806429713,0.2914245226373293);
+\draw [color=qqqqcc] (3.1297270806429713,0.2914245226373293)-- (3.0883289107111156,0.41219591156827606);
+\draw [color=qqqqcc] (3.0883289107111156,0.41219591156827606)-- (3.0397264476407515,0.6033545664943905);
+\draw [color=qqqqcc] (3.0397264476407515,0.6033545664943905)-- (3.0124999423778718,0.7767433742258963);
+\draw [color=qqqqcc] (3.0124999423778718,0.7767433742258963)-- (3.,1.);
+\draw [color=qqqqcc] (3.,1.)-- (3.0085565725475343,1.184805506563999);
+\draw [color=qqqqcc] (3.0085565725475343,1.184805506563999)-- (3.0319002448927517,1.3557855448817293);
+\draw [color=qqqqcc] (3.0319002448927517,1.3557855448817293)-- (3.0681669371087583,1.5177074628786444);
+\draw [color=qqqqcc] (3.0681669371087583,1.5177074628786444)-- (3.121081540865406,1.6853214019153953);
+\draw [color=qqqqcc] (3.121081540865406,1.6853214019153953)-- (3.1710739940099684,1.809339029463766);
+\draw [color=qqqqcc] (3.1710739940099684,1.809339029463766)-- (3.226910490117657,1.9252856801794747);
+\draw [color=qqqqcc] (3.226910490117657,1.9252856801794747)-- (3.2955047856603663,2.0462772406457503);
+\draw [color=qqqqcc] (3.2955047856603663,2.0462772406457503)-- (3.384935518014318,2.1796468620007943);
+\draw [color=qqqqcc] (3.384935518014318,2.1796468620007943)-- (3.4921333333333333,2.3139018667904985);
+\draw [color=qqqqcc] (3.4921333333333333,2.3139018667904985)-- (3.344688832741391,2.46444936515422);
+\draw [color=qqqqcc] (3.344688832741391,2.46444936515422)-- (3.2169395973824964,2.572214367165791);
+\draw [color=qqqqcc] (3.2169395973824964,2.572214367165791)-- (3.0908758888691716,2.6621641901701216);
+\draw [color=qqqqcc] (3.0908758888691716,2.6621641901701216)-- (2.970546407134429,2.7351771297474077);
+\draw [color=qqqqcc] (2.970546407134429,2.7351771297474077)-- (2.793243909741086,2.8230644803897302);
+\draw [color=qqqqcc] (2.793243909741086,2.8230644803897302)-- (2.6082359975484186,2.892841507175464);
+\draw [color=qqqqcc] (2.6082359975484186,2.892841507175464)-- (2.420199908729227,2.9432529523209143);
+\draw [color=qqqqcc] (2.420199908729227,2.9432529523209143)-- (2.217419839979867,2.976241031145525);
+\draw [color=qqqqcc] (2.217419839979867,2.976241031145525)-- (2.,2.988164983093707);
+\draw [color=qqqqcc] (2.,2.988164983093707)-- (1.7425902796133532,2.9714310121965894);
+\draw [color=qqqqcc] (1.7425902796133532,2.9714310121965894)-- (1.517799163150017,2.9288033473999304);
+\draw [color=qqqqcc] (1.517799163150017,2.9288033473999304)-- (1.3759755091040824,2.8876952706308536);
+\draw [color=qqqqcc] (1.3759755091040824,2.8876952706308536)-- (1.198011311298127,2.8192344937347276);
+\draw [color=qqqqcc] (1.198011311298127,2.8192344937347276)-- (1.0296638680982293,2.7352947274529216);
+\draw [color=qqqqcc] (1.0296638680982293,2.7352947274529216)-- (0.9036450637033102,2.658555351400092);
+\draw [color=qqqqcc] (0.9036450637033102,2.658555351400092)-- (0.7886402870473588,2.576517569148944);
+\draw [color=qqqqcc] (0.7886402870473588,2.576517569148944)-- (0.6449291576519258,2.4548481062358647);
+\draw [color=qqqqcc] (0.6449291576519258,2.4548481062358647)-- (0.4962229486737455,2.30055933348099);
+\draw [color=qqqqcc] (0.4962229486737455,2.30055933348099)-- (0.3764851737236288,2.1476060338203196);
+\draw [color=qqqqcc] (0.3764851737236288,2.1476060338203196)-- (0.2871777005306011,2.0094749974320125);
+\draw [color=qqqqcc] (0.2871777005306011,2.0094749974320125)-- (0.18158325378644702,1.803841114331754);
+\draw [color=qqqqcc] (0.18158325378644702,1.803841114331754)-- (0.09045369991027874,1.553563842581556);
+\draw [color=qqqqcc] (0.09045369991027874,1.553563842581556)-- (0.03336643119146698,1.291808851879812);
+\draw [color=qqqqcc] (0.03336643119146698,1.291808851879812)-- (0.01183501690629285,1.);
+\draw [color=qqqqcc] (13.,4.)-- (9.,4.);
+\draw [color=qqqqcc] (9.,4.)-- (9.,-2.);
+\draw [color=qqqqcc] (16.988164983093707,1.)-- (16.932334255578148,0.5321492495258247);
+\draw [color=qqqqcc] (16.932334255578148,0.5321492495258247)-- (16.772669479136734,0.0997539682191858);
+\draw [color=qqqqcc] (16.772669479136734,0.0997539682191858)-- (16.600564477406465,-0.17940381280737516);
+\draw [color=qqqqcc] (16.600564477406465,-0.17940381280737516)-- (16.411195597025745,-0.4004738437168869);
+\draw [color=qqqqcc] (16.411195597025745,-0.4004738437168869)-- (16.16885701094904,-0.6082827139390876);
+\draw [color=qqqqcc] (16.16885701094904,-0.6082827139390876)-- (15.954760596774952,-0.7439129000170683);
+\draw [color=qqqqcc] (15.954760596774952,-0.7439129000170683)-- (15.666713452412885,-0.8730438255341741);
+\draw [color=qqqqcc] (15.666713452412885,-0.8730438255341741)-- (15.249660519939779,-0.972427343347126);
+\draw [color=qqqqcc] (15.249660519939779,-0.972427343347126)-- (15.,-0.9881649830937076);
+\draw [color=qqqqcc] (15.,-0.9881649830937076)-- (14.520183100222988,-0.9293977668403111);
+\draw [color=qqqqcc] (14.520183100222988,-0.9293977668403111)-- (14.129738779302276,-0.7875808814567549);
+\draw [color=qqqqcc] (14.129738779302276,-0.7875808814567549)-- (13.855559072387074,-0.6257475090568236);
+\draw [color=qqqqcc] (13.855559072387074,-0.6257475090568236)-- (13.585575367263843,-0.39721256733153854);
+\draw [color=qqqqcc] (13.585575367263843,-0.39721256733153854)-- (13.350960881038409,-0.11061693852308108);
+\draw [color=qqqqcc] (13.350960881038409,-0.11061693852308108)-- (13.197042240351173,0.1620600755888979);
+\draw [color=qqqqcc] (13.197042240351173,0.1620600755888979)-- (13.066455403711801,0.5371768219236295);
+\draw [color=qqqqcc] (13.066455403711801,0.5371768219236295)-- (13.011835016906293,1.);
+\draw [color=qqqqcc] (13.011835016906293,1.)-- (13.066910574358255,1.4647206391716119);
+\draw [color=qqqqcc] (13.066910574358255,1.4647206391716119)-- (13.177082065219645,1.7935806216485672);
+\draw [color=qqqqcc] (13.177082065219645,1.7935806216485672)-- (13.338527833450106,2.091929594699222);
+\draw [color=qqqqcc] (13.338527833450106,2.091929594699222)-- (13.5,2.30491379025589);
+\draw [color=qqqqcc] (13.5,2.30491379025589)-- (13.668007211562417,2.476006507963387);
+\draw [color=qqqqcc] (13.668007211562417,2.476006507963387)-- (13.926884481334405,2.6736854792938463);
+\draw [color=qqqqcc] (13.926884481334405,2.6736854792938463)-- (14.211868870597742,2.825280614828066);
+\draw [color=qqqqcc] (14.211868870597742,2.825280614828066)-- (14.484788392125095,2.920249202346132);
+\draw [color=qqqqcc] (14.484788392125095,2.920249202346132)-- (14.738171790700527,2.9708490527726963);
+\draw [color=qqqqcc] (14.738171790700527,2.9708490527726963)-- (15.,2.9881649830937076);
+\draw [color=qqqqcc] (15.,2.9881649830937076)-- (15.355862957208661,2.956057656534364);
+\draw [color=qqqqcc] (15.355862957208661,2.956057656534364)-- (15.688160762710098,2.865270694742792);
+\draw [color=qqqqcc] (15.688160762710098,2.865270694742792)-- (16.05780305391125,2.6834050906231797);
+\draw [color=qqqqcc] (16.,4.)-- (13.,4.);
+\draw [color=qqqqcc] (16.,4.)-- (18.,4.);
+\draw [color=qqqqcc] (16.988164983093707,1.)-- (16.953595579915863,1.3691399600872334);
+\draw [color=qqqqcc] (16.953595579915863,1.3691399600872334)-- (16.84227579012265,1.747542582819181);
+\draw [color=qqqqcc] (16.84227579012265,1.747542582819181)-- (16.661790032779084,2.091445778294137);
+\draw [color=qqqqcc] (16.661790032779084,2.091445778294137)-- (16.43420961499963,2.376896067335009);
+\draw [color=qqqqcc] (16.43420961499963,2.376896067335009)-- (16.05780305391125,2.6834050906231797);
+\end{tikzpicture}
+\end{center}
+
+Заметим, что если пересечь дополнение к множеству $B$ с множеством $A$, то мы получим в точности $A \setminus B$. То есть $A \setminus B =A \cap B^{c}$. Пересечение двух множеств, в свою очередь, тоже можно выразить через объединение и дополнение, $A \cap B^{c} = (A^{c} \cup B)^{c}$.
+
+Для множества $B \setminus A$ можно проделать аналогичные операции и в итоге получить, что
+
+\[A \Dt B =(A \setminus B)\cup (B\setminus A) =(A \cap B^{c})\cup (B \cap A^{c}) = (A^c \cup B)^{c} \cup (B^{c} \cap A).\]
+ 
+\end{sol}
+\end{problem}
+
+
+\begin{problem}
+Игральный кубик подбрасывается один раз. В первый момент времени наблюдатель узнает, выпала ли чётная грань или нет. Во второй момент времени наблюдатель дополнительно узнает, выпала ли грань большая двух или нет. В третий момент времени наблюдатель точно узнает, какая грань выпала. Укажите множество элементарных событий и соответствующие три сигма-алгебры событий.
+\begin{sol}
+Множество элементарных исходов: $\Om = \{1,2,3,4,5,6\}$. Наблюдатель в первый момент времени получает информацию о четности грани. Если выпало число $3$ и ему задают вопрос: «Что ты видишь на кубике?», он отвечает: «Нечетное число». Если выпало $5$ и ему задают вопрос: «Что ты видишь на кубике?», он отвечает: «Нечетное число». Он не может различить между собой исходы $\{\{1\},\{3\},\{5\}\}$, они для него как-бы слипаются в одну общую группу. Таким образом в первый момент времени наблюдатель различает следующие события:
+
+\[\F_1 = \{\varnothing, \Om, \{1,3,5\},\{2,4,6\} \} \]
+
+При этом набор множеств $\{\{1,3,5\},\{2,4,6\}\}$ порождает минимальную сигма-алгебру наблюдателя.
+
+Во второй момент времени наблюдатель узнает выпала ли грань больше двух. Эта новая информация «отщепляет» исход $\{1\}$ от исходов $\{\{3\},\{5\}\}$. 
+
+Набор множеств $\{\{1\},\{3,5\},\{2\},\{4,6\}\}$ порождает минимальную сигма-алгебру наблюдателя во второй момент времени.
+
+\[\F_2 = \s(\{1\},\{3,5\},\{2\},\{4,6\}) = \{\varnothing, \Om, \{1,3,4\},\{2,4,6\},\{1\},\{2\},\{3,5\},\{4,6\}, \dots \}\] 
+
+В третий момент времени наблюдатель узнает какая точно грань выпала. Эта информация «расщепляет» исходы  $\{3\}$ и $\{5\}$. Набор множеств  $\{\{1\},\{2\},\{3\},\{4\},\{5\},\{6\}\}$ порождает минимальную сигма-алгебру наблюдателя в третий момент времени. Сигма-алгебра в третий момент времени будет включать в себя все возможные объединения и пересечения этих множеств. 
+\end{sol}
+\end{problem}
+
+
+\begin{problem}
+Великий Гудини снова в городе! Он на сцене и тянет из шляпы разноцветные магические шары. В первых рядах за фокусом наблюдает Луиза. В самый ответственный момент, когда Гудини тянет из шляпы магический шар, Луиза замечает на третьем ряду своего давнего возлюбленного, Романа, и пропускает весь фокус. Роман, в свою очередь, более внимательно наблюдает за волшебником, но как и Луиза может ненадолго зазеваться и пропустить часть фокуса. Например, он может увидеть, что у появившегося магического шара красноватый оттенок, но не понять красного он цвета или лилового.
+
+Как выглядит сигма-алгебра Луизы? Сколько различных \s-алгебр может породить Гудини в голове Романа своим фокусом, если Роман точно знает, что в шляпе находятся шары трёх различных цветов? Сколько \s-алгебр может возникнуть в голове Романа, если в шляпе находятся шары четырёх цветов? 
+Сколько множеств будет включать самая большая \s-алгебра?
+\begin{sol}
+
+Множество из $n$ элементов может породить столько же \s-алгебр, сколько существует различных разбиений\footnote{\indef{Разбиением множества} называется его представление в виде объединения произвольного количества попарно непересекающихся подмножеств.} этого множества на части. 
+
+Пусть в шляпе лежат шары трёх разных цветов. Тогда  $\Om = \{\om_1,\om_2,\om_3\}$, элементарный исход  $\om_1$ --- фокусник  вытянул  из шляпы синий шарик, $\om_2$ --- зеленый и $\om_3$ --- красный. 
+
+Роман, который смотрит за фокусником совершенно по-разному может быть наделен информацией. 
+
+Например, он как Луиза может на секунду отвлечься и пропустить весь фокус. Тогда он точно будет знать, что фокусник что-то вытянул из шляпы, а что именно неясно. Тогда его \s-алгебра будет иметь вид $\s(\{\om_1,\om_2,\om_3\},\varnothing )$.
+ 
+Другой пример --- Роман может не различать зеленый и синий шарики Например, из-за того, что он сидит на третьем ряду, а зеленый цвет у шарика темноват. Тогда его \s-алгебра будет иметь вид $\s( \{\om_1,\om_2\},\{\om_3\})$. Точно также могут слипнуться какие-то другие элементарные исходы.
+ 
+\begin{center} 
+\definecolor{ffqqqq}{rgb}{1.,0.,0.}
+\definecolor{qqwuqq}{rgb}{0.,0.39215686274509803,0.}
+\definecolor{qqqqff}{rgb}{0.,0.,1.}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+\clip(-0.7231623458578744,-0.5660482026083343) rectangle (4.741954659316065,5.257437130773761);
+\draw (0.,4.)-- (2.,4.);
+\draw (2.,4.)-- (4.,4.);
+\draw (2.,3.)-- (4.,3.);
+\draw (0.,2.)-- (2.,2.);
+\draw [shift={(2.,-5.142970672280338)}] plot[domain=1.2560441058424927:1.8855485477473006,variable=\t]({1.*6.4603474117493365*cos(\t r)+0.*6.4603474117493365*sin(\t r)},{0.*6.4603474117493365*cos(\t r)+1.*6.4603474117493365*sin(\t r)});
+\draw (-0.10574582619500646,4.7) node[anchor=north west] {$\mathbf{\omega_1}$};
+\draw (1.7802119926250313,4.7) node[anchor=north west] {$\mathbf{\omega_2}$};
+\draw (3.781101825120408,4.7) node[anchor=north west] {$\mathbf{\omega_3}$};
+\begin{scriptsize}
+\draw [fill=qqqqff] (0.,4.) circle (2.5pt);
+\draw [fill=qqqqff] (0.,3.) circle (2.5pt);
+\draw [fill=qqqqff] (0.,2.) circle (2.5pt);
+\draw [fill=qqqqff] (0.,1.) circle (2.5pt);
+\draw [fill=qqqqff] (0.,0.) circle (2.5pt);
+\draw [fill=qqwuqq] (2.,4.) circle (2.5pt);
+\draw [fill=qqwuqq] (2.,3.) circle (2.5pt);
+\draw [fill=qqwuqq] (2.,2.) circle (2.5pt);
+\draw [fill=qqwuqq] (2.,1.) circle (2.5pt);
+\draw [fill=qqwuqq] (2.,0.) circle (2.5pt);
+\draw [fill=ffqqqq] (4.,4.) circle (2.5pt);
+\draw [fill=ffqqqq] (4.,3.) circle (2.5pt);
+\draw [fill=ffqqqq] (4.,2.) circle (2.5pt);
+\draw [fill=ffqqqq] (4.,1.) circle (2.5pt);
+\draw [fill=ffqqqq] (4.,0.) circle (2.5pt);
+\end{scriptsize}
+\end{tikzpicture}
+\end{center}
+
+В конечном счете количество \s-алгебр, которое может быть сформировано совпадет с количеством разбиений множества $\Om$. И в случае $n=3$ оно будет равно $5$.
+
+В самую крупную сигма-алгебру войдет 8 элементов, так как в каждое множество в \s-алгебре мы можем как включить элементарный исход, так и не включить его. В общем случае количество элементов в самой крупной \s-алгебре будет равно $2^n$, где $|\Om|=n$. 
+
+Если $n=4$, тогда количество разбиений будет равно $15$.
+
+\begin{center}
+\definecolor{yqqqyq}{rgb}{0.5019607843137255,0.,0.5019607843137255}
+\definecolor{ffqqqq}{rgb}{1.,0.,0.}
+\definecolor{qqwuqq}{rgb}{0.,0.39215686274509803,0.}
+\definecolor{qqqqff}{rgb}{0.,0.,1.}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+\clip(-4.64,-2.42) rectangle (7.08,6.22);
+\draw (-3.,5.)-- (-2.,5.);
+\draw (-2.,5.)-- (-1.,5.);
+\draw (-1.,5.)-- (0.,5.);
+\draw (-3.,4.)-- (-2.,4.);
+\draw (-2.,3.)-- (-1.,3.);
+\draw (-1.,2.)-- (0.,2.);
+\draw [shift={(-2.,-0.12578947368421073)}] plot[domain=0.8445023069025441:2.297090346687249,variable=\t]({1.*1.5057894736842106*cos(\t r)+0.*1.5057894736842106*sin(\t r)},{0.*1.5057894736842106*cos(\t r)+1.*1.5057894736842106*sin(\t r)});
+\draw [shift={(-1.5,-2.4680952380952386)}] plot[domain=1.0246933022564964:2.1168993513332968,variable=\t]({1.*2.8881644870589334*cos(\t r)+0.*2.8881644870589334*sin(\t r)},{0.*2.8881644870589334*cos(\t r)+1.*2.8881644870589334*sin(\t r)});
+\draw [shift={(-1.,-2.1257894736842107)}] plot[domain=0.8445023069025441:2.297090346687249,variable=\t]({1.*1.5057894736842106*cos(\t r)+0.*1.5057894736842106*sin(\t r)},{0.*1.5057894736842106*cos(\t r)+1.*1.5057894736842106*sin(\t r)});
+\draw (-3.,-2.)-- (-2.,-2.);
+\draw (-2.,-2.)-- (-1.,-2.);
+\draw (3.,5.)-- (4.,5.);
+\draw (4.,5.)-- (5.,5.);
+\draw (2.,4.)-- (3.,4.);
+\draw (4.,4.)-- (5.,4.);
+\draw (4.,1.)-- (5.,1.);
+\draw [shift={(3.,-0.3)}] plot[domain=0.91510070055336:2.226491953036433,variable=\t]({1.*1.6401219466856716*cos(\t r)+0.*1.6401219466856716*sin(\t r)},{0.*1.6401219466856716*cos(\t r)+1.*1.6401219466856716*sin(\t r)});
+\draw (2.,2.)-- (3.,2.);
+\draw [shift={(4.,0.9505)}] plot[domain=0.8095457010490643:2.332046952540729,variable=\t]({1.*1.4496379720468144*cos(\t r)+0.*1.4496379720468144*sin(\t r)},{0.*1.4496379720468144*cos(\t r)+1.*1.4496379720468144*sin(\t r)});
+\draw (3.,3.)-- (4.,3.);
+\draw [shift={(3.5,0.7843478260869557)}] plot[domain=0.9756728773192852:2.1659197762705085,variable=\t]({1.*2.6756521739130443*cos(\t r)+0.*2.6756521739130443*sin(\t r)},{0.*2.6756521739130443*cos(\t r)+1.*2.6756521739130443*sin(\t r)});
+\draw [shift={(3.,-1.1236842105263158)}] plot[domain=0.8435728442346736:2.29801980935512,variable=\t]({1.*1.5042161430413352*cos(\t r)+0.*1.5042161430413352*sin(\t r)},{0.*1.5042161430413352*cos(\t r)+1.*1.5042161430413352*sin(\t r)});
+\draw [shift={(4.,0.9163636363636364)}] plot[domain=3.8833752312151177:5.541402729554261,variable=\t]({1.*1.3563636363636364*cos(\t r)+0.*1.3563636363636364*sin(\t r)},{0.*1.3563636363636364*cos(\t r)+1.*1.3563636363636364*sin(\t r)});
+\draw (-3.26,5.92) node[anchor=north west] {$\mathbf{\omega_1}$};
+\draw (-2.24,5.92) node[anchor=north west] {$\mathbf{\omega_2}$};
+\draw (-1.24,5.9) node[anchor=north west] {$\mathbf{\omega_3}$};
+\draw (-0.18,5.9) node[anchor=north west] {$\mathbf{\omega_4}$};
+\draw (1.78,5.92) node[anchor=north west] {$\mathbf{\omega_1}$};
+\draw (2.76,5.96) node[anchor=north west] {$\mathbf{\omega_2}$};
+\draw (3.74,5.96) node[anchor=north west] {$\mathbf{\omega_3}$};
+\draw (4.76,5.94) node[anchor=north west] {$\mathbf{\omega_4}$};
+\begin{scriptsize}
+\draw [fill=qqqqff] (-3.,5.) circle (2.5pt);
+\draw [fill=qqqqff] (-3.,4.) circle (2.5pt);
+\draw [fill=qqqqff] (-3.,3.) circle (2.5pt);
+\draw [fill=qqqqff] (-3.,2.) circle (2.5pt);
+\draw [fill=qqqqff] (-3.,1.) circle (2.5pt);
+\draw [fill=qqqqff] (-3.,0.) circle (2.5pt);
+\draw [fill=qqqqff] (-3.,-1.) circle (2.5pt);
+\draw [fill=qqqqff] (2.,5.) circle (2.5pt);
+\draw [fill=qqqqff] (2.,4.) circle (2.5pt);
+\draw [fill=qqqqff] (2.,3.) circle (2.5pt);
+\draw [fill=qqqqff] (2.,2.) circle (2.5pt);
+\draw [fill=qqqqff] (2.,1.) circle (2.5pt);
+\draw [fill=qqqqff] (2.,0.) circle (2.5pt);
+\draw [fill=qqqqff] (2.,-1.) circle (2.5pt);
+\draw [fill=qqqqff] (-3.,-2.) circle (2.5pt);
+\draw [fill=qqwuqq] (-2.,5.) circle (2.5pt);
+\draw [fill=qqwuqq] (-2.,4.) circle (2.5pt);
+\draw [fill=qqwuqq] (-2.,3.) circle (2.5pt);
+\draw [fill=qqwuqq] (-2.,2.) circle (2.5pt);
+\draw [fill=qqwuqq] (-2.,1.) circle (2.5pt);
+\draw [fill=qqwuqq] (-2.,0.) circle (2.5pt);
+\draw [fill=qqwuqq] (-2.,-1.) circle (2.5pt);
+\draw [fill=qqwuqq] (-2.,-2.) circle (2.5pt);
+\draw [fill=qqwuqq] (3.,5.) circle (2.5pt);
+\draw [fill=qqwuqq] (3.,4.) circle (2.5pt);
+\draw [fill=qqwuqq] (3.,3.) circle (2.5pt);
+\draw [fill=qqwuqq] (3.,2.) circle (2.5pt);
+\draw [fill=qqwuqq] (3.,1.) circle (2.5pt);
+\draw [fill=qqwuqq] (3.,0.) circle (2.5pt);
+\draw [fill=qqwuqq] (3.,-1.) circle (2.5pt);
+\draw [fill=ffqqqq] (-1.,5.) circle (2.5pt);
+\draw [fill=ffqqqq] (-1.,4.) circle (2.5pt);
+\draw [fill=ffqqqq] (-1.,3.) circle (2.5pt);
+\draw [fill=ffqqqq] (-1.,2.) circle (2.5pt);
+\draw [fill=ffqqqq] (-1.,1.) circle (2.5pt);
+\draw [fill=ffqqqq] (-1.,0.) circle (2.5pt);
+\draw [fill=ffqqqq] (-1.,-1.) circle (2.5pt);
+\draw [fill=ffqqqq] (-1.,-2.) circle (2.5pt);
+\draw [fill=ffqqqq] (4.,5.) circle (2.5pt);
+\draw [fill=ffqqqq] (4.,4.) circle (2.5pt);
+\draw [fill=ffqqqq] (4.,3.) circle (2.5pt);
+\draw [fill=ffqqqq] (4.,2.) circle (2.5pt);
+\draw [fill=ffqqqq] (4.,1.) circle (2.5pt);
+\draw [fill=ffqqqq] (4.,0.) circle (2.5pt);
+\draw [fill=ffqqqq] (4.,-1.) circle (2.5pt);
+\draw [fill=yqqqyq] (0.,5.) circle (2.5pt);
+\draw [fill=yqqqyq] (0.,4.) circle (2.5pt);
+\draw [fill=yqqqyq] (0.,3.) circle (2.5pt);
+\draw [fill=yqqqyq] (0.,2.) circle (2.5pt);
+\draw [fill=yqqqyq] (0.,1.) circle (2.5pt);
+\draw [fill=yqqqyq] (0.,0.) circle (2.5pt);
+\draw [fill=yqqqyq] (0.,-1.) circle (2.5pt);
+\draw [fill=yqqqyq] (0.,-2.) circle (2.5pt);
+\draw [fill=yqqqyq] (5.,5.) circle (2.5pt);
+\draw [fill=yqqqyq] (5.,4.) circle (2.5pt);
+\draw [fill=yqqqyq] (5.,3.) circle (2.5pt);
+\draw [fill=yqqqyq] (5.,2.) circle (2.5pt);
+\draw [fill=yqqqyq] (5.,1.) circle (2.5pt);
+\draw [fill=yqqqyq] (5.,0.) circle (2.5pt);
+\draw [fill=yqqqyq] (5.,-1.) circle (2.5pt);
+\end{scriptsize}
+\end{tikzpicture}
+\end{center}
+
+В комбинаторике число всех разбиений множества из $n$ элементов называется числом Белла \index{число Белла} и обозначается $B_n$. Такие числа можно вычислять с помощью рекуррентного соотношения
+
+\[B_{n+1} = \sum_{k=0}^n C_n^k B_k. \]
+
+По определению предполагают, что $B_0 = 0$. Подробнее о числах Белла и многих других классных комбинаторных штуках можно прочесть в \cite{gkp:km}.
+\end{sol}
+\end{problem}
+
+
+\begin{problem}
+Джеймс Бонд пойман и привязан к стулу с завязанными глазами! На улице сейчас либо солнечно, либо дождь, либо пасмурно без дождя. Соответственно множество $\Omega$ состоит из трёх исходов, $\Omega  = \{\text{солнечно, дождь, пасмурно}\}$. Джеймс Бонд может на слух отличить идёт дождь или нет. 
+
+\begin{enumerate}
+\item Как выглядит $\sigma$-алгебра событий, которые различает агент 007?
+
+\item Как выглядит минимальная $\sigma$-алгебра, содержащая событие $A = \{\text{нет солнца}\}$?
+
+\item Сколько различных $\sigma$-алгебр можно придумать для данного $\Omega$?
+\end{enumerate}
+\begin{sol}
+Сигма-алгебра агента 007 будет выглядеть следующим образом:
+
+\[ \F = \{ \{\text{пасмурно, идет дождь} \},\{\text{пасмурно без дождя, солнце} \},\varnothing,\Omega \} \].
+
+Минимальная сигма-алгебра будет иметь вид:
+
+\[\sigma( \text{нет солнца}) = \{ \{\text{нет солнца}\}, \{\text{солнце} \},\varnothing ,\Omega)\] 
+
+Количество \s-алгебр, которое можно составить из элементов множества $\Omega$, равно количеству разбиений этого множества. В данном случае множество $\Omega$ содержит 3 элемента и может быть разбито 5 способами. 
+\end{sol}
+\end{problem}
+
+
+\begin{problem}\label{cap}
+На службе у Людовика \RNumb{14} находятся три прославленных королевских мушкетёра: Атос, Портос и Арамис. Каждый из них --- рациональный агент, обладающий списком событий $\F_1$, $\F_2$ и $\F_3$ о военной тактике, который он умеет различать. Все эти списки являются \s-алгебрами, построенными на одном и том же пространстве элементарных исходов. Приехавший из Гаскони, молодой и необузданный д'Артаньян мечтает обучиться военной тактике и стать лучшим в этом деле! Король отдаёт молодое дарование в обучение трём прославленным королевским мушкетёрам.
+
+\begin{itemize}
+\item Предположим, что д'Артаньян прошёл последовательное качественное обучение. То есть он сначала узнал всё, что знает Атос, потом всё, что знает Портос, потом всё, что знает Арамис. То есть, д'Артаньян обладает списком событий $\F_1 \cup \F_2 \cup \F_3$. Является ли этот список событий \s-алгеброй? 
+
+\item Предположим, что д'Артаньян прошёл параллельное обучение и, из-за мешанины в голове, он усвоил только тот материал, который одновременно давали Атос, Портос и Арамис. То есть д'Араньян обладает списком событий $\F_1 \cap \F_2 \cap \F_3$. Является ли этот список \s-алгеброй? 
+\end{itemize} 
+
+\begin{sol}
+Пересечение любого количества сигма-алгебр снова будет сигма-алгеброй. Для того, чтобы доказать это утверждение достаточно в лоб проверить все три свойства из определения сигма-алгебры.
+
+\begin{enumerate}
+\item[SA1] Из того, что множество $\Om$ лежит в каждой сигма-алгебре $F_i$  следует что множество $\Om$ также будет лежать и в пересечении всех сигма-алгебр.
+
+\item[SA2] Если множество $B \in  \F_1 \cap \F_2 \cap \F_3$, то множество $B$ принадлежит каждой из сигма-алгебр. Если $B \in \F_i$, тогда и $B^{c} \in \F_i$, а значит $B^{c} \in  \F_1 \cap \F_2 \cap \F_3$.
+
+\item[SA3] Пусть множества $B_1, B_2, B_3, \ldots \in  \F_1 \cap \F_2 \cap \F_3$. Тогда множество $B_k \in \F_i$ для любого $i$. Значит $\cup_{k} B_k \in F_i$ для всех i сразу. Значит $\cup_{k} B_k \in  \F_1 \cap \F_2 \cap \F_3$.
+\end{enumerate}
+
+
+Множество $\F_1 \cup \F_2 \cup \F_3$ не будет сигма-алгеброй. Предположим, что Арамис ничего не знает и ничему не научил д'Артаньяна. Пусть Атос и Портос знают как выиграть в пивной у гвардейцев Кардинала в кости и хотят научить этому юнца! При этом Атос, играя в кости знает выпала ли чётная грань,а Портос знает больше трёх эта грань или нет, тогда
+
+\[\F_1 = \{ \{1,3,4\},\{2,4,6\},\varnothing,\{1,2,3,4,5,6\}\} \]
+
+\[\F_2 = \{1,2,3\},\{4,5,6\},\varnothing,\{1,2,3,4,5,6\}\}\]
+
+\[\F_1 \cup \F_2 = \{\varnothing,\Om,\{1,3,4\},\{2,4,6\},\{1,2,3\},\{4,5,6\},\{1,2,3,5\},\{1,3,4,6\},\{1,2,3,6\},\{1,2,3,4,6\}\} \]
+
+Если события входит в сигма-алгебру, то любая их счётная комбинация входит в сигма-алгебру. Для приведенных двух множеств видим, что множество 
+
+\[\{1,3,5\} \cap \{4,5,6\} = \{5\} \]
+
+не войдет в множество $\F_1 \cup \F_2$. Значит это множество не будет сигма-алгеброй.
+
+\end{sol}
+\end{problem}
+
+
+
+\subsection{Борелевская сигма-алгебра}
+
+\begin{quote}
+Из всех искусств для нас важнейшим является кино\footnote{Об этой цитате можно прочесть на \url{http://liveuser.livejournal.com/62878.html}}. (Ленин)
+\end{quote}
+
+
+Из всех $\sigma$-алгебр для нас важнейшей является борелевская $\sigma$-алгебра!!!
+
+
+\begin{mydef} \indef{Борелевская} $\sigma$-алгебра --- это $\sigma$-алгебра порожденная открытыми подмножествами множества $\Omega$, обозначается $\mathcal{B}(\Om))$
+\end{mydef}
+
+Чаще всего нам понадобятся борелевские $\sigma$-алгебры: $\mathcal{B}(\mathbb{R})$ и $\mathcal{B}(\mathbb{R}^{n})$.
+
+Заметим, что сам набор всех открытых множеств не является $\sigma$-алгеброй. Например, множество $A=(-\infty;2)$ является
+открытым, а множество $\R\backslash A$ не является открытым.
+
+
+\begin{mydef} Множество называется \indef{борелевским}, если оно является элементом борелевской $\sigma$-алгебры
+\end{mydef}
+
+\begin{myex} Например на $ \Omega=\mathbb{R} $ борелевскими являются:
+\begin{itemize}
+\item любой интервал, например $(2;100)$. Т.к. он является открытым множеством
+\item любой отрезок, например $[2;100]$. Т.к. его можно получить в виде $\mathbb{R}\backslash((-\infty;2)\cup (100;+\infty))$
+\item любую произвольную точку, например $\{7\}$. Т.к. её можно получить в виде $\mathbb{R}\backslash ((-\infty;7)\cup (7;+\infty))$
+\item любой полуинтервал, например $[2;100)$. Т.к. его можно представить в виде объединения $[2;3] \cup (3;100)$
+\end{itemize}
+\end{myex}
+
+Самое время решить упражнение \ref{Bor}, которое показывает, что все «привычные» множества на прямой --- борелевские.
+
+Существуют ли неборелевские множества? Да, существуют! Но они очень «страшные» и не будут изучаться в этой книжке. Их даже больше, чем борелевских. Ситуация с ними похожа на ситуация с иррациональными числами: иррациональных больше, чем рациональных, но используют при практических расчетах, как правило, рациональные. А именно:
+
+\begin{myth} Мощность борелевской $\sigma$-алгебры $\mathcal{B}(\mathbb{R})$ --- континуум.
+\end{myth}
+
+Доказательство этой теоремы можно найти в \cite{Shan:sets}.Из этой теоремы следует, что неборелевских множеств больше, а именно $2^{\aleph_1}$. В главе «Зоопарк» мы приведем три примера неборелевских множеств.
+
+Борелевскую $\sigma$-алгебру можно породить также с помощью более простых наборов множеств. Например:
+
+\begin{myth} \label{generate_borel}
+Множества вида $(-\infty,b]$ порождают борелевскую \s-алгебру, т.е. если $\mathcal{H}=\{(-\infty;t]|t\in\R\}$, то $\s(\mathcal{H})=\B$.
+\end{myth}
+\begin{proof} \textbf{Шаг 1.} Заметим, что множества вида $\mathcal{H}$ входят в борелевскую \s-алгебру, $\B$ и следовательно список множеств $\s(\mathcal{H})$ также войдёт в $\B$. Для того, чтобы доказать равенство обеих частей, осталось доказать, что любое открытое множество войдет в $\s(\mathcal{H})$.
+
+\textbf{Шаг 2.} Множества вида $(a;b]$ входят в $\s(\mathcal{H})$, т.к. в рамках \s-алгебры можно брать разность множеств, а $(a;b]=(-\infty;b]\backslash (-\infty;a]$.
+
+\textbf{Шаг 3.} Пусть $A$ --- произвольное открытое множество. Мы докажем, что можно построить последовательность $A_{1}$, $A_{2}$, \ldots , такую, что каждое $A_{i}$ лежит в $\s(\mathcal{H})$ и $A=\cup A_{i}$. И следовательно, $A\in\s(\mathcal{H})$:
+
+В качестве $A_{1}$ возьмем объединение тех множеств вида $(n;n+1]$, где $n$ - целое, а $(n;n+1]$ лежит в $A$.
+В качестве $A_{2}$ \ldots  $(0.5n;0.5(n+1)]$
+\ldots
+В качестве $A_{k}$ \ldots  $(0.5^{k-1}n;0.5^{k-1}(n+1)]$.
+
+\begin{center}
+\definecolor{xdxdff}{rgb}{0.49019607843137253,0.49019607843137253,1.}
+\definecolor{qqqqff}{rgb}{0.,0.,1.}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+\clip(-0.608803971721721,-2.086585544922554) rectangle (14.951962087331479,5.034442990576318);
+\draw (0.8417759151391706,4.883733391941422) node[anchor=north west] {$\mathbf{0}$};
+\draw (4.835580278963963,4.902572091770784) node[anchor=north west] {$\mathbf{1}$};
+\draw (8.829384642788755,4.902572091770784) node[anchor=north west] {$\mathbf{2}$};
+\draw (12.823189006613546,4.883733391941422) node[anchor=north west] {$\mathbf{3}$};
+\draw (0.06938922213531926,3.43315350508054) node[anchor=north west] {$\mathbf{A}$};
+\draw (0.0317118224765948,2.472379813783073) node[anchor=north west] {$\mathbf{A_1}$};
+\draw (0.0317118224765948,1.4550900229975199) node[anchor=north west] {$\mathbf{A_2}$};
+\draw (0.06938922213531926,-0.5418121589148622) node[anchor=north west] {$\mathbf{A_k}$};
+\draw (0.06938922213531926,0.38128413272388045) node[anchor=north west] {$\mathbf{\ldots}$};
+\draw (0.0317118224765948,-1.088134453966363) node[anchor=north west] {$\mathbf{\ldots}$};
+\draw [->] (1.,4.) -- (14.,4.);
+\draw (5.,2.)-- (1.,2.);
+\draw (1.,3.)-- (7.,3.);
+\draw (8.5,3.)-- (13.5,3.);
+\draw (13.,2.)-- (9.,2.);
+\draw (7.,1.)-- (5.,1.);
+\draw (5.,1.)-- (3.,1.);
+\draw (13.5,-1.)-- (12.5,-1.);
+\draw (12.5,-1.)-- (11.5,-1.);
+\draw (11.5,-1.)-- (10.5,-1.);
+\draw (10.5,-1.)-- (9.5,-1.);
+\draw (9.5,-1.)-- (8.5,-1.);
+\draw (5.5,-1.)-- (4.5,-1.);
+\draw (4.5,-1.)-- (3.5,-1.);
+\draw (3.5,-1.)-- (2.5,-1.);
+\draw (2.5,-1.)-- (1.5,-1.);
+\draw (5.5,-1.)-- (6.5,-1.);
+\begin{scriptsize}
+\draw [fill=qqqqff] (5.,2.) circle (1.5pt);
+\draw [fill=qqqqff] (13.,2.) circle (1.5pt);
+\draw [fill=qqqqff] (5.,1.) circle (1.5pt);
+\draw [fill=qqqqff] (7.,1.) circle (1.5pt);
+\draw [fill=qqqqff] (13.5,-1.) circle (1.5pt);
+\draw [fill=xdxdff] (1.,4.) circle (2.5pt);
+\draw [fill=xdxdff] (5.,4.) circle (2.5pt);
+\draw [fill=xdxdff] (13.,4.) circle (2.5pt);
+\draw [fill=xdxdff] (9.,4.) circle (2.5pt);
+\draw [fill=black,shift={(1.,2.)},rotate=90] (0,0) ++(0 pt,3.0pt) -- ++(2.598076211353316pt,-4.5pt)--++(-5.196152422706632pt,0 pt) -- ++(2.598076211353316pt,4.5pt);
+\draw [fill=black,shift={(1.,3.)},rotate=90] (0,0) ++(0 pt,3.0pt) -- ++(2.598076211353316pt,-4.5pt)--++(-5.196152422706632pt,0 pt) -- ++(2.598076211353316pt,4.5pt);
+\draw [fill=black,shift={(7.,3.)},rotate=270] (0,0) ++(0 pt,3.0pt) -- ++(2.598076211353316pt,-4.5pt)--++(-5.196152422706632pt,0 pt) -- ++(2.598076211353316pt,4.5pt);
+\draw [fill=black,shift={(8.5,3.)},rotate=90] (0,0) ++(0 pt,3.0pt) -- ++(2.598076211353316pt,-4.5pt)--++(-5.196152422706632pt,0 pt) -- ++(2.598076211353316pt,4.5pt);
+\draw [fill=black,shift={(13.5,3.)},rotate=270] (0,0) ++(0 pt,3.0pt) -- ++(2.598076211353316pt,-4.5pt)--++(-5.196152422706632pt,0 pt) -- ++(2.598076211353316pt,4.5pt);
+\draw [fill=black,shift={(9.,2.)},rotate=90] (0,0) ++(0 pt,3.0pt) -- ++(2.598076211353316pt,-4.5pt)--++(-5.196152422706632pt,0 pt) -- ++(2.598076211353316pt,4.5pt);
+\draw [fill=black,shift={(3.,1.)},rotate=90] (0,0) ++(0 pt,3.0pt) -- ++(2.598076211353316pt,-4.5pt)--++(-5.196152422706632pt,0 pt) -- ++(2.598076211353316pt,4.5pt);
+\draw [fill=black,shift={(5.264098624464319,1.)},rotate=90] (0,0) ++(0 pt,3.75pt) -- ++(3.2475952641916446pt,-5.625pt)--++(-6.495190528383289pt,0 pt) -- ++(3.2475952641916446pt,5.625pt);
+\draw [fill=black,shift={(12.5,-1.)},rotate=90] (0,0) ++(0 pt,3.0pt) -- ++(2.598076211353316pt,-4.5pt)--++(-5.196152422706632pt,0 pt) -- ++(2.598076211353316pt,4.5pt);
+\draw [fill=black,shift={(11.5,-1.)},rotate=90] (0,0) ++(0 pt,3.0pt) -- ++(2.598076211353316pt,-4.5pt)--++(-5.196152422706632pt,0 pt) -- ++(2.598076211353316pt,4.5pt);
+\draw [fill=black,shift={(10.5,-1.)},rotate=90] (0,0) ++(0 pt,3.0pt) -- ++(2.598076211353316pt,-4.5pt)--++(-5.196152422706632pt,0 pt) -- ++(2.598076211353316pt,4.5pt);
+\draw [fill=black,shift={(9.5,-1.)},rotate=90] (0,0) ++(0 pt,3.0pt) -- ++(2.598076211353316pt,-4.5pt)--++(-5.196152422706632pt,0 pt) -- ++(2.598076211353316pt,4.5pt);
+\draw [fill=black,shift={(8.5,-1.)},rotate=90] (0,0) ++(0 pt,3.0pt) -- ++(2.598076211353316pt,-4.5pt)--++(-5.196152422706632pt,0 pt) -- ++(2.598076211353316pt,4.5pt);
+\draw [fill=black,shift={(5.5,-1.)},rotate=90] (0,0) ++(0 pt,3.0pt) -- ++(2.598076211353316pt,-4.5pt)--++(-5.196152422706632pt,0 pt) -- ++(2.598076211353316pt,4.5pt);
+\draw [fill=black,shift={(4.5,-1.)},rotate=90] (0,0) ++(0 pt,3.0pt) -- ++(2.598076211353316pt,-4.5pt)--++(-5.196152422706632pt,0 pt) -- ++(2.598076211353316pt,4.5pt);
+\draw [fill=black,shift={(3.5,-1.)},rotate=90] (0,0) ++(0 pt,3.0pt) -- ++(2.598076211353316pt,-4.5pt)--++(-5.196152422706632pt,0 pt) -- ++(2.598076211353316pt,4.5pt);
+\draw [fill=black,shift={(2.5,-1.)},rotate=90] (0,0) ++(0 pt,3.0pt) -- ++(2.598076211353316pt,-4.5pt)--++(-5.196152422706632pt,0 pt) -- ++(2.598076211353316pt,4.5pt);
+\draw [fill=black,shift={(1.5,-1.)},rotate=90] (0,0) ++(0 pt,3.0pt) -- ++(2.598076211353316pt,-4.5pt)--++(-5.196152422706632pt,0 pt) -- ++(2.598076211353316pt,4.5pt);
+\draw [fill=qqqqff] (6.5,-1.) circle (1.5pt);
+\draw [fill=qqqqff] (12.261614806070265,-1.) circle (1.5pt);
+\draw [fill=qqqqff] (11.305947208229602,-1.) circle (1.5pt);
+\draw [fill=qqqqff] (10.303279564593497,-1.) circle (1.5pt);
+\draw [fill=qqqqff] (9.253611875161951,-1.) circle (1.5pt);
+\draw [fill=qqqqff] (5.258607982549346,-1.) circle (1.5pt);
+\draw [fill=qqqqff] (4.3186070666404985,-1.) circle (1.5pt);
+\draw [fill=qqqqff] (3.30027274107258,-1.) circle (1.5pt);
+\draw [fill=qqqqff] (2.281938415504661,-1.) circle (1.5pt);
+\end{scriptsize}
+\end{tikzpicture}
+\end{center}
+
+Например, для $A=(0;\sqrt{3})=(0;1.73\ldots )$:
+$A_{1}=(0;1]$, $A_{2}=(0;1.5]$, $A_{3}=(0;1.5]$, $A_{4}=(0;1.625]$ и т.д.
+
+Почему нас всегда ждет успех? Рассмотрим произвольную точку $a\in A$. Вокруг любой точки открытого множества $A$ можно найти $\varepsilon$-окрестность, которая целиком лежит $A$. Длина кусочков, из которых состоит каждое $A_{k}$ стремится к 0. Значит наступит, такой момент, когда кусочки очередного $A_{k}$ «залезут» в произвольную $\varepsilon$-окрестность и покроют точку $a$. Следовательно, любая точка из $A$ лежит в некотором $A_{k}$. А, значит, $A=\cup_{i} A_{i}$.
+\end{proof}
+
+Заметим, что в качестве порождающих множеств можно взять, например, такие наборы: $\mathcal{H} = \{(-\infty,t) | t \in \RR \}$, $\mathcal{H} = \{[t,+\infty) | t \in \RR \}$, $\mathcal{H} = \{[a,b] | a,b \in \RR \}$.
+
+
+\subsubsection*{Задачи}
+
+\begin{problem}\label{Bor}
+Будут ли борелевскими на числовой прямой множества
+\begin{multicols}{2}
+\begin{enumerate}
+    \item $(2;5)$,
+    \item $(-\infty;t)$,
+    \item $(t; +\infty)$,
+    \item $[2;5]$,     
+    \item $(-\infty;t]$,
+    \item $[t; +\infty)$,
+    \item $(3;5]$,   
+    \item $\{10,5,7\}$,
+    \item Замкнутое множество на $\RR$.
+    
+\end{enumerate}
+\end{multicols}
+\begin{sol}
+
+\begin{itemize}
+
+\item Множества $(2;5)$, $(-\infty;t)$ и $(t; +\infty)$ --- открытые, они порождают борелевскую сигма-алгебру, а значит и входят в неё. 
+
+\item Множество $[2;5]$ можно записать в виде бесконечного пересечения открытых множеств. Это означает, что оно порождается открытыми множествами и входит в Борелевскую сигма-алгебру, $[2;5] = \cap_{n=1}^{\infty} (2- \frac{1}{n};4+\frac{1}{n})$. Аналогично можно поступить с множеством $(-\infty; t] = \cap_{n=1}^{\infty} (-\infty; t+\frac{1}{n})$ и множеством  $[t; +\infty) = \cap_{n=1}^{\infty} (t-\frac{1}{n};+\infty);$
+
+\item $(3;5]$ можно представить в виде пересечения двух борелевских множеств $(-\infty;5) \cap (-\infty;3]^{C} $.
+
+\item $\{10,5,7\} = \{10\} \cup \{5\} \cup \{7\}$. Множество $\{10\}$ можно записать в виде $(-\infty;10] \setminus (-\infty;10)$. Множества $\{5\}$ и $\{7\}$ аналогично. 
+
+\item Если множество $A$ является закрытым и принадлежит $\RR$, то $A^c$ является открытым множеством и принадлежит борелевской сигма-алгебре. Множество $A$, как дополнение к $A^c$, также является борелевским.
+\end{itemize}
+\end{sol}
+\end{problem}
+
+
+\begin{problem}
+Являются ли борелевскими следующие подмножества $\mathbb{R}$: 
+\begin{enumerate}
+\item[a] Множество целых чисел $\mathbb{Z}$
+
+\item[b] Множество решений уравнения $\cos(2x)+x=0$
+
+\item[c] Множество решений неравенства $x^{5}-5x^{4}+x^{3}-x+8\geq 0$
+\end{enumerate}
+\begin{sol}
+Да, так как все эти множества представимы в виде счётного объединения точек, отрезков или интервалов.
+\end{sol}
+\end{problem}
+
+
+
+
+\section{Еще задачи}
+
+\begin{problem}
+Монета подбрасывается бесконечное число раз. Пётр \RNumb{1} приходит перед первым подбрасыванием, Пётр \RNumb{2} приходит перед вторым подбрасыванием, Пётр \RNumb{3} приходит перед третьим подбрасыванием и так далее. Если возможно, то приведите примеры:
+
+\begin{enumerate}
+\item события, которое различает Пётр \RNumb{1910};
+
+\item события, которое не различает Пётр \RNumb{1910};
+
+\item события, которое различает Пётр \RNumb{5}, но не различает Пётр \RNumb{10};
+
+\item события, которое различает Пётр \RNumb{10}, но не различает Пётр \RNumb{5};
+
+\item события, которое различают все Петры.
+
+\item Пусть событие $A_1$ --- при первом подбрасывании выпал орел, событие $A_2$ --- при втором подбрасывании выпал орел, событие $A_3$ --- при третьем подбрасывании выпал орел и так далее. Как с помощью этих событий записать события «За всю историю выпал хотя бы один орел», «Со второго подбрасывания выпал хотя бы один орел», «Орел выпал бесконечное число раз».
+
+\item Как через события $A_i$ можно записать $\sg$-алгебру Петра \RNumb{1}? А Петра \RNumb{6}?
+
+\item Вопрос со звёздочкой! Конечна или бесконечна сигма-алгебра $\F = \cap_{i=1}^{\infty} \F_i$?
+
+\end{enumerate}
+\begin{sol}
+\begin{enumerate}
+\item \RNumb{1910} = 1910. В $\F_{1910}$ будут лежать такие события как «При 1912 подбрасывании выпал орёл», «Решка выпала бесконечное число раз». 
+
+\item В $\F_{1910}$ не будут лежать такие события как «При втором подбрасывании выпал орел», «Хотя бы раз выпала последовательность ОРРООРОРР». Эта последовательность могла выпасть до 1910 подбрасывания и Пётр \RNumb{1910} никогда об этом не узнает.
+
+\item «При одиннадцатом подбрасывании выпало то же самое, что и при седьмом».
+
+\item Таких событий не существует. Петру \RNumb{5} доступна вся информация, которая доступна Петру \RNumb{10}, то есть $\F_{10} \subset \F_5$.
+
+\item События «Выпало бесконечное число орлов», «Выпало конечное число орлов», «Начиная с некоторого момента времени орлы и решки чередовались», «Последовательность ОРО выпала бесконечное число раз» различают все Петры.
+
+\item «За всю историю выпал хотя бы один орел» --- $\cup_{i=1}^{\infty} A_i$.
+
+«Со второго подбрасывания выпал хотя бы один орел» --- $\cup_{i=2}^{\infty} A_i$.
+
+«Орел выпал бесконечное число раз» --- $\cap_{i=1}^{\infty} (\cup_{j=i}{\infty} A_i)$. Пересечение событий: «Хотя бы один раз выпал орел, начиная с первого раза», «Хотя бы один орел выпал, начиная со второго раза», «Хотя бы один орел выпал начиная с третьего раза» даст событие «Выпало бесконечное количество орлов».
+
+\item Сигма-алгебра Петра \RNumb{1} будет иметь вид $\F_1 =\sg(A_1,A_2,A_3, \dots)$. Сигма-алгебра Петра \RNumb{6} будет иметь вид $\F_2 = \sg(A_6,A_7,A_8, \dots)$.
+
+\item 
+
+\end{enumerate}
+
+\end{sol}
+\end{problem}
+
+\begin{problem}
+Найдите самую маленькую сигма-алгебру, которая содержит множества $[1;7.5]$ и $(3;10)$. 
+
+\begin{sol}
+
+Изобразим указанные множества на картинке.
+
+\begin{center}
+\definecolor{ffqqqq}{rgb}{1.,0.,0.}
+\definecolor{qqwuqq}{rgb}{0.,0.39215686274509803,0.}
+\definecolor{xdxdff}{rgb}{0.49019607843137253,0.49019607843137253,1.}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+\clip(4.324822913986791,-2.714877776607681) rectangle (17.900161476254684,2.49327097998569);
+\draw (5.,0.)-- (17.,0.);
+\draw [line width=1.6pt,,color=qqwuqq] (7.,-1.)-- (12.,-1.);
+\draw [->] (15.,1.5) -- (12.,1.5);
+\draw [->] (12.,1.5) -- (15.,1.5);
+\draw [->] (12.,1.5) -- (9.5,1.5);
+\draw [->] (9.5,1.5) -- (12.,1.5);
+\draw [->] (9.5,1.5) -- (7.,1.5);
+\draw [->] (7.,1.5) -- (9.5,1.5);
+\draw [->] (5.,-1.5) -- (7.,-1.5);
+\draw [->] (17.,-1.5) -- (12.,-1.5);
+\draw [shift={(9.5,3.9195641775069183)},dotted]  plot[domain=4.280184647564512:5.144593313204869,variable=\t]({1.*5.968389722036944*cos(\t r)+0.*5.968389722036944*sin(\t r)},{0.*5.968389722036944*cos(\t r)+1.*5.968389722036944*sin(\t r)});
+\draw (6.6585289142089445,-0.03965382513349025) node[anchor=north west] {$\mathbf{1}$};
+\draw (9.248373377870116,-0.03965382513349025) node[anchor=north west] {$\mathbf{3}$};
+\draw (11.510929804914765,-0.011193995862488223) node[anchor=north west] {$\mathbf{7.5}$};
+\draw (14.556131536911966,-0.025423910497989234) node[anchor=north west] {$\mathbf{10}$};
+\draw (8.038830633852536,2.1232931994626636) node[anchor=north west] {$\mathbf{K_2}$};
+\draw (10.69982467069121,2.151753028733666) node[anchor=north west] {$\mathbf{K_3}$};
+\draw (13.332358878258885,2.1232931994626636) node[anchor=north west] {$\mathbf{K_4}$};
+\draw (5.263997279929853,-0.8507589593570479) node[anchor=north west] {$\mathbf{K_1}$};
+\draw [->,color=ffqqqq] (9.62061302809324,0.9938709508324693) -- (15.,1.);
+\draw [->,color=ffqqqq] (14.841150111360093,0.9998190130617457) -- (9.5,1.);
+\begin{scriptsize}
+\draw [fill=xdxdff] (7.,0.) circle (2.5pt);
+\draw [fill=xdxdff] (15.,0.) circle (2.5pt);
+\draw [fill=xdxdff] (12.,0.) circle (2.5pt);
+\draw [fill=xdxdff] (9.52,0.) circle (2.5pt);
+\draw [fill=qqwuqq] (7.,-1.) circle (2.0pt);
+\draw [fill=qqwuqq] (11.986727952473094,-1.) circle (2.0pt);
+\end{scriptsize}
+\end{tikzpicture}
+\end{center}
+
+Абсолютно любое событие можно выразить через множества $K_1, K_2, K_3, K_4$. Минимальная сигма-алгебра будет содержать $2^4=16$ элементов.
+
+\end{sol}
+\end{problem}
+
+
+\begin{problem} Новые вопросы под новый год!
+Дед Мороз пришёл к Вовочке на Новый Год с мешком, в котором счётное количество пронумерованных конфет. Конфеты можно есть только после наступления Нового Года. Ровно за час до Нового Года Дед Мороз дарит Вовочке конфеты номер 1 и 2 и тут же забирает конфету номер 1 обратно. Ровно за полчаса он выдаёт конфеты номер 3 и 4 и забирает конфету номер 2. Ровно за четверть часа он выдаёт конфеты номер 5 и 6 и забирает конфету номер 3. И так далее, ускоряясь выдаёт из мешка две очередные конфеты и забирает у Вовочки конфету с наименьшим номером. Пусть $A_{i}$ - это номера тех конфет которые находятся в распоряжении Вовочки после $i$-го действия Деда Мороза. Например, $A_{1}=\{2\}$, $A_{2}=\{3,4\}$, $A_{3}=\{4,5,6\}$, $A_{4} = \{5,6,7,8\}$ и так далее.
+
+\begin{enumerate}
+\item Существует ли $\lim_{n \to \infty} A_{i}$? Если да, то чему он равен?
+
+\item Найдите  $\limsup_{n \to \infty} A_n$, $\liminf_{n \to \infty} A_n$, $ \lim_{n \to \infty} |A_n|$, $|\lim_{n \to \infty} A_n |$
+\end{enumerate}
+
+\begin{sol}
+$\liminf_{n \to \infty} A_n$ --- такие $\om$, которые принадлежат всем множествам из последовательности. Выпишем в явном виде множества нашей последовательности: $A_{1}=\{2\}$, $A_{2}=\{3,4\}$, $A_{3}=\{4,5,6\}$,$A_{4} = \{5,6,7,8\}$, $\ldots$ Любая конфета, которой располагает Вовочка рано или поздно окажется у Деда Мороза, значит $\cap_{i=1}^{\infty} A_i = \varnothing$. Множество из $\om$, которые принадлежали бы всем элементам оказывается пустым.
+
+$\limsup_ {n \to \infty} A_n$ --- такие $\om$, которые принадлежат бесконечному числу множеств из последовательности. В каждый момент времени у Вовочки находятся все новые и новые конфеты. Ни одна конфета не находится у Вовочки бесконечно долго. Значит $\limsup_ {n \to \infty} A_n = \varnothing$.
+
+Так как $\limsup_ {n \to \infty} A_n=\liminf_{n \to \infty} A_n = \varnothing$, то существует $\lim_{n \to \infty} A_n = \varnothing$.
+
+Для того, чтобы найти $\lim_{n \to \infty} |A_n|$ выпишем последовательность из мощностей.
+
+ $|A_1|=1$,$|A_2|=2$,$|A_3|=3$,$\ldots$,$|A_n|=n$,$\ldots$ Значит $\lim_{n \to \infty} |A_n| = \lim_{n \to \infty} n = +\infty$.
+
+Дело осталось за малым, $|\lim_{n \to \infty} A_{n}| =|\varnothing| = 0.$
+\end{sol}
+\end{problem}
+
+
+
+\begin{problem}
+Пусть $N$ --- произвольная функция сопоставляющая каждому исходу число или плюс-минус бесконечность, $N:\Omega\to \R\cup \{-\infty,\infty\}$. Можно думать об $N$ как о случайной величине. Найдите $\lim_{k\to+\infty}(N<k)$
+\begin{sol}
+$N<+\infty$
+\end{sol}
+\end{problem}
+
+
+
+
+\begin{problem}
+Пусть $A$ и $B$ --- события. Определим $C_n = \begin{cases} A, n=2k \\ B, n = 2k+1 \end{cases}$. Найдите $\limsup_{n \to \infty} C_n$ и $\liminf_{n \to \infty} C_n$. Существует ли у данной последовательности $\lim_{n \to \infty} C_n$?
+\begin{sol}
+Выпишем в явном виде последовательность. $A,B,A,B,A,B, \ldots$ Вспомним, что $\liminf_{n \to \infty} C_n = \cap_n \cup_{k \ge n} C_k$ и по смыслу представляет собой все элементы, которые входят во все множества. В каждый из членов последовательности будут входить те элементы, которые лежат в $A \cap B$.
+
+ Множество $\limsup_{n \to \infty} C_n = \cup_n \cap_{k \ge n} C_k$ по смыслу представляет собой все те $w$, которые лежат в бесконечном числе множеств из последовательности. Чтобы элемент бесконечно часто встречался в последовательности, необходимо чтобы он принадлежал либо множеству $A$ либо множеству $B$, а значит $\limsup_{n \to \infty} C_n = A \cup B$.  
+
+Так как $A \cap B \ne A \cup B$, $\lim_{n \to \infty} C_n$ не существует.
+\end{sol}
+\end{problem}
+
+
+
+
+\begin{problem}
+Пусть $A_1 \subseteq A_2 \subseteq A_3 \subseteq \ldots$ и $B_1 \supseteq B_2 \supseteq B_3 \supseteq \ldots$ Найдите верхний и нижний пределы для обеих последовательностей. 
+\begin{sol}
+
+
+
+\end{sol}
+\end{problem}
+
+
+
+
+\begin{problem}
+Верно ли, что $\limsup_{n \to \infty} A_n = \limsup_{n \to \infty} A_{n+k}$ и $\liminf_{n \to \infty} A_n = \liminf_{n \to \infty} A_{n+k}$ при любом натуральном $k$. Смысл этого утверждения следующий: при вычислении предела последовательности можно проигнорировать миллион-другой членов в ее начале.
+\begin{sol}
+
+\end{sol}
+\end{problem}
+
+\begin{problem}
+Пусть $A_n \subseteq B_n$ для всех $n \ge N$. Сравните множества $\liminf_{n \to \infty} A_n$ и $\liminf_{n \to \infty} B_n$, множества  $\limsup_{n \to \infty} A_n$ и $\limsup_{n \to \infty} B_n$.
+\begin{sol}
+
+\end{sol}
+\end{problem}
+
+\begin{problem}
+Верно ли, что $(\limsup_{n \to \infty} A_n)^{c} = \liminf_{n \to \infty} A_n^c$?
+\begin{sol}
+
+\end{sol}
+\end{problem}
+
+\begin{problem}
+
+Список $\F$ подмножеств пространства $\Om$ называется алгеброй, если выполнены следующие условия:
+
+\begin{enumerate}
+\item Множество $\Om$ входит в список $\F$;
+
+\item Если множество $A$ входит в список $\F$, то и множество $A^c$ входит в список $\F$;
+
+\item Если множества $A$ и $B$ входят в список $\F$, то и множество $A \cup B$ входит в список $\F$. 
+\end{enumerate}
+
+Приведите пример алгебры, которая не является \s-алгеброй.
+\begin{sol}
+
+
+\end{sol}
+\end{problem}
+
+\Closesolutionfile{solution_file}
+
+\input{sols_chap_02}
+
+\printbibliography
+
+
+\end{document}
