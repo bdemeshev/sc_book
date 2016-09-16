@@ -1,8 +1,24 @@
 language: r
+
+dist: trusty
+
+before_install:
+  - sudo add-apt-repository ppa:jonathonf/texlive -y
+  - sudo apt-get update
+
+install:
+  - sudo apt-get install -y texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-bibtex-extra texlive-lang-russian texlive-generic-extra
+  - wget https://sourceforge.net/projects/biblatex-biber/files/biblatex-biber/2.4/binaries/Linux/biber-linux_x86_64.tar.gz/download --output-document biber-linux_x86_64.tar.gz
+  - tar -xvzf biber-linux_x86_64.tar.gz
+  - sudo mv biber /usr/bin/
+
 cache: packages
+
 script:
-  - sudo apt-get install texlive-latex-extra texlive-latex-recommended biber latexmk
+  - pdflatex --version
+  - biber --version
   - make
+
 sudo: required
 
 r_binary_packages:
