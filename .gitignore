@@ -76,3 +76,5 @@ sc_book-concordance.tex
 sc_book.idx
 *.log
 sc_book.synctex.gz
+sc_book.ilg
+*.ind
