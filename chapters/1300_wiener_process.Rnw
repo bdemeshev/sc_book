@@ -160,8 +160,8 @@ Two questions on Brownian Motion:\par
 \begin{sol}
 (check!)\par
 Let $T_a = min{t>0:W_t = a}$. Using simple properties of B.M. you can easily show that $\P(T_a<T) = 2\P(W_T>a)$. That's all you need to solve both problems.\par
-1. $2N(-a/sqrt(T))$\par
-2. $2N(-a/sqrt(2T))$
+1. $2N(-a/\sqrt{T})$\par
+2. $2N(-a/\sqrt{2T})$
 \end{sol}
 \end{problem}
 
