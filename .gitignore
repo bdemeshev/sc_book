@@ -71,3 +71,8 @@ sols_chap_17.tex
 sols_chap_18.tex
 
 sols_chap_20.tex
+sc_book-concordance.tex
+*.blg
+sc_book.idx
+*.log
+sc_book.synctex.gz
