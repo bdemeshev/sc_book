@@ -1,6 +1,7 @@
 language: r
 cache: packages
 script:
+  - sudo apt-get install texlive-latex-extra texlive-latex-recommended biber latexmk
   - make
 sudo: required
 
