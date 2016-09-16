@@ -1,6 +1,6 @@
 language: r
 cache: packages
-script:  
+script:
   - make
 sudo: required
 
@@ -17,6 +17,7 @@ r_binary_packages:
   - data.table
   - reshape2
   - tidyr
+  - knitr
 
 r_packages:
   - devtools
