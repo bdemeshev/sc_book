@@ -1,0 +1,1470 @@
+\documentclass[pdftex, 12pt, a4paper]{article}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%  Загрузка пакетов  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[british,russian]{babel} % выбор языка для документа
+\usepackage[utf8]{inputenc} % задание utf8 кодировки исходного tex файла
+
+%\usepackage{showkeys} % показывать метки в готовом pdf
+
+\usepackage{etex} % расширение классического tex
+% в частности позволяет подгружать гораздо больше пакетов, чем мы и займёмся далее
+
+%\usepackage{mathtext} % русские буквы в формулах? (и без нее работает)
+% Например, $x_{\text{один}}$
+
+%\usepackage{cmap} % для поиска русских слов в pdf --- теперь устарело?
+
+\usepackage{verbatim} % для многострочных комментариев
+\usepackage{makeidx} % для создания предметных указателей
+\usepackage[X2,T2A]{fontenc}
+\usepackage{setspace}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{mathrsfs} % sudo yum install texlive-rsfs
+\usepackage{dsfont} % sudo yum install texlive-doublestroke
+\usepackage{array,multicol,multirow,bigstrut} % sudo yum install texlive-multirow
+\usepackage{indentfirst} % установка отступа в первом абзаце главы
+\usepackage{bm}
+\usepackage{bbm} % шрифт с двойными буквами
+\usepackage[perpage]{footmisc}
+
+\usepackage{dcolumn} % центрирование по разделителю для apsrtable
+
+% создание гиперссылок в pdf
+\usepackage[pdftex,unicode,colorlinks=true,urlcolor=blue,hyperindex,breaklinks]{hyperref}
+
+
+
+\usepackage[backend = biber]{biblatex}
+%\addbibresource{sc_biblio.bib}
+
+
+
+
+% свешиваем пунктуацию
+% теперь знаки пунктуации могут вылезать за правую границу текста, при этом текст выглядит ровнее
+%\usepackage{microtype}     %этот пакет выдает фатальную ошибку
+
+
+
+
+
+
+
+
+
+
+
+
+\usepackage{textcomp}  %  Чтобы в формулах можно было русские буквы писать через \text{}
+
+% размер листа бумаги
+\usepackage[paper=a4paper,top=13.5mm, bottom=13.5mm,left=16.5mm,right=13.5mm,includefoot]{geometry}
+
+\usepackage{xcolor}
+
+
+\usepackage{float,longtable}
+\usepackage{soulutf8}
+
+\usepackage{enumitem} % дополнительные плюшки для списков
+%  например \begin{enumerate}[resume] позволяет продолжить нумерацию в новом списке
+
+\usepackage{mathtools}
+\usepackage{cancel,xspace} % sudo yum install texlive-cancel
+
+%\usepackage{minted} % display program code with syntax highlighting
+% требует установки pygments и python
+
+\usepackage{numprint} % sudo yum install texlive-numprint
+\npthousandsep{,}\npthousandthpartsep{}\npdecimalsign{.}
+
+\usepackage{embedfile} % Чтобы код LaTeXа включился как приложение в PDF-файл
+
+\usepackage{subfigure} % для создания нескольких рисунков внутри одного
+
+\usepackage{tikz, pgfplots} % язык для рисования графики из latex'a
+\usetikzlibrary{trees} % tikz-прибамбас для рисовки деревьев
+\usepackage{tikz-qtree} % альтернативный tikz-прибамбас для рисовки деревьев
+\usetikzlibrary{arrows} % tikz-прибамбас для рисовки стрелочек подлиннее
+
+
+
+
+\usepackage{amscd}  %Пакеты для рисования
+\usepackage[matrix,arrow,curve]{xy} %комунитативных диаграмм
+
+
+%%% Работа с картинками
+\usepackage{graphicx}  % Для вставки рисунков
+\graphicspath{{images/}{images2/}}  % папки с картинками
+\setlength\fboxsep{3pt} % Отступ рамки \fbox{} от рисунка
+\setlength\fboxrule{1pt} % Толщина линий рамки \fbox{}
+\usepackage{wrapfig} % Обтекание рисунков и таблиц текстом
+
+
+
+\usepackage{todonotes} % для вставки в документ заметок о том, что осталось сделать
+% \todo{Здесь надо коэффициенты исправить}
+% \missingfigure{Здесь будет Последний день Помпеи}
+% \listoftodos --- печатает все поставленные \todo'шки
+
+
+% более красивые таблицы
+\usepackage{booktabs}
+% заповеди из докупентации
+% 1. Не используйте вертикальные линни
+% 2. Не используйте двойные линии
+% 3. Единицы измерения - в шапку таблицы
+% 4. Не сокращайте .1 вместо 0.1
+% 5. Повторяющееся значение повторяйте, а не говорите "то же"
+
+
+
+%\usepackage{asymptote} % пакет для рисовки графики, должен идти после graphics
+% но мы переходим на tikz :)
+
+%\usepackage{sagetex} % для интеграции с Sage (вероятно тоже должен идти после graphics)
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%  Внедрение tex исходников в pdf файл  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\embedfile[desc={Main tex file}]{\jobname.tex} % Включение кода в выходной файл
+%\embedfile[desc={title_bor}]{title_bor.tex}
+% отменено в силу явной ссылки на репозиторий
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%  ПАРАМЕТРЫ  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setstretch{1}                          % Межстрочный интервал
+\flushbottom                            % Эта команда заставляет LaTeX чуть растягивать строки, чтобы получить идеально прямоугольную страницу
+\righthyphenmin=2                       % Разрешение переноса двух и более символов
+\pagestyle{plain}                       % Нумерация страниц снизу по центру.
+\widowpenalty=300                     % Небольшое наказание за вдовствующую строку (одна строка абзаца на этой странице, остальное --- на следующей)
+\clubpenalty=3000                     % Приличное наказание за сиротствующую строку (омерзительно висящая одинокая строка в начале страницы)
+\setlength{\parindent}{1.5em}           % Красная строка.
+%\captiondelim{. }
+\setlength{\topsep}{0pt}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%% Это окружение, которое выравнивает по центру без отступа, как у простого center
+\newenvironment{center*}{%
+  \setlength\topsep{0pt}
+  \setlength\parskip{0pt}
+  \begin{center}
+}{%
+  \end{center}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Правила переноса  слов
+\hyphenation{ }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\emergencystretch=2em
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%  DEFS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def \mbf{\mathbf}
+\def \msf{\mathsf}
+\def \mbb{\mathbb}
+\def \tbf{\textbf}
+\def \tsf{\textsf}
+\def \ttt{\texttt}
+\def \tbb{\textbb}
+
+\def \wh{\widehat}
+\def \wt{\widetilde}
+\def \ni{\noindent}
+\def \ol{\overline}
+\def \cd{\cdot}
+\def \fr{\frac}
+\def \bs{\backslash}
+\def \lims{\limits}
+
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\VC}{VCdim}
+\DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\sgn}{sign}
+\DeclareMathOperator{\Tr}{\mbf{Tr}}
+\DeclareMathOperator{\tr}{tr}
+
+
+\def \xfs{(x_1,\ldots,x_{n-1})}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\amn}{arg\,min}
+\DeclareMathOperator*{\amx}{arg\,max}
+\DeclareMathOperator{\trace}{tr}
+
+
+\DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator{\sCorr}{sCorr}
+\DeclareMathOperator{\sCov}{sCov}
+\DeclareMathOperator{\sVar}{sVar}
+
+\DeclareMathOperator{\argmax}{argmax}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\corr}{Corr}
+\DeclareMathOperator{\cov}{Cov}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\bin}{Bin}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\rang}{rang}
+\DeclareMathOperator*{\plim}{plim}
+\DeclareMathOperator{\MSE}{MSE}
+
+
+\providecommand{\iff}{\Leftrightarrow}
+\providecommand{\hence}{\Rightarrow}
+
+\def \ti{\tilde}
+\def \wti{\widetilde}
+
+\def \mA{\mathcal{A}}
+\def \mB{\mathcal{B}}
+\def \mC{\mathcal{C}}
+\def \mE{\mathcal{E}}
+\def \mF{\mathcal{F}}
+\def \mH{\mathcal{H}}
+\def \mL{\mathcal{L}}
+\def \mN{\mathcal{N}}
+\def \mU{\mathcal{U}}
+\def \mV{\mathcal{V}}
+\def \mW{\mathcal{W}}
+
+
+\def \RR{\mbb R}
+\def \NN{\mbb N}
+\def \N{\mbb N}
+\def \ZZ{\mbb Z}
+\def \Z{\mbb Z}
+\def \PP{\mbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\def \D{\msf{D}}
+\def \I{\mbf{I}}
+\def \Q{\mbb Q}
+
+
+\def\R{\ensuremath{\mathbb{R}}} % достало уже!
+\def\F{\ensuremath{\mathcal{F}}} % аналогично!
+\def\B{\ensuremath{\mathcal{B}}} % аналогично!
+
+
+
+\newcommand{\tP}{\tilde{\mathbb{P}}}
+\newcommand{\tW}{\tilde{W}}
+
+\def \lra{\leftrightarrow} % сокращение для стрелки влево-вправо (туда-сюда), для соответствий
+
+\def\s{\ensuremath{\sigma}}
+\def \a{\alpha}
+\def \b{\beta}
+\def \t{\tau}
+\def \dt{\delta}
+\newcommand{\e}{\varepsilon}
+\def \ga{\gamma}
+\def \kp{\varkappa}
+\def \la{\lambda}
+\def \sg{\sigma}
+\def \sgm{\sigma}
+\def \tt{\theta}
+\def \ve{\varepsilon}
+\def \Dt{\Delta}
+\def \La{\Lambda}
+\def \Sgm{\Sigma}
+\def \Sg{\Sigma}
+\def \Tt{\Theta}
+\def \Om{\Omega}
+\def \om{\omega}
+
+%%\newcommand{\p}{\partial}
+
+\def \ni{\noindent}
+\def \lq{\glqq}
+\def \rq{\grqq}
+\def \lbr{\linebreak}
+\def \vsi{\vspace{0.1cm}}
+\def \vsii{\vspace{0.2cm}}
+\def \vsiii{\vspace{0.3cm}}
+\def \vsiv{\vspace{0.4cm}}
+\def \vsv{\vspace{0.5cm}}
+\def \vsvi{\vspace{0.6cm}}
+\def \vsvii{\vspace{0.7cm}}
+\def \vsviii{\vspace{0.8cm}}
+\def \vsix{\vspace{0.9cm}}
+\def \VSI{\vspace{1cm}}
+\def \VSII{\vspace{2cm}}
+\def \VSIII{\vspace{3cm}}
+
+\newcommand{\grad}{\mathrm{grad}}
+\newcommand{\bls}[1]{\boldsymbol{#1}}
+\newcommand{\bsA}{\boldsymbol{A}}
+\newcommand{\bsH}{\boldsymbol{H}}
+\newcommand{\bsI}{\boldsymbol{I}}
+\newcommand{\bsP}{\boldsymbol{P}}
+\newcommand{\bsR}{\boldsymbol{R}}
+\newcommand{\bsS}{\boldsymbol{S}}
+\newcommand{\bsX}{\boldsymbol{X}}
+\newcommand{\bsY}{\boldsymbol{Y}}
+\newcommand{\bsZ}{\boldsymbol{Z}}
+\newcommand{\bse}{\boldsymbol{e}}
+\newcommand{\bsq}{\boldsymbol{q}}
+\newcommand{\bsy}{\boldsymbol{y}}
+\newcommand{\bsbeta}{\boldsymbol{\beta}}
+\newcommand{\fish}{\mathrm{F}}
+\newcommand{\Fish}{\mathrm{F}}
+\renewcommand{\phi}{\varphi}
+\newcommand{\ind}{\mathds{1}}
+\newcommand{\inds}[1]{\mathds{1}_{\{#1\}}}
+\renewcommand{\to}{\rightarrow}
+\newcommand{\sumin}{\sum\limits_{i=1}^n}
+\newcommand{\ofbr}[1]{\bigl( \{ #1 \} \bigr)}     % Например, вероятность события. Большие круглые, нормальные фигурные скобки вокруг аргумента
+\newcommand{\Ofbr}[1]{\Bigl( \bigl\{ #1 \bigr\} \Bigr)} % Например, вероятность события. Больше больших круглые, большие фигурные скобки вокруг аргумента
+\newcommand{\oeq}{{}\textcircled{\raisebox{-0.4pt}{{}={}}}{}} % Равно в кружке
+\newcommand{\og}{\textcircled{\raisebox{-0.4pt}{>}}}  % Знак больше в кружке
+
+% вместо горизонтальной делаем косую черточку в нестрогих неравенствах
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+
+\newcommand{\figb}[1]{\bigl\{ #1  \bigr\}} % большие фигурные скобки вокруг аргумента
+\newcommand{\figB}[1]{\Bigl\{ #1  \Bigr\}} % Больше больших фигурные скобки вокруг аргумента
+\newcommand{\parb}[1]{\bigl( #1  \bigr)}   % большие скобки вокруг аргумента
+\newcommand{\parB}[1]{\Bigl( #1  \Bigr)}   % Больше больших круглые скобки вокруг аргумента
+\newcommand{\parbb}[1]{\biggl( #1  \biggr)} % большие-большие круглые скобки вокруг аргумента
+\newcommand{\br}[1]{\left( #1  \right)}    % круглые скобки, подгоняемые по размеру аргумента
+\newcommand{\fbr}[1]{\left\{ #1  \right\}} % фигурные скобки, подгоняемые по размеру аргумента
+\newcommand{\eqdef}{\mathrel{\stackrel{\rm def}=}} % знак равно по определению
+\newcommand{\const}{\mathrm{const}}        % const прямым начертанием
+\newcommand{\zdt}[1]{\textit{#1}}
+\newcommand{\ENG}[1]{\foreignlanguage{british}{#1}}
+\newcommand{\ENGs}{\selectlanguage{british}}
+\newcommand{\RUSs}{\selectlanguage{russian}}
+\newcommand{\iid}{\text{i.\hspace{1pt}i.\hspace{1pt}d.}}
+
+\newdimen\theoremskip
+\theoremskip=0pt
+\newenvironment{note}{\par\vskip\theoremskip\textbf{Замечание.\xspace}}{\par\vskip\theoremskip}
+\newenvironment{hint}{\par\vskip\theoremskip\textbf{Подсказка.\xspace}}{\par\vskip\theoremskip}
+\newenvironment{ist}{\par\vskip\theoremskip Источник:\xspace}{\par\vskip\theoremskip}
+
+\newcommand*{\tabvrulel}[1]{\multicolumn{1}{|c}{#1}}
+\newcommand*{\tabvruler}[1]{\multicolumn{1}{c|}{#1}}
+
+\newcommand{\II}{{\fontencoding{X2}\selectfont\CYRII}}   % I десятеричное (английская i неуместна)
+\newcommand{\ii}{{\fontencoding{X2}\selectfont\cyrii}}   % i десятеричное
+\newcommand{\EE}{{\fontencoding{X2}\selectfont\CYRYAT}}  % ЯТЬ
+\newcommand{\ee}{{\fontencoding{X2}\selectfont\cyryat}}  % ять
+\newcommand{\FF}{{\fontencoding{X2}\selectfont\CYROTLD}} % ФИТА
+\newcommand{\ff}{{\fontencoding{X2}\selectfont\cyrotld}} % фита
+\newcommand{\YY}{{\fontencoding{X2}\selectfont\CYRIZH}}  % ИЖИЦА
+\newcommand{\yy}{{\fontencoding{X2}\selectfont\cyrizh}}  % ижица
+
+%%%%%%%%%%%%%%%%%%%%% Определение разрядки разреженного текста и задание красивых многоточий
+\sodef\so{}{.15em}{1em plus1em}{.3em plus.05em minus.05em}
+\newcommand{\ldotst}{\so{...}}
+\newcommand{\ldotsq}{\so{?\hbox{\hspace{-0.61ex}}..}}
+\newcommand{\ldotse}{\so{!..}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Команда для переноса символов бинарных операций
+\def\hm#1{#1\nobreak\discretionary{}{\hbox{$#1$}}{}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setlist[enumerate,1]{label=\arabic*., ref=\arabic*, partopsep=0pt plus 2pt, topsep=0pt plus 1.5pt,itemsep=0pt plus .5pt,parsep=0pt plus .5pt}
+\setlist[itemize,1]{partopsep=0pt plus 2pt, topsep=0pt plus 1.5pt,itemsep=0pt plus .5pt,parsep=0pt plus .5pt}
+
+%% Эти парни затем, если вдруг не захочется управлять списками из-под уютненького enumitem
+% или если будет жизненно важно, чтобы в списках были именно русские буквы.
+%\setlength{\partopsep}{0pt plus 3pt}
+%\setlength{\topsep}{0pt plus 2pt}
+%\setlength{\itemsep}{0 plus 1pt}
+%\setlength{\parsep}{0 plus 1pt}
+
+%на всякий случай пока есть
+%теоремы без нумерации и имени
+\newtheorem*{theor}{Теорема}
+
+%"Определения","Замечания"
+%и "Гипотезы" не нумеруются
+\theoremstyle{definition} % убирает курсив и что-то еще наверное делает ;)
+\newtheorem*{mydef}{Определение}
+\newtheorem*{rem}{Замечание}
+\newtheorem*{conj}{Гипотеза}
+\newtheorem{myex}{Пример}
+
+%"Теоремы" и "Леммы" нумеруются
+%по главам и согласованно м/у собой
+\newtheorem{myth}{Теорема}
+\newtheorem{lemma}[myth]{Лемма}
+
+% Утверждения нумеруются по главам
+%независимо от Лемм и Теорем
+\newtheorem{prop}{Утверждение}
+\newtheorem{cor}{Следствие}
+
+
+
+%\numberwithin{equation}{page} % уравнения нумеруются на каждой стр. отдельно
+%\newtheorem{myth}[equation]{Теорема} % нумерация сквозная с уравнениями
+
+%\theoremstyle{definition} % убирает курсив и что-то еще наверное делает ;)
+%\newtheorem{mydef}[equation]{Определение}
+
+%\theoremstyle{definition}
+%\newtheorem{myex}[equation]{Пример}
+
+%\newtheorem{assertion}{Утверждение}
+%\newtheorem{lemma}{Лемма}
+
+%\theoremstyle{definition}
+%\newtheorem*{myproof}{Доказательство}
+
+%\theoremstyle{definition}
+
+\newtheorem{problem}{Задача}
+\numberwithin{problem}{section}
+
+\usepackage{answers}
+\Newassociation{sol}{solution}{sols_chap_02}
+% sol --- имя окружения внутри задач
+% solution --- имя окружения внутри solution_file
+% solution_file --- имя файла в который будет идти запись решений
+% можно изменить далее по ходу
+
+
+\newcommand{\indef}[1]{\textbf{#1}}
+% выделение ключевого слова в определениях
+
+\makeindex % команда для создания предметного указателя
+
+
+
+\newtheorem{blits}{Блиц-вопрос}
+\numberwithin{blits}{section}
+
+\Newassociation{blitssol}{solution}{blits_solution_file}
+% sol --- имя окружения внутри задач
+% solution --- имя окружения внутри solution_file
+% solution_file --- имя файла в который будет идти запись решений
+% можно изменить далее по ходу
+
+
+
+\addbibresource{sc_biblio.bib}
+
+
+\usetikzlibrary{arrows}
+
+
+
+\begin{document}
+
+\Opensolutionfile{solution_file}[sols_chap_03]
+% в квадратных скобках фактическое имя файла
+
+\missingfigure{Косяки пока ещё не были исправлены!!!}
+
+\section{Случайные величины}
+\begin{quote}
+Случайности неслучайны (Мастер Угвэй)
+\end{quote}
+
+Обратите внимание, что мы начинаем главу про случайные величины перед главой про вероятность! Без последующего определения вероятности случайные величины окажутся бесполезны, но важно понимать, что понятие случайной величины не требует для себя наличия вероятности. Например, вероятность можно поменять, сохранив случайную величину, при этом, конечно, все интересные количества, например, $\PP(X<0)$ или $\E(X)$ могут измениться.
+
+\subsection{Определение случайной величины}
+
+\begin{quote}
+Сумма чисел на противоположных сторонах игральной кости всегда равна семи.
+\end{quote}
+
+\begin{mydef}
+Случайная величина $X$ --- это функция, сопоставляющая каждому исходу случайного эксперимента некое действительное число, $ X \colon \Omega\to\R $.
+\end{mydef}
+
+\begin{center}
+\definecolor{xdxdff}{rgb}{0.49019607843137253,0.49019607843137253,1.}
+\definecolor{qqqqff}{rgb}{0.,0.,1.}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+\clip(-8.421370046135285,1.4972490447360018) rectangle (5.746867394556352,5.369900611858383);
+\draw [rotate around={0.:(-4.5,3.)}] (-4.5,3.) ellipse (2.7105978495930043cm and 1.0475403105457346cm);
+\draw (-7.042328268574632,4.689825214705184) node[anchor=north west] {\Large{$\mathbf{\Omega}$}};
+\draw (2.7243100738754693,4.519806365416884) node[anchor=north west] {\Large{$\mathbf{\R}$}};
+\draw (-4.662064378538437,3.2) node[anchor=north west] {$\mathbf{\omega}$};
+\draw [->,color=qqqqff] (0.9674486312297084,3.3863473701615536) -- (1.3452682963148155,3.1218736046019764);
+\draw (-1.5450521415862772,4.822062097484973) node[anchor=north west] {\large{$X$}};
+\draw (-0.037781966508510845,2.9811090167457444)-- (4.962218033491489,2.9811090167457444);
+\draw (1.2697043632977947,2.9) node[anchor=north west] {$x$};
+\draw [shift={(-1.5495157596315134,-1.62839975005155)},color=qqqqff]  plot[domain=1.105619868329226:2.072200706483435,variable=\t]({1.*5.6109534327553465*cos(\t r)+0.*5.6109534327553465*sin(\t r)},{0.*5.6109534327553465*cos(\t r)+1.*5.6109534327553465*sin(\t r)});
+\begin{scriptsize}
+\draw [fill=xdxdff] (1.401941246077583,2.981109016745744) circle (1.0pt);
+\draw [fill=xdxdff] (-4.3031356967075824,3.2541104873817646) circle (1.0pt);
+\end{scriptsize}
+\end{tikzpicture}
+\end{center}
+
+Если рациональному наблюдателю известно значение $ X $, то он может определить, произошли ли например события $X<0$, $X\in [2;3]$, $X=\sqrt{3}$ и др. Таким образом, с каждой случайной величиной $ X $ связана сигма-алгебра $ \sigma(X) $ событий гарантированно различимых наблюдателем, знающим значение $X$. Доведем эту идею до формального определения. Что означает, что я знаю $ X $? Это означает, что я могу сравнить $ X $ с любым действительным числом, т.е. для любого заданного $ t $ могу сказать произошло ли событие вида $ \{X \le t\} $. 
+
+\begin{blits}
+Почему событие имеет именно вид $ \{X \le t\} $?
+\begin{blitssol}
+Потому что с помощью множеств такого вида можно описать все события из борелевской сигма-алгебры! Смотри главу 2! 
+\end{blitssol}
+\end{blits}
+
+
+Получаем определение:
+
+\begin{mydef}
+Сигма-алгеброй порожденной случайной величиной $ X $, $ \sigma(X) $, называется минимальная сигма-алгебра, содержащая все события вида $ \{X \le t\} $, т.е. $ \sigma(X):=\sigma(\{X \le t|t\in \mathbb{R}\}) $.
+\end{mydef}
+
+Говоря доступным языком, $\s(X)$ --- это список событий, про которые мы сможем гарантированно сказать, произошли они или нет, если мы знаем значение $X$. Кроме того, если мы различаем события из $\s(X)$, то мы можем определить значение $X$.
+
+Как мы уже видели ранее с помощью подмножеств вида $ (-\infty;t] $ можно породить нашу любимую борелевскую сигма-алгебру, а значит определение можно переформулировать и так:
+
+\begin{mydef}
+Сигма-алгеброй порожденной случайной величиной $ X $, $ \sigma(X) $, называется минимальная сигма-алгебра, содержащая все события вида $ \{X\in A\} $, где $ A $ --- борелевское подмножество $ \mathbb{R} $, т.е. $ \sigma(X):=\sigma(\{X\in A|A\in \mathcal{B}(\mathbb{R})\}) $. 
+\end{mydef}
+
+\todo{Верно ли последнее предложение?}
+
+\begin{myex}
+\todo{Сделать упражнение!}
+Я забыл какого характера должно быть тут упражнение. 
+%\begin{table}
+%\begin{center}
+%\begin{tabular}{|c|c|c|c|}
+%\hline
+%$\Om$ & $a$ & $b$ & $c$
+%\hline
+%$X$ & 2 & 3 & 3
+%\hline
+%$P(\ldots)$ & & &
+%\hline
+%\end{tabular}
+%\end{center}
+%\end{table}
+\end{myex}
+
+
+
+
+
+
+
+
+
+Для понимания структуры $ \sigma(X) $ полезным может оказаться понятие прообраза:
+
+\begin{mydef} Если задана функция $X:\Omega \to \R$, то \indef{прообразом} (pullback) множества $A$ называется множество $\{w\in\Omega|X(w)\in A\}$, обозначается прообраз $X^{-1}(A)$.
+\end{mydef}
+
+\begin{myex} Функция $f(t)=t^{2}$. Примеры прообразов: $f^{-1}(5)=\{\sqrt{5},-\sqrt{5}\}$, $f^{-1}(0)=\{0\}$, $f^{-1}(-1)=\varnothing$.
+\end{myex}
+
+\begin{blits}
+Рассмотрим множество $\Om = \{H,I,P,P,O,P,O,T,A,B,U,S\}$. Пусть функция $f(t)$ ставит в соответствие каждой букве из $\Omega$ в соответствие количество дырок. Например, в букве $O$ одна дырка, в букве $L$ ни одной дырки. Укажите для каждого элемента из множества $\{0,1,2\}$ его прообраз.  
+\begin{blitssol}
+$f^{-1}(0)=\{H,I,T,U,S\}$,$f^{-1}(1)=\{P,O,A\}$
+,$f^{-1}(2)=\{B\}$
+\end{blitssol}
+\end{blits}
+
+Используя понятие прообраза можно понять, что $ \sigma(X) $ состоит ровно из прообразов всех борелевских множеств. 
+
+\begin{center}
+\definecolor{qqqqff}{rgb}{0.,0.,1.}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+\clip(-8.383588079626776,1.4216851117189797) rectangle (5.7846493610648615,5.29433667884136);
+\draw [rotate around={0.:(-4.5,3.)}] (-4.5,3.) ellipse (2.7105978495930043cm and 1.0475403105457346cm);
+\draw (-7.042328268574633,4.689825214705184) node[anchor=north west] {\Large{$\mathbf{\Omega}$}};
+\draw (2.7243100738754684,4.519806365416884) node[anchor=north west] {\Large{$\mathbf{\R}$}};
+\draw (-5.1,3.3) node[anchor=north west] {\footnotesize{$X^{-1}(B)$}};
+\draw [->,color=qqqqff] (0.9674486312297084,3.3863473701615536) -- (1.3452682963148155,3.1218736046019764);
+\draw (-1.5450521415862783,4.822062097484973) node[anchor=north west] {\large{$X$}};
+\draw [rotate around={-32.12499844038758:(-4.293690205080459,2.980191230195061)},color=qqqqff] (-4.293690205080459,2.980191230195061) ellipse (0.9cm and 0.7cm);
+\draw (0.,3.)-- (5.,3.);
+\draw [line width=2.8pt,color=qqqqff] (1.,3.)-- (2.,3.);
+\draw (1.2697043632977936,2.8) node[anchor=north west] {$B$};
+\draw [shift={(-1.5495157596315134,-1.62839975005155)},color=qqqqff]  plot[domain=1.105619868329226:2.072200706483435,variable=\t]({1.*5.6109534327553465*cos(\t r)+0.*5.6109534327553465*sin(\t r)},{0.*5.6109534327553465*cos(\t r)+1.*5.6109534327553465*sin(\t r)});
+\end{tikzpicture}
+\end{center}
+
+ Действительно, прообразы борелевских множеств обязаны входить в $ \sigma(X) $ исходя из определения сигма-алгебры, порожденной случайной величиной. А никакое лишнее множество нам не нужно, т.к. имеет место следующая теорема.
+
+\begin{myth} Пусть задана случайная величина $X$. Набор прообразов всех борелевских множеств $\{X^{-1}(B)|B\in\B\}$ является \s-алгеброй и обозначается $X^{-1}(B)$.
+\end{myth}
+\begin{proof} Проверяем три свойства \s-алгебры.
+\begin{itemize}
+\item $\Omega = X^{-1}((-\infty;+\infty))$
+
+\item Если $A = X^{-1}(B)$, то $ A^{c}=X^{-1}(B^{c})$
+
+\todo{правильно ли написан этот пункт}
+\item Если $ A_1 = X^{-1}(B_1), A_2 = X^{-1}(B_2), \ldots $, то $X^{-1}(B_1 \cup B_2 \cup \ldots) = X^{-1} (B_1) \cup X^{-1} (B_2) \cup \ldots$
+
+Это показывает, что множество $X^{-1}(B)$ --- \s-алгебра.
+\end{itemize}
+\end{proof}
+
+
+
+
+
+\todo{Нормальный кусок или не очень?}
+Итак, в нашем распоряжении имеются четыре объекта. Пространство элементарных исходов $\Om$, сигма-алгебра \F, определённая на пространстве элементарных исходов, множество значений, которое может принять случайная величина, $\R$ и сигма-алгебра, порожденная случайной величиной, $\s(X)$. Попытаемся прочувствовать связь между этими объектами на новом уровне.  
+
+\todo{Узнать должна ли быть измеримость относительно конкретной сигма-алгебры}
+\begin{mydef}
+Пусть $\Om$ --- пространство элементарных исходов, а $\F$ --- некоторая \s-алгебра в $\Om$. Тогда упорядоченная пара $(\Om,\F)$ называется \indef{измеримым пространством}. \index{измеримое пространство} Любое множество, входящее в \s-алгебру $\F$ называется \indef{измеримым множеством}. \index{измеримое множество}
+\end{mydef}
+
+Пара $(\Om, \F)$ --- измеримое пространство. Пара $(\R, \s(X))$ --- также измеримое пространство. Функция $X$ устанавливает между этими двумя пространствами соответствие. Информация о случайной величине, которой владеет индивид, может быть сформулирована в понятиях любого из этих двух пространств. То есть либо в виде множеств $\{X \in B | B \in \B(\R)\}$, либо в виде множеств $\{\om \in \Om | X(\om) \in B\}$. Вне зависимости от того, в каком виде описана информация о случайной величине, она должна быть одной и той же. То есть, $\s(X) = \F = X^{-1}(B)$  
+
+
+Если рациональный индивид помимо событий из $ \sigma(X) $ различает какие-то еще события, то он, конечно же, может определить значение случайной величины $ X $. Для описания такой ситуации служит:
+
+\begin{mydef} Случайная величина $X:\Omega\rightarrow\R$ называется \indef{измеримой} относительно $ \sigma $- алгебры $\F$, если индивид, владеющей информацией из \s-алгебры $\F$, может сказать чему равна случайная величина $X$, то есть информация о случайной величине $X$ входит в информационное множество $\F$, $ \sigma(X)\subseteq \mathcal{F} $. 
+
+\todo{что сделать с закоменченым кусочком?}
+
+%для любого борелевского множества $B$ событие $X\in B$ лежит в $\sigma$-алгебре $\F$.
+\end{mydef}
+
+Чуть более формально.
+
+\begin{mydef}
+Пусть $(\Om,\F)$--- измеримое пространство, а $X \colon \Om \to \R$. Тогда функция $X$ называется \F-измеримой, если для любого борелевского множества $B$ прообраз $X^{-1}(B) \in F$, то есть $\forall t \subseteq \R \quad \{\omega \in \Om | X(\omega) \le t\} \subseteq \F$. 
+\end{mydef}
+
+\begin{myex}\label{myex:3} Рассмотрим $\Omega$, состоящее из 3-х элементов, $\sigma$-алгебру $\F=\{\varnothing,\Omega,a,\{b,c\}\}$ и случайные величины $X$ и $Y$:
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+$\Om$ & $a$ & $b$ & $c$ \\
+\hline
+$X$ & 5 & 6 & 6 \\
+\hline
+$Y$ & 5 & 6 & 7 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+В данном случае $X$ является $\F$-измеримой случайной величиной. Если происходит <<слипшееся>> событие $\{b,c\}$, то индивид, обладающий информацией \F{} понимает, что случайная величина $X$ приняла значение равное шести. Случайная величина $Y$ --- не является $\F$-измеримой. Если происходит <<слипшееся>> событие $\{b,c\}$, то индивид, обладающий информацией \F{} не может понять какое именно значение приняла случайная величина $Y$. 
+\end{myex}
+
+Иногда символом $\mathcal{F}$ обозначают не только саму $\sigma$-алгебру, но и множество всех случайных величин,
+являющихся $\mathcal{F}$-измеримыми. Это даёт право использовать короткое обозначение $X \in \mathcal{F}$, означающее, что
+случайная величина $X$ является $\mathcal{F}$-измеримой величиной. Буква $\F$ оказывается слегка перегруженной, но проблем при этом не возникает. Если $A$ --- событие, то $A\in \F$ следует понимать буквально: «множество $A$ входит в список $\F$». Если $X$ --- случайная величина, то $X\in \F$ следует понимать как «$X$ является $\F$-измеримой случайной величиной». В конце концов, букв мало, а событий и случайных величин --- много!
+
+\begin{myth} Любая случайная величина $X:\Omega\rightarrow \R$ является измеримой относительно самой «подробной» $\sigma$-алгебры $2^\Omega$ (все подмножества множества $\Omega$).
+\end{myth}
+
+\begin{proof} Самая «подробная» \s-алгебра содержит все подмножества множества $\Omega$ и, в частности, содержит сигма-алгебру $ \sigma(X) $, куда входят все прообразы борелевских множеств.
+\end{proof}
+
+Интерпретировать эту теорему можно следующим образом: Человек, который знает всё на свете, может ответить на любой вопрос! 
+
+Пусть $X:\Omega\to\mathbb{R}$, на $\Omega$ задана \s-алгебра $\F$, а на $\R$ --- борелевская \s-алгебра $\B$. Оказывается, даже если $X$ не является \F-измеримой, пересечение $\F$ и $X^{-1}(B)$ является \s-алгеброй. То есть множества, у которых «хороший» прообраз, прообраз попадает в \F, образуют \s-алгебру, не обязательно совпадающую с борелевской.
+
+\todo{Похожие дэшки!}
+
+\begin{myth} Пусть заданы случайная величина $X$ и произвольная \s-алгебра \F. Набор числовых подмножеств с прообразом, попадающим в \F, $\mathcal{D}:=\{D|X^{-1}(D)\in\F\}$ является \s-алгеброй.
+\end{myth}
+\begin{proof} Проверяем три свойства \s-алгебры.
+\begin{itemize}
+
+\item $X^{-1}(\R)=\Omega$, значит $\R\in\mathcal{D}$
+
+\item $X^{-1}(D^{c})=(X^{-1}(D))^{c}$, значит имеем цепочку $D\in\mathcal{D}\Rightarrow X^{-1}(D)\in\F \Rightarrow (X^{-1}(D))^{c}\in\F \Rightarrow X^{-1}(D^{c})\in\F \Rightarrow D^{c}\in \mathcal{D} $.
+
+\item  По аналогии в силу того, что прообраз объединения равен объединению прообразов.
+\end{itemize}
+\end{proof}
+
+
+Борелевская \s-алгебра --- довольно сложный объект, мы даже не можем явно перечислить все входящие в нее множества. Как же на практике проверить, является ли данная случайная величина $X$ измеримой относительно данной \s-алгебры $\F$?
+
+Оказывается вместо проверки всех борелевских множеств достаточно проверить только некоторые. Например, достаточно убедиться, что прообразы множеств $(-\infty; t]$ входят в \F.
+
+\todo{Мне не нравится формулировка теоремы. Не очень ясно к чему привязана измеримость $X$ и где $\s(X)$}
+
+\begin{myth}
+Пусть $\mathcal{H}$ --- произвольный набор подмножеств $\R$, порождающий борелевскую \s-алгебру $\mathcal{B}$, $\s(\mathcal{H})=\B$. Случайная величина $X$ измерима относительно \s-алгебры $\F$ тогда и только тогда, когда для любого $H\in\mathcal{H}$ событие $\{X\in H\}\in X^{-1}(H)\in\F$.
+\end{myth}
+\begin{proof}
+
+\mbox{ }
+
+\textbf{Необходимость:}
+
+Пусть $X$ измерима относительно $\F$. Значит прообразы всех борелевских множеств лежат в \s-алгебре $\F$.  Так как $\mathcal{H}\subset \B$, то и прообразы всех множеств из $\mathcal{H}$ лежат в $\F$.
+
+\textbf{Достаточность:}
+
+Мы доказывали, что $\mathcal{D}:=\{D|X^{-1}(D)\in\F\}$ - \s-алгебра.
+
+Мы знаем, что $\mathcal{H}\subset\mathcal{D}$, $\mathcal{D}$ - \s-алгебра и $\s(\mathcal{H})=\B$. Значит $\B\subset\mathcal{D}$.
+\end{proof}
+
+То есть для измеримости случайной величины каждому событию из $\s(X)$ должно соответствовать событие из $\F$. Если двум событиям из $\s(X)$ соответствует <<слипшееся>> событие из $\F$, как в примере \ref{myex:3} или наоборот, то случайная величина $X$ не будет \F-измерима.  
+
+\begin{myex}
+Итак, проверим на измеримость случайную величину из примера \ref{myex:3} более формально. Рассмотрим $\Omega$, состоящее из 3-х элементов, $\sigma$-алгебру $\F=\{\varnothing,\Omega,a,\{b,c\}\}$ и случайные величины $X$ и $Y$:
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+$\Om$ & $a$ & $b$ & $c$ \\
+\hline
+$X$ & 5 & 6 & 6 \\
+\hline
+$Y$ & 5 & 6 & 7 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+Для случайной величины $Y$ сигма-алгебра $\s(Y) = \s(\{X \le t | t \in \R\})$ должна быть вложена в \s-алгебру $\F$, в случае её \F-измеримости. Однако при $t=6.5$ множество $\{\omega \in \Om | X(\omega) \le 6.5 \} = \\ = \{a,b\}$ не входит в сигма-алгебру \F. 
+
+Для случайной величины $X$ при $t > 6$ множество $\{\omega \in \Om | X(\omega) \le t \} = \Om$ входит в сигма-алгебру \F. 
+
+\begin{center}
+\definecolor{qqqqff}{rgb}{0.,0.,1.}
+\definecolor{xdxdff}{rgb}{0.49019607843137253,0.49019607843137253,1.}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+\clip(-8.554954726462642,0.7936126871107447) rectangle (5.6806334205725655,6.032309125219705);
+\draw [rotate around={0.:(-4.5,3.)}] (-4.5,3.) ellipse (2.7105978495930043cm and 1.0475403105457346cm);
+\draw (-7.036491990778886,4.684673447300372) node[anchor=north west] {$\mathbf{\Omega}$};
+\draw (1.5238416816382852,5.8) node[anchor=north west] {$\mathbf{\R}$};
+\draw (-4.474086124312549,2.900479732871957) node[anchor=north west] {$a$};
+\draw (-1.8167763368659768,5.311039325769921) node[anchor=north west] {$\mathbf{X}$};
+\draw [line width=1.2pt] (2.,5.)-- (2.,1.);
+\draw (2.131226775911787,2.3690177753826425) node[anchor=north west] {$5$};
+\draw (2.131226775911787,4.38098090016362) node[anchor=north west] {$6$};
+\draw (-3.563008482902296,3.374999337773131) node[anchor=north west] {$b$};
+\draw (-4.284278282352079,3.8115573742822115) node[anchor=north west] {$c$};
+\draw [->,color=qqqqff] (1.7473211629175023,1.9140646769409182) -- (2.,2.);
+\draw [->,color=qqqqff] (1.7004187814948217,4.174101371864013) -- (2.,4.);
+\draw [->,color=qqqqff] (1.6626368149863107,3.7584997402703912) -- (2.,4.);
+\draw [shift={(-0.3677385092880107,10.001188854325319)},color=qqqqff]  plot[domain=4.252193565188231:4.968193570202494,variable=\t]({1.*8.359130031135141*cos(\t r)+0.*8.359130031135141*sin(\t r)},{0.*8.359130031135141*cos(\t r)+1.*8.359130031135141*sin(\t r)});
+\draw [shift={(-0.4017662781590403,-1.7800559515904864)},color=qqqqff]  plot[domain=1.2313965203208617:2.142028885853966,variable=\t]({1.*6.314362315980826*cos(\t r)+0.*6.314362315980826*sin(\t r)},{0.*6.314362315980826*cos(\t r)+1.*6.314362315980826*sin(\t r)});
+\draw [shift={(-1.678437607933304,10.179202190234529)},color=qqqqff]  plot[domain=4.504339293666396:5.192191323562386,variable=\t]({1.*7.23796920762054*cos(\t r)+0.*7.23796920762054*sin(\t r)},{0.*7.23796920762054*cos(\t r)+1.*7.23796920762054*sin(\t r)});
+\draw (2.1881691284999283,5.140212268005499) node[anchor=north west] {$t$};
+\begin{scriptsize}
+\draw [fill=xdxdff] (-4.080222094307366,2.511694845489526) circle (1.0pt);
+\draw [fill=xdxdff] (2.,2.) circle (1.0pt);
+\draw [fill=xdxdff] (2.,4.) circle (1.0pt);
+\draw [fill=xdxdff] (-3.1734548981031017,3.0973153263714472) circle (1.0pt);
+\draw [fill=xdxdff] (-3.815748328747789,3.5318079412193244) circle (1.0pt);
+\draw [fill=black] (2.,4.6656926631043225) circle (1.5pt);
+\end{scriptsize}
+\end{tikzpicture}
+\end{center}
+
+При $ 6 \ge t > 5$  множество $\{\omega \in \Om | X(\omega) \le t \} = \{a\}$ входит в сигма-алгебру \F. 
+
+\begin{center}
+\definecolor{qqqqff}{rgb}{0.,0.,1.}
+\definecolor{xdxdff}{rgb}{0.49019607843137253,0.49019607843137253,1.}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+\clip(-8.554954726462642,0.7936126871107447) rectangle (5.6806334205725655,6.032309125219705);
+\draw [rotate around={0.:(-4.5,3.)}] (-4.5,3.) ellipse (2.7105978495930043cm and 1.0475403105457346cm);
+\draw (-7.036491990778886,4.684673447300372) node[anchor=north west] {$\mathbf{\Omega}$};
+\draw (1.5238416816382852,5.8) node[anchor=north west] {$\mathbf{\R}$};
+\draw (-4.474086124312549,2.900479732871957) node[anchor=north west] {$a$};
+\draw (-1.8167763368659768,5.311039325769921) node[anchor=north west] {$\mathbf{X}$};
+\draw [line width=1.2pt] (2.,5.)-- (2.,1.);
+\draw (2.131226775911787,2.3690177753826425) node[anchor=north west] {$5$};
+\draw (2.131226775911787,4.38098090016362) node[anchor=north west] {$6$};
+\draw (-3.563008482902296,3.374999337773131) node[anchor=north west] {$b$};
+\draw (-4.284278282352079,3.8115573742822115) node[anchor=north west] {$c$};
+\draw [->,color=qqqqff] (1.7473211629175023,1.9140646769409182) -- (2.,2.);
+\draw [->,color=qqqqff] (1.7004187814948217,4.174101371864013) -- (2.,4.);
+\draw [->,color=qqqqff] (1.6626368149863107,3.7584997402703912) -- (2.,4.);
+\draw [shift={(-0.3677385092880107,10.001188854325319)},color=qqqqff]  plot[domain=4.252193565188231:4.968193570202494,variable=\t]({1.*8.359130031135141*cos(\t r)+0.*8.359130031135141*sin(\t r)},{0.*8.359130031135141*cos(\t r)+1.*8.359130031135141*sin(\t r)});
+\draw [shift={(-0.4017662781590403,-1.7800559515904864)},color=qqqqff]  plot[domain=1.2313965203208617:2.142028885853966,variable=\t]({1.*6.314362315980826*cos(\t r)+0.*6.314362315980826*sin(\t r)},{0.*6.314362315980826*cos(\t r)+1.*6.314362315980826*sin(\t r)});
+\draw [shift={(-1.678437607933304,10.179202190234529)},color=qqqqff]  plot[domain=4.504339293666396:5.192191323562386,variable=\t]({1.*7.23796920762054*cos(\t r)+0.*7.23796920762054*sin(\t r)},{0.*7.23796920762054*cos(\t r)+1.*7.23796920762054*sin(\t r)});
+\draw (2.1881691284999283,3.140212268005499) node[anchor=north west] {$t$};
+\begin{scriptsize}
+\draw [fill=xdxdff] (-4.080222094307366,2.511694845489526) circle (1.0pt);
+\draw [fill=xdxdff] (2.,2.) circle (1.0pt);
+\draw [fill=xdxdff] (2.,4.) circle (1.0pt);
+\draw [fill=xdxdff] (-3.1734548981031017,3.0973153263714472) circle (1.0pt);
+\draw [fill=xdxdff] (-3.815748328747789,3.5318079412193244) circle (1.0pt);
+\draw [fill=black] (2.,2.6656926631043225) circle (1.5pt);
+\end{scriptsize}
+\end{tikzpicture}
+\end{center}
+
+При $ t \le 5$  множество $\{\omega \in \Om | X(\omega) \le t \} = \varnothing$ входит в сигма-алгебру \F. 
+\end{myex}
+
+Хорошая новость: \F-измеримые случайные величины можно складывать, вычитать, умножать и делить!
+
+\begin{myth}\label{th:sum} Если $X$, $Y$ --- \F-измеримые случайные величины, то: $X+Y$,$X-Y$, $X\cdot Y$ --- \F-измеримые случайные величины. Если выполнено дополнительно условие $Y \neq 0$, то и $X/Y$ --- \F-измеримая случайная величина.
+\end{myth}
+
+\todo{Не должно ли Y быть не равно 0 относительно F}
+
+\begin{proof} Мы рассмотрим только случай $X+Y$, т.к. при доказательстве остальных трех случаев используется та же идея.
+
+События $\{X \le t \}$ и $\{Y \le s\}$ войдут в сигма-алгебру $\F$. Докажем, что событие $\{X+Y \le t+s\} = \{X \le t \} \cap \{Y \le s \} $ также войдёт в сигма-алгебру $\F$. 
+
+Пусть $t=2$ и $s=5$, тогда все события вида $\{X+Y \le 7\} $ будут образовывать полуплоскость. Эта полуплоскость не будет исчерпываться событием $\{X \le 2 \} \cap \{Y \le 5 \}$. Например,если $X=5$, а $Y = 2$, $X+Y \le 7$, но $X>2$. Событие  $\{X \le 2 \} \cap \{Y \le 5 \} \in \{X+Y \le 7\}$.
+
+\begin{center}
+\definecolor{xdxdff}{rgb}{0.49019607843137253,0.49019607843137253,1.}
+\definecolor{qqqqff}{rgb}{0.,0.,1.}
+\definecolor{uuuuuu}{rgb}{0.26666666666666666,0.26666666666666666,0.26666666666666666}
+\definecolor{qqwuqq}{rgb}{0.,0.39215686274509803,0.}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=0.35cm,y=0.35cm]
+\clip(-15.989471996175519,-8.893751124244655) rectangle (15.925711626703318,12.08888879985987);
+\draw [->] (1.953626630512122,-8.893751124244657) -- (2.,12.);
+\draw [->] (-16.,2.) -- (16.,2.);
+\draw [domain=-15.989471996175519:15.925711626703318] plot(\x,{(--28.-2.*\x)/4.});
+\draw [color=qqwuqq,domain=-15.989471996175519:-6.0] plot(\x,{(-32.-2.*\x)/-2.});
+\draw [color=qqwuqq,domain=-15.989471996175519:-2.0] plot(\x,{(-20.-2.*\x)/-2.});
+\draw [color=qqwuqq,domain=-15.989471996175519:2.0] plot(\x,{(-8.-2.*\x)/-2.});
+\draw [color=qqwuqq,domain=-15.989471996175519:5.900577537114341] plot(\x,{(--4.397689851542637-2.0497112314428296*\x)/-1.9005775371143407});
+\draw [color=qqwuqq,domain=-15.989471996175519:9.94467875114077] plot(\x,{(--16.-2.*\x)/-1.9446787511407706});
+\draw [color=qqwuqq,domain=-15.989471996175519:14.0] plot(\x,{(--28.-2.*\x)/-2.});
+\draw [color=qqwuqq,domain=-15.989471996175519:-10.0] plot(\x,{(-44.-2.*\x)/-2.});
+\draw [line width=2.pt,color=qqqqff,domain=-15.989471996175519:5.900577537114341] plot(\x,{(-39.80115507422868-0.04971123144282963*\x)/-9.90057753711434});
+\draw [color=qqqqff] (-2.0000504204864464,4.010041834029226)-- (6.,-4.);
+\draw [color=qqqqff,domain=-9.999848738540656:15.925711626703318] plot(\x,{(-23.819246987473925-3.969874497912321*\x)/3.9998487385406563});
+\draw [color=qqqqff,domain=-13.999747897567751:15.925711626703318] plot(\x,{(-19.397994163110923-1.9497908298538689*\x)/1.999747897567751});
+\draw [color=qqqqff,domain=-15.989471996175519:15.925711626703318] plot(\x,{(--34.92875521715196--2.5090026807548362*\x)/-2.4596821024008992});
+\draw [color=qqqqff,domain=-15.989471996175519:15.925711626703318] plot(\x,{(--36.--2.*\x)/-2.});
+\draw [color=qqqqff,domain=-15.989471996175519:15.925711626703318] plot(\x,{(--40.85825299169821--1.9496907346293204*\x)/-1.6953228383609655});
+\draw [color=qqwuqq,domain=-15.989471996175519:17.386438170709972] plot(\x,{(--39.833953574744285-2.*\x)/-2.});
+\draw [color=qqqqff](-11.086986032599661,-0.8046492843445453) node[anchor=north west] {$\mathbf{\{X \le 2 \} \cap \{Y \le 5\}}$};
+\draw [color=qqwuqq](7.297336330809808,-1.147823301794853) node[anchor=north west] {$\mathbf{\{X+Y \le 7 \}}$};
+\draw (-3.782281946871632,10.765217589694398) node[anchor=north west] {$\mathbf{y = 7 - x}$};
+\draw [line width=2.pt,color=qqqqff] (5.900577537114341,4.04971123144283)-- (5.958488393686078,-13.958488393686078);
+\draw [color=qqqqff] (5.9395215444343314,-8.060478455565669)-- (-6.010092763397715,3.9899072366022854);
+\draw [color=qqqqff] (1.9822442065964185,4.000039408719056)-- (5.913601511812268,-2.778406815568957E-4);
+\begin{scriptsize}
+\draw [fill=uuuuuu] (5.900577537114341,4.04971123144283) circle (1.5pt);
+\draw [fill=xdxdff] (5.958488393686078,-13.958488393686078) circle (2.5pt);
+\end{scriptsize}
+\end{tikzpicture}
+\end{center}
+
+ Если $A_1, A_2, A_3, \ldots \in \F$, то и $\cup A_i \in \F$ для счётного количества множеств. В нашем случае $s$ и $t$ могут принимать континуальное множество значений. Одним из выходов из сложившейся ситуации является приближение множества $\{X+Y \le 7\}$ какой-нибудь последовательностью, для которой оно является пределом. 
+ 
+Зафиксируем все рациональные точки, которые на рассматриваемой плоскости будут лежать строго ниже прямой  $y = 7 - x$. Как было установлено ранее, множество $\Q$ --- счётное. Для любой точки с иррациональными координатами существует точка с рациональной координатой, образующая множество $\{X \le x\}\cap\{Y \le y\}$.
+
+\begin{center}
+\definecolor{qqqqff}{rgb}{0.,0.,1.}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.7cm,y=1.7cm]
+\clip(-6.828146528998256,0.5409293175780105) rectangle (0.7192731333129293,5.562976621397224);
+\draw (-3.,2.4)-- (-1.6,2.4)-- (-1.6,1.2);
+\draw (0.,1.)-- (-5.,6.);
+\draw (-4.5,2.5)-- (-4.5,5.)-- (-6.5,5.);
+\draw (-5.,2.5)-- (-5.,4.5)-- (-6.5,4.5);
+\draw (-1.9208888778377518,3.869829244681032) node[anchor=north west] {\parbox{3.4966749453272743 cm}{$\text{Точка с рациональной} \\ \text{координатой}$}};
+\draw (-4.7,1.5166413651771722) node[anchor=north west] {\parbox{3.668859424315362 cm}{$\text{Точка с иррациональной} \\ \text{координатой}$}};
+\draw [->] (-1.1891048421383765,3.0806503826522986) -- (-1.461730267202849,2.6071430654350585);
+\draw [->] (-2.853554805689893,1.4879439520124909) -- (-2.121770769990519,1.8466616165710061);
+\draw (-5.465019403675894,3.152393915564002) node[anchor=north west] {$A_1$};
+\draw (-4.93411726012929,3.152393915564002) node[anchor=north west] {$A_2$};
+\begin{scriptsize}
+\draw [fill=qqqqff] (-2.,2.) circle (1.5pt);
+\draw [color=qqqqff] (-1.6,2.4)-- ++(-2.0pt,-2.0pt) -- ++(4.0pt,4.0pt) ++(-4.0pt,0) -- ++(4.0pt,-4.0pt);
+\draw [fill=qqqqff] (6.723944391141064,1.0067618025042675) circle (1.5pt);
+\draw [fill=qqqqff] (-4.632944400769647,3.912741553302398) circle (1.5pt);
+\draw [fill=qqqqff] (-5.022480956589247,3.7076096942581693) circle (1.5pt);
+\draw [fill=qqqqff] (-4.749349516775171,3.3473452755612847) circle (1.5pt);
+\draw [fill=qqqqff] (-5.643410401471066,3.914586175885442) circle (1.5pt);
+\draw [fill=qqqqff] (-5.194961357945307,3.9835783364278665) circle (1.5pt);
+\draw [fill=qqqqff] (-5.4810388173813225,4.378362017324492) circle (1.5pt);
+\draw [fill=qqqqff] (-5.384689799436975,3.1901684901899876) circle (1.5pt);
+\draw [fill=qqqqff] (-5.574418240928642,3.4833851724952907) circle (1.5pt);
+\draw [fill=qqqqff] (-5.22945743821652,3.4143930119528663) circle (1.5pt);
+\draw [fill=qqqqff] (-4.798256434826367,4.242298938461957) circle (1.5pt);
+\draw [fill=qqqqff] (-5.206742685193761,4.28594173556891) circle (1.5pt);
+\draw [fill=qqqqff] (-4.729264274283943,4.6562519017165025) circle (1.5pt);
+\draw [color=qqqqff] (-4.5,5.)-- ++(-2.0pt,-2.0pt) -- ++(4.0pt,4.0pt) ++(-4.0pt,0) -- ++(4.0pt,-4.0pt);
+\draw [color=qqqqff] (-5.,4.5)-- ++(-2.0pt,-2.0pt) -- ++(4.0pt,4.0pt) ++(-4.0pt,0) -- ++(4.0pt,-4.0pt);
+\draw [fill=qqqqff] (-5.995921547222497,4.8311925856978535) circle (1.5pt);
+\draw [fill=qqqqff] (-5.708947415575683,4.874238705444875) circle (1.5pt);
+\draw [fill=qqqqff] (-5.436321990511211,4.687705519874447) circle (1.5pt);
+\draw [fill=qqqqff] (-5.178045272029079,4.773797759368491) circle (1.5pt);
+\draw [fill=qqqqff] (-6.3259417986163315,4.687705519874447) circle (1.5pt);
+\end{scriptsize}
+\end{tikzpicture}
+\end{center}
+
+Строя подобные множества в итоге приблизим $\{X+Y \le t\}$ последовательностью $A_1$, $A_2$, $\ldots$ такой, что \[\cap_{i=1}^{\infty} \{X+Y \le t + \frac{1}{i} \}.\]
+
+Аналогично можно показать, что случайная величина $X \cdot Y$ измерима. Однако можно использовать читерский способ. Дело в том, что случайную величину $X \cdot Y$ можно представить в виде 
+
+\[X \cdot Y = \frac{1}{4} [(X+Y)^2 - (X-Y)^2] \]
+
+Сумма случайных величин --- измеримая случайная величина. Возведенная в квадрат случайная величина снова измерима. Разность случайных величин --- измеримая случайная величина. Случайная величина, домноженная на константу --- измеримая случайная величина. Все эти факты читателю предлагается проверить самостоятельно, решив упражнение \ref{upr:mesuarable}.
+\end{proof}
+
+
+Кроме того, можно смело брать пределы!
+
+\begin{myth} Если $X_{i}$ --- последовательность \F-измеримых случайных величин, то:
+
+\begin{enumerate}
+\item[a] Множество $A=\{w|\exists \lim X_{i}(w)\}\in\F$.
+\item[b] Если для $\forall w\in\Omega$ существует предел $\lim X_{n}(w)$, то случайная величина $\lim X_{n}$ является \F-измеримой.
+\end{enumerate}
+\end{myth}
+\begin{proof}
+\end{proof}
+
+Если преобразовать \F-измеримую случайную величину с помощью «хорошего» преобразования, то снова получится \F-измеримая случайная величина.
+Сначала уточним, что значит «хорошее» преобразование:
+
+\begin{mydef} Функция $f:\R\to\R$ называется \indef{борелевской} \index{Борелевская функция} если прообраз любого борелевского множества является борелевским множеством, $f^{-1}(B)\in\B$ для $\forall B\in \B$.
+\end{mydef}
+
+\begin{myex} $f(t)=t^{2}$, $f(t)=\cos(t)$, $f(t)=|t|$ - борелевские функции.
+\end{myex}
+
+Более того, все «привычные» функции - борелевские, о чем говорит следующая теорема:
+
+\begin{myth} Если $f$ имеет счетное число разрывов, то она - борелевская (\ldots проверить)
+\end{myth}
+(\ldots ) Используя пример неборелевского множества, постройте пример неборелевской функции (упр.)
+
+Итак, если использовать «хорошее» преобразование, то \F-измеримость сохраняется:
+
+\begin{myth}\label{th:8} Если $X:\Omega\to\R$ - \F-измеримая случайная величина, и $f:\R\to\R$ - борелевская функция, то $f(X):\Omega\to\R$ - \F-измеримая случайная величина.
+\end{myth}
+\begin{proof}
+Случайная величина $X$ является \F-измеримой. $\{f(X) \in B\} = \{ X \in f^{-1}(B)\} = \{X \in \B\} \in \F$ 
+
+Другими словами, пусть $B$ --- некоторое открытое множество на $\R$, тогда по определению борелевской функции множество $f^{-1}(B)$ также будет открытым и будет принадлежать сигма-алгебре $\F$.
+
+\todo{нормально написал док-во или нет?}
+\end{proof}
+
+В случае, когда $\F=\s(X)$ эту теорему можно уточнить:
+
+\begin{myth} Случайная величина $Y$ является $\s(X)$-измеримой если и только если $Y=f(X)$, где $f$ --- борелевская функция.
+\end{myth}
+\begin{proof}
+
+\mbox{ }
+
+\textbf{Необходимость:} $X$ является $\s(X)$-измеримой. Поэтому согласно теореме \ref{th:8} если $f$ - борелевская функция, то $f(X)$ является $\s(X)$-измеримой.
+
+\textbf{Достаточность:}  Интуитивно: если зная $X$ можно определить, чему равно $Y$, то $Y$ - это функция от $X$. Строго:
+
+
+\end{proof}
+
+\todo{возможно это относится к векторным сл. вел. ?}
+\begin{mydef}
+Пусть $(\Om,\F)$ --- измеримое пространство и $X \colon \Om \to \R$, $Y \colon \Om \to \R$. Наименьшей сигма-алгеброй относительно которой измеримы функции $X$ и $Y$ называется такая сигма-алгебра $\s(X,Y)$, что 
+\begin{enumerate}
+\item случайные величины $X$ и $Y$ являются $\s(X,Y)$ измеримыми,
+\item для любой \s-алгебры \F относительно которой измеримы случайные величины $X$ и $Y$ выполняется $\s(X,Y) \subseteq \F$. 
+\end{enumerate}
+\end{mydef}
+
+
+
+
+
+\subsubsection{Задачи}
+\begin{problem}
+Кубик подбрасывается два раза. Пусть $X_1$ --- результат первого броска, $X_2$ --- результат второго броска. Болек следил за обоими бросками, его друг Лёлек опоздал и видел только второй бросок. Какие из следующих событий распознает Лёлек? О каких событиях Болек может сказать, что они гарантированно произошли?
+\begin{multicols}{2}
+\begin{itemize}
+\item $A = \{X_1 >3 \}$
+\item $B = \{X_2 <5 \}$
+\item $C = \{X_1 \times X_2 - \text{чётное} \}$
+\item $D = \{X_1 + X_2 >10 \}$
+\item $E = \{X_1 - \text{чётное} \}$
+\item $F = \{X_2 < X_1 \}$
+\item $G = \{X_1 + X_2 < 100 \}$
+\item $H = \{X_1 \times X_2 < 0 \}$
+\item $I = \{X_1 - 3 >4\}$
+\end{itemize}
+\end{multicols}
+Сколько всего событий гарантированно различают Лёлек и Болек? Пусть $\F_1$ --- \s-алгебра Болека, а $\F_2$ --- \s-алгебра Лёлека. Будут ли случайные величины $X_1, X_2, X_1 \times X_2, X_1 + X_2, X_2^5$ измеримы относительно $\F_1, \F_2$?
+
+\begin{sol}
+Болек различает все события, так как видел оба броска. Лёлек, зная результаты только второго броска может гарантированно сказать, что произошли события: $B, G, H, I$.
+
+\[H = \{X_1 \times X_2 < 0 \} = \{X_2 <1\} = \varnothing\]
+\[I = \{X_1 - 3 >4\} = \{X_1 > -1 \} = \Om \]
+\[G = \Om \]
+
+Все события вида $(1,x)$, $(2,x)$, $(3,x)$, $(4,x)$, $(5,x)$, $(6,x)$ слипаются в \s-алгебре Лёлека между собой. Таким образом, он различает всего лишь 6 событий. Для Болека таких слипаний не существует. Он гарантированно различает 36 событий. 
+
+Относительно $F_1$ будут измеримы все случайные величины. 
+
+\[\s(X_1) \notin \F_2; \s(X_2) \in \F_2; X_1 \times X_2 \notin \F_2; X_1 + X_2 \notin \F_2; X_2^5 \in F_2\]
+\end{sol}
+\end{problem}
+
+
+
+
+\begin{problem}
+Черви --- Духовенство! Бубны --- Купечество! Пики --- Военные! Трефы --- Крестьянство! Случайные величины $X$ и $Y$ отображают пространство элементарных исходов $\Om$ на множество действительных чисел. 
+
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+$\Om$ &$\heartsuit$ & $\diamondsuit$  & $\clubsuit$ & $\spadesuit$  \\
+\hline
+$X$ & 1 & 2 & -1 & -1 \\
+\hline
+$Y$ & 1 & 1 & -1 & -1 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+На пространстве элементарных исходов заданы две $\s$-алгебры: $\F = \{\Om,\varnothing,\{\heartsuit, \diamondsuit\}, \{\clubsuit,\spadesuit \}\}$ и $\mathcal{H} = \{\Om, \varnothing, \{\heartsuit \}, \{\diamondsuit \}, \{\clubsuit,\spadesuit \}, \{\heartsuit,\diamondsuit \}, \{\diamondsuit,\clubsuit,\spadesuit\}, \{\heartsuit,\clubsuit,\spadesuit \}\}$. Будут ли случайные величины $X$ и $Y$ $\F$- измеримы, $\mathcal{H}$-измеримы?
+
+\begin{sol}
+Случайная величина $X$ не $\F$-измерима, так при $t=1.5$ множество $\{\om \in \Om | X(\om) \le t \} = \{\heartsuit,\clubsuit,\spadesuit \} \notin \F$. 
+
+Случайная величина $Y$ --- \F-измерима. Покажем это. Если $t > 1$, тогда $\{\om \in \Om | X(\om) \le t \} = \Om \in \F$.
+
+\begin{center}
+\definecolor{qqffff}{rgb}{0.,1.,1.}
+\definecolor{xdxdff}{rgb}{0.49019607843137253,0.49019607843137253,1.}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+\clip(-2.52,0.88) rectangle (11.44,3.6);
+\draw (-2.,2.)-- (10.,2.);
+\draw (6.88,3.14) node[anchor=north west] {$\mathbf{1}$};
+\draw (0.7,3.14) node[anchor=north west] {$\mathbf{-1}$};
+\draw [line width=1.6pt,,color=qqffff] (7.3,2.)-- (10.,2.);
+\draw (8.56,2.86) node[anchor=north west] {$t$};
+\draw [shift={(7.81108991825613,1.9874386920980929)},color=qqffff]  plot[domain=1.9703277181067138:4.399759379855935,variable=\t]({1.*0.4912505412404337*cos(\t r)+0.*0.4912505412404337*sin(\t r)},{0.*0.4912505412404337*cos(\t r)+1.*0.4912505412404337*sin(\t r)});
+\begin{scriptsize}
+\draw [fill=xdxdff] (1.,2.) circle (2.5pt);
+\draw [fill=xdxdff] (7.04,2.) circle (2.5pt);
+\end{scriptsize}
+\end{tikzpicture}
+\end{center}
+
+Если $ -1 < t \le 1$, тогда $\{\om \in \Om | X(\om) \le t \} = \{\clubsuit,\spadesuit \} in \F$.
+
+\begin{center}
+\definecolor{qqffff}{rgb}{0.,1.,1.}
+\definecolor{xdxdff}{rgb}{0.49019607843137253,0.49019607843137253,1.}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+\clip(-2.52,0.88) rectangle (11.44,3.6);
+\draw (-2.,2.)-- (10.,2.);
+\draw (6.88,3.14) node[anchor=north west] {$\mathbf{1}$};
+\draw (0.7,3.14) node[anchor=north west] {$\mathbf{-1}$};
+\draw [line width=1.6pt,,color=qqffff] (7.02,2.)-- (10.,2.);
+\draw (1.94,2.96) node[anchor=north west] {$t$};
+\draw [shift={(1.859775280898876,2.026516853932584)},color=qqffff]  plot[domain=2.1352189206989296:4.270262711779258,variable=\t]({1.*0.5604029877221371*cos(\t r)+0.*0.5604029877221371*sin(\t r)},{0.*0.5604029877221371*cos(\t r)+1.*0.5604029877221371*sin(\t r)});
+\draw [line width=1.6pt,,color=qqffff] (7.02,2.)-- (1.3,2.);
+\begin{scriptsize}
+\draw [fill=xdxdff] (1.1,2.) circle (2.5pt);
+\draw [fill=xdxdff] (7.02,2.) circle (2.5pt);
+\end{scriptsize}
+\end{tikzpicture}
+\end{center}
+
+Если $t \le -1$, тогда $\{\om \in \Om | X(\om) \le t \} =\varnothing \in \F$
+
+\begin{center}
+\definecolor{qqffff}{rgb}{0.,1.,1.}
+\definecolor{xdxdff}{rgb}{0.49019607843137253,0.49019607843137253,1.}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+\clip(-2.52,0.88) rectangle (11.44,3.6);
+\draw (-2.,2.)-- (10.,2.);
+\draw (6.88,3.14) node[anchor=north west] {$\mathbf{1}$};
+\draw (0.7,3.14) node[anchor=north west] {$\mathbf{-1}$};
+\draw [line width=1.6pt,,color=qqffff] (7.02,2.)-- (10.,2.);
+\draw (-1.84,2.94) node[anchor=north west] {$t$};
+\draw [line width=1.6pt,,color=qqffff] (7.02,2.)-- (1.,2.);
+\draw [line width=1.6pt,,color=qqffff] (1.,2.)-- (-2.06,2.);
+\begin{scriptsize}
+\draw [fill=xdxdff] (1.,2.) circle (2.5pt);
+\draw [fill=xdxdff] (7.02,2.) circle (2.5pt);
+\end{scriptsize}
+\end{tikzpicture}
+\end{center}
+
+Для рассматриваемых \s-алгебр выполняется соотношение $\F \subseteq \mathcal{H}$. Если случайная величина $Y$ измерима относительно скудной сигма-алгебры $\F$, то она будет измерима относительно богатой сигма-алгебры $\mathcal{H}$.
+
+Для того, чтобы показать $\mathcal{H}$-измеримость случайной величины $X$, можно воспользоваться вновь способом, предложенным выше. Однако мы в данном решении используем другой способ, чтобы лишний раз продемонстрировать взаимосвязь пространств $(\Om,\s(X))$ и $\R,\s(X)$. 
+
+Зная,что $X= -1$, мы понимаем, что цвет выпавшей карты --- черный, а множество $\{\clubsuit,\spadesuit\}$ входит в $\mathcal{H}$. Зная, что $X=1$, мы понимаем, что выпавшая масть --- черви, а $\{\heartsuit\}$ входит в $\mathcal{H}$. Зная, что $X=2$, мы понимаем, что выпавшая масть --- бубны, а $\{\diamondsuit\}$ входит в $\mathcal{H}$. Значит $\s(X) \subset \mathcal{H}$.
+\end{sol}
+\end{problem}
+
+
+
+
+\begin{problem}
+Красивая сказака.
+
+Верно ли, что $\{X^2 >7 \} \in \s(X)$?
+\begin{sol}
+Да, это верно! Если $X^2 > 7$, то $X \ in (-\infty;\sqrt{7}) \cup (\sqrt{7}; +\infty)$. По определению $\s(X)$ КТО-ТО ИЗ СКАЗКИ может различить событие $X \le \sqrt{7}$. Событие $X > \sqrt{7}$ можно представить как \[\cup_{i=1}^{\infty}\{X \le \sqrt{7} - \frac{1}{i}\}^c = \{(-\infty;-\sqrt{7}-1) \cup (-\infty;-\sqrt{7}-\frac{1}{2}) \cup \ldots \}^c\]
+
+Каждое из событий в этом бесконечном объединении принадлежит \s-алгебре $\s(X)$. Отсюда следует, что КТО-ТО ИЗ СКАЗКИ РАЗЛИЧАЕТ событие $\{X^2 >7 \}$, то есть $\{X^2 >7 \} \in \s(X)$.
+\end{sol}
+\end{problem}
+
+
+
+\begin{problem}
+Пусть случайные величины $X$ и $Y$ имеют следующие дискретные распределения с некоторыми вероятностями.
+
+\begin{table}[H]
+\centering
+\setlength\tabcolsep{4pt}
+\begin{minipage}{0.48\textwidth}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+ $X$ & 0 & 1 \\
+\hline
+ $\PP(\ldots)$& $\mbox{ }$ & $\mbox{ }$ \\
+\hline
+\end{tabular}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+ $Y$ & 0 & 1 \\
+\hline
+ $\PP(\ldots)$& $\mbox{ }$ & $\mbox{ }$ \\
+\hline
+\end{tabular}
+\end{minipage}
+\end{table}
+
+Пусть случайные величины $X$ и $Y$ измеримы относительно сигма-алгебры $\F$. Будут ли $\F$-измерима  случайная величина $X+Y$? Докажите это не используя результат теоремы \ref{th:sum}.
+
+\begin{sol}
+Попытаемся для начала ответить на вопрос будет ли событие  $\{X+Y =2\}$ лежать в сигма-алгебре $\F$. Оно будет лежать в ней, так как 
+
+\[ \{X+Y=2\} = \{X=1\} \cap \{Y=1\} = \{\{X=0\} \cup \{Y=0\}\}^C \in F. \]
+
+Проще было бы сказать, что событие $\{X+Y=2\}$ можно выразить с помощью различных операций над множествами, лежащими в сигма-алгебре $\F$. Это означает, что рассматриваемое событие также лежит в сигма-алгебре $\F$. 
+
+Любое из событий $A = \{X+Y=0\}$ и $B = \{X+Y = 1\}$ может быть представлено как объединение и пересечение событий $\{X=1\}$, $\{X=0\}$, $\{Y=0\}$, $\{Y=1\}$. Например, $\{X+Y=1\} = (\{X=1\} \cap \{Y=0\})\cup (\{X=0\} \cap \{Y=1\})$. Используя законы Де Моргана можно представить пересечения как дополнения к объединениям. Это будет означать, что рассматриваемое множество входит в сигма-алгебру $\F$ и случайная величина $X+Y$ --- \F-измерима.
+
+\end{sol}
+\end{problem}
+
+\todo{Написать упражнение по человечески!}
+
+\begin{problem}\label{upr:mesuarable}
+Пусть случайные величины $X$ и $Y$ измеримы относительно сигма-алгебры $\F$. Будут ли $\F$-измеримы следующие случайные величины:
+\begin{multicols}{2}
+\begin{itemize}
+\item $X^3$
+
+\item $X^2$
+
+\item $|X|^{\a}, \quad \a >0$
+
+\item $X + b$
+
+\item $a \cdot X$
+
+\item $1/X$
+
+\item $X/Y$, если $Y \neq 0$
+
+\item $X-Y$ 
+
+\item $\min(X,Y)$
+
+\item $\max(X,Y)$
+
+\item $\sin(X)$
+
+\item $e^{X}$
+\end{itemize}
+\end{multicols}
+
+\begin{sol}
+Перед тем как рассказать решение, мы хотели бы напомнить читателю, что практически все известные нам множества являются борелевскими!
+
+\begin{itemize}
+\item $X^3$ измерима относительно \s-алгебры \F, так как 
+\[\forall t \in \R \quad \{\om \in \Om | X^3(\om) \le t\} = \{\om \in \Om | X(\om) \le \sqrt[3]{t}\} \subset \F \]
+
+\item $X^2$ измерима относительно \s-алгебры \F, так как
+
+Пусть $t \in \R$, тогда если $t=0$, то $\{\om \in \Om | X^2(\om) \le 0 \} = \{\om \in \Om | X(\om) = 0 \} \subset \F$
+
+Если $t > 0$, то $\{\om \in \Om | X^2(\om) \le t \} = \{\om \in \Om | X(\om) \ge -\sqrt{t} \} \cup \{\om\in \Om | X(\om) \le \sqrt{t} \} \subset \F$
+
+Если $t < 0$, то $\{\om \in \Om | X^2(\om) \le t \} = \varnothing \subset \F$
+
+\todo{Что будет в t=0, не ошибся ли я нигде?}
+
+
+\item $|X|^{\a}, \quad \a >0$
+
+Если $t>0$, тогда 
+\[\{\om \in \Om | |X|^{\a} \le t\} = \{ \om \in \Om | -t^{1/ \a} \le X \le t^{1/ \a}\} = \{ \om \in \Om | -t^{1/ \a} \le X\} \cap \{ \om \in \Om | X \le t^{1/ \a}\} \subset \F \]
+
+
+
+\item $X + b$ измерима относительно \s-алгебры \F, так как
+
+\[ \forall t \in \R \quad \{\om \in \Om | X(\om) + b \le t\} = \{\om \in \Om | X(\om) \le t-b \} \subset \F \]
+
+\item $a \cdot X$ измерима относительно \s-алгебры \F, так как
+
+\[ \forall t \in \R \quad \{\om \in \Om | a \cdot X(\om) \le t \} = \begin{cases} \{\om \in \Om | X(\om) \le \frac{t}{a} \} \subset \F  \text{ если } a > 0  \\ \{\om \in \Om | X(\om) \ge \frac{t}{a} \} = \{\om \in \Om | X(\om) \le \frac{t}{a} \}^c \subset \F \text{ если } a < 0 \end{cases} \] 
+
+Если $a = 0$, тогда
+
+\todo{Правильно ли в нуле?}
+
+\[ \{ \om \in \Om | 0 \le t \} = \begin{cases} \text{Если } t=0 \{\om | 0 \le 0\} = \Om \subset \F \\ \text{Если } t<0 \{\om | 0 \le t\} = \varnothing \subset \F \\  \text{Если } t>0 \{\om | 0 \le t\} = \Om \subset \F                                                                       \end{cases} \]
+
+
+\item $1/X$ измерима относительно \s-алгебры \F, так как если $t \ge 0$, тогда  
+
+\[ \{\om \in \Om | 1/X \le t\} = \{ \om \in \Om | X < 0\} \cup \{ \om \in \Om | X \le 1/t \} \subset \F\]
+
+Если $t < 0$, тогда 
+
+\[\{\om \in \Om | 1/X \le t\} = \{\om \in \Om |X \le 1/t \} \subset \F \]
+
+
+\item $X/Y$ измерима, так как $X/Y = X \cdot 1/Y$. Ранее было показано, что $1/Y$ измерима и что произведение измеримых случайных величин измеримо.
+
+\item $X-Y$ измерима, так как $X+ (-1) \cdot Y$ измерима.
+
+\item Воспользуемся уже доказанными результатами и просто представим минимум из двух случайных величин в виде <<измеримых комбинаций>> следующим образом:
+
+\[\min(X,Y) = \frac{1}{2}(X+Y)-\frac{1}{2}|X-Y| \]
+
+Докажем, что минимум измерим менее ленивым способом. 
+
+\[\forall t \in \R \{\om \in \Om | \min(X,Y) \le t \} = \{ \om \in \Om | X \le t \} \cap \{ \om \in \Om | Y \le t\} \subset \F\]
+
+\item Поступим аналогично минимуму, а именно представим максимум из двух случайных величин в виде <<измеримых комбинаций>> следующим образом:
+
+\[\max(X,Y) = \frac{1}{2}(X+Y)+\frac{1}{2}|X-Y| \]
+
+Кроме того, максимум можно выразить через минимум, $\max(X,Y) = -\min(-X,-Y).$
+
+\item Если $t >1$, тогда $ \{\om \in \Om | \sin(X) \le t \}=\Om$, так как функция $\sin(X)$ принимает значения от -1 до 1. По этой же самой причине, если $t<1$, тогда $ \{\om \in \Om | \sin(X) \le t \}=\varnothing$.
+
+\todo{Я запутался со знаками, правильно ли они стоят?}
+
+Если $-1 \le t \le 1$, тогда $ \{\om \in \Om | \sin(X) \le t \}=\Om = \{\om \in \Om | X \le \arcsin(t) +\pi\cdot k \}\cap \{\om \in \Om | X \ge \pi -\arcsin(t) + \pi \cdot k \}$
+
+\item Если $t>0$, тогда $\{\om \in \Om|e^{X} \le t\} = \{\om \in \Om | X \le \ln(t) \} \subset \F$.
+
+Если $t \le 0 $, тогда $\{\om \in \Om|e^{X} \le t\} = \varnothing \subset \F$. 
+
+\end{itemize}
+\end{sol}
+\end{problem}
+
+
+
+
+
+
+\subsection{Сигма-алгебры и случайные величины}
+
+\todo{Что тут нужно сделать?}
+
+На самом деле большинство $ \sigma $-алгебр связано со случайными величинами. Для иллюстрации приведем три примера:
+
+\begin{itemize}
+\item Сигма-алгебра, порожденная случайной величиной, $ \sigma(X) $.
+\item Сигма-алгебра, связанная с моментом остановки $ T $, $\mathcal{F}_{T}$.
+\item Остаточная (хвостовая) сигма-алгебра.
+\end{itemize}
+
+\ldots
+
+
+\subsection{Обобщение случайных величин}
+
+Можно обобщать определение случайной величины по-разному. В любом случае у нас будет следующая картина. Функция $X:\Omega\to S$, где $S$ --- некое, не обязательно числовое, множество. Есть две \s-алгебры: \F, заданная на $\Omega$ и $\mathcal{H}$, заданная на $S$. Чаще всего на $S$ определено понятие открытого множества и $\mathcal{H}$ является борелевской \s-алгеброй, т.е. минимальной \s-алгеброй, содержащей все открытые множества.
+
+\begin{center}
+\definecolor{qqqqff}{rgb}{0.,0.,1.}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+\clip(-7.665730715965067,1.4594670782274908) rectangle (5.916886243844649,5.332118645349872);
+\draw [rotate around={0.:(-4.5,3.)}] (-4.5,3.) ellipse (2.7105978495930043cm and 1.0475403105457346cm);
+\draw [rotate around={0.:(2.5,3.)}] (2.5,3.) ellipse (2.68229794175068cm and 0.9719682342134075cm);
+\draw (-7.042328268574635,4.689825214705184) node[anchor=north west] {\Large{$\mathbf{\Omega}$}};
+\draw (-3.3,2.9140727888051656) node[anchor=north west] {\large{$\mathbf{\omega}$}};
+\draw (4.972337081131873,4.425351449145607) node[anchor=north west] {\Large{$\mathbf{S}$}};
+\draw (0.665192899161616,3.2163285208732537) node[anchor=north west] {\large{$X(\mathbf{\omega})$}};
+\draw [->,color=qqqqff] (0.2118093010594878,3.1218736046019764) -- (0.4573920833648095,2.781835906025377);
+\draw [shift={(-1.1251534623701323,2.0608033346798917)},color=qqqqff]  plot[domain=0.6708522862747119:2.7417957952860825,variable=\t]({1.*1.7068507692560273*cos(\t r)+0.*1.7068507692560273*sin(\t r)},{0.*1.7068507692560273*cos(\t r)+1.*1.7068507692560273*sin(\t r)});
+\draw (-1.2994693592809579,4.5) node[anchor=north west] {\large{$X$}};
+\begin{scriptsize}
+\draw [fill=black] (-2.6974021200958616,2.7251629562626105) circle (1.5pt);
+\draw [fill=black] (0.4573920833648095,2.781835906025377) circle (1.5pt);
+\end{scriptsize}
+\end{tikzpicture}
+\end{center}
+
+Самые популярные обобщения такие:
+
+\begin{itemize}
+
+\item Векторные случайные величины.
+
+В $\R^{n}$ есть понятие открытого множества. Поэтому есть и понятие борелевской \s-алгебры в $\R^{n}$, т.е. минимальной \s-алгебры, содержащей все открытые множества. Впрочем, принципиально ничего нового не возникает:
+
+\begin{myth}
+Вектор $(X_{1},X_{2},\ldots , X_{n})$ измерим относительно \s-алгебры $\F$ если и только если каждая случайная величина $X_{i}$ измерима относительно \s-алгебры $\F$.
+\end{myth}
+
+\todo{тут закоменчен кусок для 4 главы}
+
+%Хотя «чудеса, леший бродит и русалка на ветвях» сидит даже в $\R^{2}$:
+%\begin{myth}
+%Существует измеримое по Лебегу множество в $\R^{2}$, такое, что его проекция на любую координату является неизмеримым в $\R$.
+%\end{myth}
+%
+%\begin{proof}
+%Пример можно найти\ldots  строится он примерно так\ldots
+%\end{proof}
+
+\item Добавление бесконечностей.
+
+Иногда случайная величина может принимать значение плюс или минус бесконечность. Например, время первого выпадения орла при подбрасывании монетки может никогда не наступить и тогда удобно говорить, что оно равно плюс бесконечности. Порою может понадобится и минус бесконечность.
+
+Как выглядят определения в этом случае? Вместо старого множества значений $\mathbb{R}$ будет множество $S=\{-\infty\}\cup \mathbb{R}\cup\{+\infty\}$. В качестве \s-алгебры $\mathcal{H}$ будем использовать борелевскую \s-алгебру. Она порождается множествами вида $[-\infty;a]$, где $a\in S$. Например, $[-\infty;0)$ открыто, $(-\infty;0)$ открыто, $\{-\infty\}$ замкнуто.
+
+
+\item Комплексные случайные величины, $X:\Omega\to\mathbb{C}$.
+
+В силу того, что комплексная плоскость $\mathbb{C}$ может быть естественным образом сопоставлена с плоскостью $\R^{2}$, то на $\mathbb{C}$ есть понятие открытых множеств. Вместо одной комплексной случайной величины можно рассматривать вектор из двух действительных случайных величин. Первая компонента вектора отвечает за действительную часть, вторая --- за мнимую. Понятие измеримости для комплексной случайной величины совпадает с измеримостью для вектора. Комплексная случайная величина будет измерима тогда и только тогда, когда измеримы её мнимая и действительная части. 
+
+\todo{проверить работает ли ссылка!}
+
+\item Случайные процессы. Об этом позже, в главе \ref{process_one_rv}.
+
+\end{itemize}
+
+\subsection{Еще задачи}
+
+\begin{problem}
+Красная Шапочка собирает грибы \ldots В лесу есть три вида грибов: рыжики, лисички и мухоморы. Попадаются они равновероятно и независимо друг от друга. Шапка нашла 100 грибов. Пусть $R$ --- количество рыжиков, $L$ --- количество лисичек, а $M$--- количество мухоморов среди этих трёх грибов. 
+\begin{enumerate}
+\item Красная Шапочка различает только рыжики. Сколько элементов в сигма-алгебре Шапки, $\s(R)$?
+\item Бабушка Шапки различает рыжики и мухоморы.  Сколько элементов в сигма-алгебре Бабушки, $\s(R,M)$?
+\item Измерима ли $L$ относительно $\s(R)$?
+\item Измерима ли $L$ относительно $\s(R,M)$?
+\item Измерима ли $L$ относительно $\s(R+M)$?
+\item Измерима ли $L$ относительно $\s(R-M)$?
+\end{enumerate}
+\begin{sol}
+Итак, у нас есть сто грибов. При этом с вероятностью единица выполняется равенство $R+L+M = 100$. 
+\begin{enumerate}
+\item Красная Шапка различает только рыжики. Значит она различает события вида $\{R \le t\}$. 
+
+\todo{Как-то по человечески написать про поиск $\s(R)$}
+
+В итоге видим, что $\s(R)=\s(\{R=0\},\{R=1\}, \ldots \{R=100\}\}$ и что $|\s(R)| = 2^{101}$. 
+
+\item Бабушка различает мухоморы и рыжики. Значит самое примитивное событие, входящее в её \s-алгебру имеет вид $\{R = i, M = j\}$. При этом событие $\{R=0\} = \cup_{i=0}^{100} \{R=0, M=i\}$. Для
+
+\end{enumerate}
+
+\end{sol}
+\end{problem}
+
+\begin{problem}
+Правильный кубик подбрасывается один раз. $Y$ --- индикатор того, выпала ли чётная грань. $Z$ --- индикатор того, выпало ли число больше двух.
+
+\begin{enumerate}
+\item Сколько элементов в $\s(Z)$?
+\item Сколько элементов в $\s(Y \cdot Z)$?
+\item Сколько элементов в $\s(Y , Z)$?
+\item Как связаны между собой \s-алгебры $\s(Y \cdot Z)$ и $\s(Y , Z)$?
+\end{enumerate}
+\begin{sol}
+
+\end{sol}
+\end{problem}
+
+
+\begin{problem}
+Луиза подбрасывает кубик. Если выпала нечётная грань, то Рома подбрасывает монетку один раз. Если выпадает чётная грань, то два раза. Пусть $X$ --- количество подбрасываний монетки, а $Y$ --- количество выпавших орлов. 
+
+\begin{enumerate}
+\item Сколько элементов в $\s(X)$?
+\item Сколько элементов в $\s(Y)$?
+\item Сколько элементов в $\s(X,Y)$?
+\item Измерима ли $X$ относительно $\s(Y)$?
+\item Измерима ли $Y$ относительно $\s(X)$?
+\end{enumerate}
+\begin{sol}
+
+\end{sol}
+\end{problem}
+
+
+
+
+\begin{problem}
+Пусть $X$ и $Y$ --- \F-измеримые случайные величины. Доказать, что множество $\{\om | X(\om) < Y(\om) \}$ измеримо, то есть $\{\om \in \Om | X(\om) < Y(\om) \} \subset \F$.
+
+\textbf{Hints:} воспользуйтесь тем фактом, что для любых двух действительных чисел $a$ и $b$ всегда найдется такое рациональное число $r$, что $a<r<b$.
+\begin{sol}
+Итак, для каждого рационального числа $r \in \Q$ зафиксируем множества$\{\om \in \Om | X(\om) < r < Y(\om)\}$. Каждое из этих множеств можно представить в виде пересечения двух измеримых множеств $\{ \om | X(\om) <r \} \cap \{\om | r < Y(\om)\} \subset \F$.
+
+Счётное объединение множеств из \F снова войдёт в \F. Из того факта, что 
+
+\[  \{\om \in \Om | X(\om) < Y(\om) \} = \cup_{r \in \Q} \{ \om | X(\om) <r \} \cap \{\om | r < Y(\om)\} \] 
+
+получаем требуемое.
+
+\todo{Верно ли?}
+
+Отдельно отметим, что используя полученный факт можно обосновать измеримость суммы двух случайных величин:
+
+\[\{\om \in \Om | X + Y \le t\} = \{\om \in \Om | X \le -Y +t \} = \cap_{i=1}^{\infty} \left\{om \in \Om | X < - Y + t + \frac{1}{i} \right\} \subset \F \].
+\end{sol}
+\end{problem}
+
+
+\Closesolutionfile{solution_file}
+
+
+\end{document}

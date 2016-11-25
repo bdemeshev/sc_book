@@ -1,0 +1,2007 @@
+\documentclass[pdftex, 12pt, a4paper]{article}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%  Загрузка пакетов  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[british,russian]{babel} % выбор языка для документа
+\usepackage[utf8]{inputenc} % задание utf8 кодировки исходного tex файла
+
+%\usepackage{showkeys} % показывать метки в готовом pdf
+
+\usepackage{etex} % расширение классического tex
+% в частности позволяет подгружать гораздо больше пакетов, чем мы и займёмся далее
+
+%\usepackage{mathtext} % русские буквы в формулах? (и без нее работает)
+% Например, $x_{\text{один}}$
+
+%\usepackage{cmap} % для поиска русских слов в pdf --- теперь устарело?
+
+\usepackage{verbatim} % для многострочных комментариев
+\usepackage{makeidx} % для создания предметных указателей
+\usepackage[X2,T2A]{fontenc}
+\usepackage{setspace}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{mathrsfs} % sudo yum install texlive-rsfs
+\usepackage{dsfont} % sudo yum install texlive-doublestroke
+\usepackage{array,multicol,multirow,bigstrut} % sudo yum install texlive-multirow
+\usepackage{indentfirst} % установка отступа в первом абзаце главы
+\usepackage{bm}
+\usepackage{bbm} % шрифт с двойными буквами
+\usepackage[perpage]{footmisc}
+
+\usepackage{dcolumn} % центрирование по разделителю для apsrtable
+
+% создание гиперссылок в pdf
+\usepackage[pdftex,unicode,colorlinks=true,urlcolor=blue,hyperindex,breaklinks]{hyperref}
+
+
+
+\usepackage[backend = biber]{biblatex}
+%\addbibresource{sc_biblio.bib}
+
+
+
+
+% свешиваем пунктуацию
+% теперь знаки пунктуации могут вылезать за правую границу текста, при этом текст выглядит ровнее
+%\usepackage{microtype}     %этот пакет выдает фатальную ошибку
+
+
+
+
+
+
+
+
+
+
+
+
+\usepackage{textcomp}  %  Чтобы в формулах можно было русские буквы писать через \text{}
+
+% размер листа бумаги
+\usepackage[paper=a4paper,top=13.5mm, bottom=13.5mm,left=16.5mm,right=13.5mm,includefoot]{geometry}
+
+\usepackage{xcolor}
+
+
+\usepackage{float,longtable}
+\usepackage{soulutf8}
+
+\usepackage{enumitem} % дополнительные плюшки для списков
+%  например \begin{enumerate}[resume] позволяет продолжить нумерацию в новом списке
+
+\usepackage{mathtools}
+\usepackage{cancel,xspace} % sudo yum install texlive-cancel
+
+%\usepackage{minted} % display program code with syntax highlighting
+% требует установки pygments и python
+
+\usepackage{numprint} % sudo yum install texlive-numprint
+\npthousandsep{,}\npthousandthpartsep{}\npdecimalsign{.}
+
+\usepackage{embedfile} % Чтобы код LaTeXа включился как приложение в PDF-файл
+
+\usepackage{subfigure} % для создания нескольких рисунков внутри одного
+
+\usepackage{tikz, pgfplots} % язык для рисования графики из latex'a
+\usetikzlibrary{trees} % tikz-прибамбас для рисовки деревьев
+\usepackage{tikz-qtree} % альтернативный tikz-прибамбас для рисовки деревьев
+\usetikzlibrary{arrows} % tikz-прибамбас для рисовки стрелочек подлиннее
+
+
+
+
+\usepackage{amscd}  %Пакеты для рисования
+\usepackage[matrix,arrow,curve]{xy} %комунитативных диаграмм
+
+
+%%% Работа с картинками
+\usepackage{graphicx}  % Для вставки рисунков
+\graphicspath{{images/}{images2/}}  % папки с картинками
+\setlength\fboxsep{3pt} % Отступ рамки \fbox{} от рисунка
+\setlength\fboxrule{1pt} % Толщина линий рамки \fbox{}
+\usepackage{wrapfig} % Обтекание рисунков и таблиц текстом
+
+
+
+\usepackage{todonotes} % для вставки в документ заметок о том, что осталось сделать
+% \todo{Здесь надо коэффициенты исправить}
+% \missingfigure{Здесь будет Последний день Помпеи}
+% \listoftodos --- печатает все поставленные \todo'шки
+
+
+% более красивые таблицы
+\usepackage{booktabs}
+% заповеди из докупентации
+% 1. Не используйте вертикальные линни
+% 2. Не используйте двойные линии
+% 3. Единицы измерения - в шапку таблицы
+% 4. Не сокращайте .1 вместо 0.1
+% 5. Повторяющееся значение повторяйте, а не говорите "то же"
+
+
+
+%\usepackage{asymptote} % пакет для рисовки графики, должен идти после graphics
+% но мы переходим на tikz :)
+
+%\usepackage{sagetex} % для интеграции с Sage (вероятно тоже должен идти после graphics)
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%  Внедрение tex исходников в pdf файл  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\embedfile[desc={Main tex file}]{\jobname.tex} % Включение кода в выходной файл
+%\embedfile[desc={title_bor}]{title_bor.tex}
+% отменено в силу явной ссылки на репозиторий
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%  ПАРАМЕТРЫ  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setstretch{1}                          % Межстрочный интервал
+\flushbottom                            % Эта команда заставляет LaTeX чуть растягивать строки, чтобы получить идеально прямоугольную страницу
+\righthyphenmin=2                       % Разрешение переноса двух и более символов
+\pagestyle{plain}                       % Нумерация страниц снизу по центру.
+\widowpenalty=300                     % Небольшое наказание за вдовствующую строку (одна строка абзаца на этой странице, остальное --- на следующей)
+\clubpenalty=3000                     % Приличное наказание за сиротствующую строку (омерзительно висящая одинокая строка в начале страницы)
+\setlength{\parindent}{1.5em}           % Красная строка.
+%\captiondelim{. }
+\setlength{\topsep}{0pt}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%% Это окружение, которое выравнивает по центру без отступа, как у простого center
+\newenvironment{center*}{%
+  \setlength\topsep{0pt}
+  \setlength\parskip{0pt}
+  \begin{center}
+}{%
+  \end{center}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Правила переноса  слов
+\hyphenation{ }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\emergencystretch=2em
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%  DEFS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def \mbf{\mathbf}
+\def \msf{\mathsf}
+\def \mbb{\mathbb}
+\def \tbf{\textbf}
+\def \tsf{\textsf}
+\def \ttt{\texttt}
+\def \tbb{\textbb}
+
+\def \wh{\widehat}
+\def \wt{\widetilde}
+\def \ni{\noindent}
+\def \ol{\overline}
+\def \cd{\cdot}
+\def \fr{\frac}
+\def \bs{\backslash}
+\def \lims{\limits}
+
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\VC}{VCdim}
+\DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\sgn}{sign}
+\DeclareMathOperator{\Tr}{\mbf{Tr}}
+\DeclareMathOperator{\tr}{tr}
+
+
+\def \xfs{(x_1,\ldots,x_{n-1})}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\amn}{arg\,min}
+\DeclareMathOperator*{\amx}{arg\,max}
+\DeclareMathOperator{\trace}{tr}
+
+
+\DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator{\sCorr}{sCorr}
+\DeclareMathOperator{\sCov}{sCov}
+\DeclareMathOperator{\sVar}{sVar}
+
+\DeclareMathOperator{\argmax}{argmax}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\corr}{Corr}
+\DeclareMathOperator{\cov}{Cov}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\bin}{Bin}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\rang}{rang}
+\DeclareMathOperator*{\plim}{plim}
+\DeclareMathOperator{\MSE}{MSE}
+
+
+\providecommand{\iff}{\Leftrightarrow}
+\providecommand{\hence}{\Rightarrow}
+
+\def \ti{\tilde}
+\def \wti{\widetilde}
+
+\def \mA{\mathcal{A}}
+\def \mB{\mathcal{B}}
+\def \mC{\mathcal{C}}
+\def \mE{\mathcal{E}}
+\def \mF{\mathcal{F}}
+\def \mH{\mathcal{H}}
+\def \mL{\mathcal{L}}
+\def \mN{\mathcal{N}}
+\def \mU{\mathcal{U}}
+\def \mV{\mathcal{V}}
+\def \mW{\mathcal{W}}
+
+
+\def \RR{\mbb R}
+\def \NN{\mbb N}
+\def \N{\mbb N}
+\def \ZZ{\mbb Z}
+\def \Z{\mbb Z}
+\def \PP{\mbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\def \D{\msf{D}}
+\def \I{\mbf{I}}
+\def \Q{\mbb Q}
+
+
+\def\R{\ensuremath{\mathbb{R}}} % достало уже!
+\def\F{\ensuremath{\mathcal{F}}} % аналогично!
+\def\B{\ensuremath{\mathcal{B}}} % аналогично!
+
+
+
+\newcommand{\tP}{\tilde{\mathbb{P}}}
+\newcommand{\tW}{\tilde{W}}
+
+\def \lra{\leftrightarrow} % сокращение для стрелки влево-вправо (туда-сюда), для соответствий
+
+\def\s{\ensuremath{\sigma}}
+\def \a{\alpha}
+\def \b{\beta}
+\def \t{\tau}
+\def \dt{\delta}
+\newcommand{\e}{\varepsilon}
+\def \ga{\gamma}
+\def \kp{\varkappa}
+\def \la{\lambda}
+\def \sg{\sigma}
+\def \sgm{\sigma}
+\def \tt{\theta}
+\def \ve{\varepsilon}
+\def \Dt{\Delta}
+\def \La{\Lambda}
+\def \Sgm{\Sigma}
+\def \Sg{\Sigma}
+\def \Tt{\Theta}
+\def \Om{\Omega}
+\def \om{\omega}
+
+%%\newcommand{\p}{\partial}
+
+\def \ni{\noindent}
+\def \lq{\glqq}
+\def \rq{\grqq}
+\def \lbr{\linebreak}
+\def \vsi{\vspace{0.1cm}}
+\def \vsii{\vspace{0.2cm}}
+\def \vsiii{\vspace{0.3cm}}
+\def \vsiv{\vspace{0.4cm}}
+\def \vsv{\vspace{0.5cm}}
+\def \vsvi{\vspace{0.6cm}}
+\def \vsvii{\vspace{0.7cm}}
+\def \vsviii{\vspace{0.8cm}}
+\def \vsix{\vspace{0.9cm}}
+\def \VSI{\vspace{1cm}}
+\def \VSII{\vspace{2cm}}
+\def \VSIII{\vspace{3cm}}
+
+\newcommand{\grad}{\mathrm{grad}}
+\newcommand{\bls}[1]{\boldsymbol{#1}}
+\newcommand{\bsA}{\boldsymbol{A}}
+\newcommand{\bsH}{\boldsymbol{H}}
+\newcommand{\bsI}{\boldsymbol{I}}
+\newcommand{\bsP}{\boldsymbol{P}}
+\newcommand{\bsR}{\boldsymbol{R}}
+\newcommand{\bsS}{\boldsymbol{S}}
+\newcommand{\bsX}{\boldsymbol{X}}
+\newcommand{\bsY}{\boldsymbol{Y}}
+\newcommand{\bsZ}{\boldsymbol{Z}}
+\newcommand{\bse}{\boldsymbol{e}}
+\newcommand{\bsq}{\boldsymbol{q}}
+\newcommand{\bsy}{\boldsymbol{y}}
+\newcommand{\bsbeta}{\boldsymbol{\beta}}
+\newcommand{\fish}{\mathrm{F}}
+\newcommand{\Fish}{\mathrm{F}}
+\renewcommand{\phi}{\varphi}
+\newcommand{\ind}{\mathds{1}}
+\newcommand{\inds}[1]{\mathds{1}_{\{#1\}}}
+\renewcommand{\to}{\rightarrow}
+\newcommand{\sumin}{\sum\limits_{i=1}^n}
+\newcommand{\ofbr}[1]{\bigl( \{ #1 \} \bigr)}     % Например, вероятность события. Большие круглые, нормальные фигурные скобки вокруг аргумента
+\newcommand{\Ofbr}[1]{\Bigl( \bigl\{ #1 \bigr\} \Bigr)} % Например, вероятность события. Больше больших круглые, большие фигурные скобки вокруг аргумента
+\newcommand{\oeq}{{}\textcircled{\raisebox{-0.4pt}{{}={}}}{}} % Равно в кружке
+\newcommand{\og}{\textcircled{\raisebox{-0.4pt}{>}}}  % Знак больше в кружке
+
+% вместо горизонтальной делаем косую черточку в нестрогих неравенствах
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+
+\newcommand{\figb}[1]{\bigl\{ #1  \bigr\}} % большие фигурные скобки вокруг аргумента
+\newcommand{\figB}[1]{\Bigl\{ #1  \Bigr\}} % Больше больших фигурные скобки вокруг аргумента
+\newcommand{\parb}[1]{\bigl( #1  \bigr)}   % большие скобки вокруг аргумента
+\newcommand{\parB}[1]{\Bigl( #1  \Bigr)}   % Больше больших круглые скобки вокруг аргумента
+\newcommand{\parbb}[1]{\biggl( #1  \biggr)} % большие-большие круглые скобки вокруг аргумента
+\newcommand{\br}[1]{\left( #1  \right)}    % круглые скобки, подгоняемые по размеру аргумента
+\newcommand{\fbr}[1]{\left\{ #1  \right\}} % фигурные скобки, подгоняемые по размеру аргумента
+\newcommand{\eqdef}{\mathrel{\stackrel{\rm def}=}} % знак равно по определению
+\newcommand{\const}{\mathrm{const}}        % const прямым начертанием
+\newcommand{\zdt}[1]{\textit{#1}}
+\newcommand{\ENG}[1]{\foreignlanguage{british}{#1}}
+\newcommand{\ENGs}{\selectlanguage{british}}
+\newcommand{\RUSs}{\selectlanguage{russian}}
+\newcommand{\iid}{\text{i.\hspace{1pt}i.\hspace{1pt}d.}}
+
+\newdimen\theoremskip
+\theoremskip=0pt
+\newenvironment{note}{\par\vskip\theoremskip\textbf{Замечание.\xspace}}{\par\vskip\theoremskip}
+\newenvironment{hint}{\par\vskip\theoremskip\textbf{Подсказка.\xspace}}{\par\vskip\theoremskip}
+\newenvironment{ist}{\par\vskip\theoremskip Источник:\xspace}{\par\vskip\theoremskip}
+
+\newcommand*{\tabvrulel}[1]{\multicolumn{1}{|c}{#1}}
+\newcommand*{\tabvruler}[1]{\multicolumn{1}{c|}{#1}}
+
+\newcommand{\II}{{\fontencoding{X2}\selectfont\CYRII}}   % I десятеричное (английская i неуместна)
+\newcommand{\ii}{{\fontencoding{X2}\selectfont\cyrii}}   % i десятеричное
+\newcommand{\XX}{{\fontencoding{X2}\selectfont\CYRII}} 
+
+\newcommand{\EE}{{\fontencoding{X2}\selectfont\CYRYAT}}  % ЯТЬ
+\newcommand{\ee}{{\fontencoding{X2}\selectfont\cyryat}}  % ять
+\newcommand{\FF}{{\fontencoding{X2}\selectfont\CYROTLD}} % ФИТА
+\newcommand{\ff}{{\fontencoding{X2}\selectfont\cyrotld}} % фита
+\newcommand{\YY}{{\fontencoding{X2}\selectfont\CYRIZH}}  % ИЖИЦА
+\newcommand{\yy}{{\fontencoding{X2}\selectfont\cyrizh}}  % ижица
+
+%%%%%%%%%%%%%%%%%%%%% Определение разрядки разреженного текста и задание красивых многоточий
+\sodef\so{}{.15em}{1em plus1em}{.3em plus.05em minus.05em}
+\newcommand{\ldotst}{\so{...}}
+\newcommand{\ldotsq}{\so{?\hbox{\hspace{-0.61ex}}..}}
+\newcommand{\ldotse}{\so{!..}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Команда для переноса символов бинарных операций
+\def\hm#1{#1\nobreak\discretionary{}{\hbox{$#1$}}{}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setlist[enumerate,1]{label=\arabic*., ref=\arabic*, partopsep=0pt plus 2pt, topsep=0pt plus 1.5pt,itemsep=0pt plus .5pt,parsep=0pt plus .5pt}
+\setlist[itemize,1]{partopsep=0pt plus 2pt, topsep=0pt plus 1.5pt,itemsep=0pt plus .5pt,parsep=0pt plus .5pt}
+
+%% Эти парни затем, если вдруг не захочется управлять списками из-под уютненького enumitem
+% или если будет жизненно важно, чтобы в списках были именно русские буквы.
+%\setlength{\partopsep}{0pt plus 3pt}
+%\setlength{\topsep}{0pt plus 2pt}
+%\setlength{\itemsep}{0 plus 1pt}
+%\setlength{\parsep}{0 plus 1pt}
+
+%на всякий случай пока есть
+%теоремы без нумерации и имени
+\newtheorem*{theor}{Теорема}
+
+%"Определения","Замечания"
+%и "Гипотезы" не нумеруются
+\theoremstyle{definition} % убирает курсив и что-то еще наверное делает ;)
+\newtheorem*{mydef}{Определение}
+\newtheorem*{rem}{Замечание}
+\newtheorem*{conj}{Гипотеза}
+\newtheorem{myex}{Пример}
+
+%"Теоремы" и "Леммы" нумеруются
+%по главам и согласованно м/у собой
+\newtheorem{myth}{Теорема}
+\newtheorem{lemma}[myth]{Лемма}
+
+% Утверждения нумеруются по главам
+%независимо от Лемм и Теорем
+\newtheorem{prop}{Утверждение}
+\newtheorem{cor}{Следствие}
+
+
+
+%\numberwithin{equation}{page} % уравнения нумеруются на каждой стр. отдельно
+%\newtheorem{myth}[equation]{Теорема} % нумерация сквозная с уравнениями
+
+%\theoremstyle{definition} % убирает курсив и что-то еще наверное делает ;)
+%\newtheorem{mydef}[equation]{Определение}
+
+%\theoremstyle{definition}
+%\newtheorem{myex}[equation]{Пример}
+
+%\newtheorem{assertion}{Утверждение}
+%\newtheorem{lemma}{Лемма}
+
+%\theoremstyle{definition}
+%\newtheorem*{myproof}{Доказательство}
+
+%\theoremstyle{definition}
+
+\newtheorem{problem}{Задача}
+\numberwithin{problem}{section}
+
+\usepackage{answers}
+\Newassociation{sol}{solution}{sols_chap_02}
+% sol --- имя окружения внутри задач
+% solution --- имя окружения внутри solution_file
+% solution_file --- имя файла в который будет идти запись решений
+% можно изменить далее по ходу
+
+
+\newcommand{\indef}[1]{\textbf{#1}}
+% выделение ключевого слова в определениях
+
+\makeindex % команда для создания предметного указателя
+
+
+
+\newtheorem{blits}{Блиц-вопрос}
+\numberwithin{blits}{section}
+
+\Newassociation{blitssol}{solution}{blits_solution_file}
+% sol --- имя окружения внутри задач
+% solution --- имя окружения внутри solution_file
+% solution_file --- имя файла в который будет идти запись решений
+% можно изменить далее по ходу
+
+
+
+\addbibresource{sc_biblio.bib}
+
+
+\usetikzlibrary{arrows}
+
+\newcommand{\RNumb}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
+
+
+\begin{document}
+
+\Opensolutionfile{solution_file}[sols_chap_04]
+
+%\Opensolutionfile{solution_file}[sols_blits_chap_02]
+
+% в квадратных скобках фактическое имя файла
+
+
+\section{Вероятность}
+
+\subsection{Определение вероятности}
+
+Вероятность - это размер событий! А именно:
+
+\begin{mydef} Пусть $\mathcal{F}$ - $\sigma$-алгебра. Функция $\mu:\mathcal{F} \rightarrow [0;+\infty]$ называется \indef{мерой}, если выполнены два условия:
+
+M1. $\mu(\emptyset)=0$
+
+M2. Если все $A_{i}\in \mathcal{F}$ и они попарно не пересекаются ($A_{i}\cap A_{j}=\emptyset$ при $i\neq j$), то $\mu\left(\cup_{i=1}^{\infty} A_{i}\right)=\sum_{i=1}^{\infty}\mu(A_{i})$
+\end{mydef}
+
+\begin{mydef} Пусть $\mathcal{F}$ - $\sigma$-алгебра. Функция $\mu:\mathcal{F} \rightarrow [0;+\infty]$ называется \indef{мерой}, \index{мера} выполнены два условия: 
+\begin{itemize}
+\item[M1]  У пустого множества нулевая мера, $\mu(\emptyset)=0$;
+
+\item[M2]  Если для любой последовательности попарно не пересекающихся множеств $A_{i}$ из \s-алгебры $\F$ справедливо равенство \[\mu\left(\cup_{i=1}^{\infty} A_{i}\right)=\sum_{i=1}^{\infty}\mu(A_{i}).\] Это свойство также называют \indef{свойством \s-аддитивности} или \indef{свойством  счётной аддитивности}  \index{\s-аддитивность} \index{сигма-аддитивность} \index{счётная аддитивность}.
+\end{itemize}
+\end{mydef}
+
+Обратить внимание следует на две вещи. Во-первых, мера определена только на тех множествах, которые входят в \s-алгебру $\F$! Именно эти множества мы будем называть событиями. Во-вторых, мера может принимать бесконечные значения, при этом они складываются по естественным правилам: $\infty+\text{любое число}=\infty$, $\infty+\infty=\infty$.
+
+Приведём несколько примеров меры.
+\begin{myex} Например, $\Omega=\mathbb{R}$, $\mathcal{F}=2^{\mathbb{R}}$, и $\mu(A)$ --- количество элементов в множестве $A$. Легко проверить, что это мера, которая может принимать бесконечные значения.
+\end{myex}
+
+\begin{myex} Например, $\Omega=\mathbb{R}$, $\mathcal{F}=2^{\mathbb{R}}$, и мера $\mu(A)$ --- равна единице, если множество $A$ содержит $\sqrt{3}$, и равна нулю, если $A$ не содержит $\sqrt{3}$.
+\end{myex}
+
+\begin{myex} $\Omega=\mathbb{R}$, $\mathcal{F}=2^{\mathbb{R}}$. Функция $\mu(A)=\sup(A)$ --- не является мерой, т.к. $\mu([0;1])\neq \mu([0;0.5))+\mu([0.5;1])$.
+\end{myex}
+
+\todo{Что за вопросительный знак}
+
+\begin{myex} Длина. Если $\Omega=\R$, то на борелевской \s-алгебре $\B$ можно определить меру $\lambda$, которая будет соответствовать естественному понятию длины. Например, $\lambda([0;100])=100$. К сожалению (?), эту меру нельзя определить на \s-алгебре $2^{\R}$. Этот пример содержит в себе сразу два недоказанных утверждения.  Во-первых, на $\B$ можно определить такую меру, там не возникнет проблем с сигма-аддитивностью. Во-вторых, не получится определить на $2^{\R}$ меру, которая соответствует естественному понятию длины. Доказательство чуть позже.
+\end{myex}
+
+\begin{mydef} Мера $\PP$ называется \indef{вероятностью} если $\PP(\Omega)=1$. \index{Вероятность}
+\end{mydef}
+
+\begin{myex}
+$\Om = {a,b}$, $\F = 2^{\Om}$. Пусть вероятность $\PP$ ставит в соответствие каждому элементу сигма-алгебры $\F$ элемент отрезка $[0;1]$ следующим образом: 
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+$\F$ & $a$ & $b$ & $c$ & $\{a,b\}$ & $\{a,c\}$ & $\{b,c\}$  & $\Om$ & $\varnothing$ \\
+\hline
+$\PP$ & 0.6 & 0.1 & 0.3 & 0.7 & 0.9 & 0.4 & 1 & 0 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table} 
+
+
+
+\todo{простенький пример с конечным омега}
+\end{myex}
+
+
+В данном курсе мы будем иметь дело с вероятностью, которая является конечной мерой и с длиной подмножеств $\R$, которая является \s-конечной мерой.
+
+\begin{mydef} Мера $\mu$ называется конечной, если $\mu(\Omega)<\infty$
+\end{mydef}
+\begin{mydef} Мера $\mu$ называется \s-конечной, если $\Omega$ можно разбить на счетное количество непересекающихся $\Omega_{i}$, так что на каждом $\Omega_{i}$ мера $\mu$ будет конечной: $\Omega=\cup \Omega_{i}$, $\mu(\Omega_{i})<\infty$.
+\end{mydef}
+Длина является \s-конечной в силу того, что числовую прямую можно разбить на счетное количество полуинтервалов единичной длины вида $[n;n+1)$.
+
+
+\subsubsection*{Задачи}
+
+\begin{problem}
+Пусть $\mu_{1}$ и $\mu_{2}$ - конечные меры на $\Omega$ и $a>0$. Верно ли, что:
+\begin{enumerate}
+\item[a] $\mu:=a \cdot \mu_{1}$ - конечная мера? 
+\item[b] $\mu:=\mu_{1}+\mu_{2}$ - конечная мера?
+\end{enumerate}
+\begin{sol}
+\begin{enumerate}
+\item[a] да
+\item[b] да
+\end{enumerate}
+\end{sol}
+\end{problem}
+
+
+
+\begin{problem}
+Пусть $\mu$ - конечная мера на $\Omega$. Верно ли, что $\nu(A):=\frac{\mu(A)}{\mu(\Omega)}$ - вероятность на $\Omega$?
+\begin{sol}
+да, если $\mu(\Omega)>0$
+\end{sol}
+\end{problem}
+
+
+\begin{problem}
+Найдите меру множества $A$, $\lambda(A)$, если $A = \Q \cap [0;1]$.
+\begin{sol}
+Множество $A$ представляет собой множество, состоящее из рациональных точек отрезка $[0;1]$. Это множество является счётным, а значит $\lambda(A) = 0$.
+
+\[A = \cup_{r_k \in \Q} [r_k; r_k], \qquad \lambda([r_k;r_k]) = r_k - r_k =0\].
+\end{sol}
+\end{problem}
+
+
+
+\begin{problem}
+Приведите пример $ \sigma $-алгебры $ \mathcal{F} $ и функции $ R:\mathcal{F}\to [0;1] $ такой, что:
+\begin{enumerate}
+\item $ R(\Omega)=1 $, $ R(\varnothing)=0 $
+\item Если $ A\in \F $, $B\in \F  $ и $ A\cap B=\varnothing$, то $ R(A\cup B)=R(A)+R(B) $
+\item Существует возрастающая последовательность $ A_{1}\subset A_{2}\subset A_{3}\subset \ldots $ такая, что $ R(\cup A_{n})\neq \lim R(A_{n}) $
+\end{enumerate}
+\begin{sol}
+Пусть $ \Omega=[0;1]\cap \mathbb{Q} $, $ \mathcal{F} $ --- это все конечные множества и множества с конечными дополнениями.  Функция $ R $ равна 0 для конечных множеств и единице для множеств с конечным дополнением. Занумеруем все рациональные числа на $ [0;1] $: $ r_{i} $ --- $ i $-ое по счету рациональное число. Возьмем $ A_{n}=\{r_{1},r_{2},\ldots ,r_{n}\} $. Тогда $ R(A_{n})=0 $ т.к. $ A_{n} $ конечно, но $ \cup A_{n}=\Omega $ и $ R(\Omega)=1 $.
+\end{sol}
+\end{problem}
+
+
+\subsection{Свойства вероятности}
+
+Нам часто понадобятся следующие свойства:
+
+\begin{myth} Если $\PP$ - вероятность, то:
+\begin{enumerate}
+\item[PP1] $\PP(\varnothing) = 0$
+
+\item[PP2] Если $A_i \in \F$ и $A_i \cap A_j = \varnothing$ при $i \ne j$, тогда $\PP(A_1 \cup \ldots \cup A_n) = \PP(A_1) + \ldots + \PP(A_n)$.
+
+\item[PP3]  Если $A,B \in \F$ и $A \subseteq B$, тогда $
+\PP(A) \le \PP(B)$.
+
+\item[PP4] $\PP(\cup A_{i})\leq \sum \PP(A_{i})$
+
+\item[PP5] Если $\PP(A_{i})=0$, то $\PP(\cup A_{i})=0$.
+
+\item[PP6] Если $\PP(A_{i})=1$, то $\PP(\cap A_{i})=1$.
+
+
+\item[PP7] Вероятность выдерживает взятие пределов:
+
+\item[PP7a] Если $A_{1}\subset A_{2}\subset A_{3} \ldots $, то $\displaystyle \PP(\cup A_{i})=\lim_{n \to \infty} \PP(A_{i})$
+
+\item[PP7b] Если $A_{1}\supset A_{2}\supset A_{3} \ldots $, то $\displaystyle \PP(\cap A_{i})=\lim_{n \to \infty} \PP(A_{i})$
+
+\item[PP7c] Если $\displaystyle \lim_{n \to \infty} A_{i}$ существует, то $\displaystyle \PP(\lim_{n \to \infty} A_{i})=\lim_{n \to \infty} \PP(A_{i})$
+\end{enumerate}
+\end{myth}
+\begin{proof}
+
+\mbox{ }
+
+\begin{enumerate}
+\item[PP1] Пусть $A_i = \varnothing$ для всех $i \in \N$. Тогда по свойству сигма-аддитивности 
+
+\[\PP(\cup_{i=1}^{\infty} A_i) = \sum_{i=1}^{\infty} \mu(A_i) \]
+
+Учитывая, что $\cup_{i=1}^{\infty} A_i = \varnothing$ получаем:
+
+\[ \PP(\varnothing) = \sum_{i=1}^{\infty} \PP(\varnothing) ,\]
+
+что возможно только если $\PP(\varnothing) = 0$, иначе ряд справа будет расходящимся. 
+
+\item[PP2]\label{PP2} Пусть $A_i = \varnothing \quad \forall i > n$, тогда по свойству сигма-аддитивности выполняется \[\PP(A_1 \cup \ldots \cup A_n) = \PP(\cup_{i=1}^{\infty} A_i) = \PP(A_1) + \ldots + \PP(A_n) + 0 + 0 + 0 + \ldots \]
+
+\item[PP3] В силу вложенности множества $A$ в множество $B$ выполняется $B = A \cup (B \setminus A)$ и $A \cap (B \setminus A) = \varnothing$. Используя свойство \ref{PP2} получаем, что $\PP(B) = \PP(A) + \PP(B \setminus A) \ge \PP(A)$. 
+
+\item[PP4]\label{PP4} Воспользуемся следующим трюком, от последовательности $A_{n}$ перейдем к последовательности «добавок» $A_{n}'$. То есть $A_{n}'$ - это те новые элементы, которые приносит с собой $A_{n}$, которых еще нет в $\cup_{i}^{n-1}A_{i}$. Формально, $A_{i}'=A_{i}\backslash(\cup_{i}^{n-1}A_{i})$. В силе этого $A_{n}'$ попарно не пересекаются.
+
+Остается заметить, что $\PP(A_{n}')\leq \PP(A_{n})$ и \[\PP(\cup A_{n})=\PP(\cup A_{n}')=\sum \PP(A_{n}')\leq \sum \PP(A_{n})\].
+
+\item[PP5] Следует из \ref{PP4}.
+
+\item[PP6] Перейдем к дополнениям, $B_{n}=A_{n}^{c}$. Тогда $\PP(B_{n})=0$ и к ним применимо свойство \ref{PP4}, $\PP(\cup B_{n})=0$ и $\PP((\cup B_{n})^{c})=1$. Но это как раз и есть желаемое: $(\cup B_{n})^{c}=(\cup A_{n}^{c})^{c}=\cap A_{n}$.
+
+\item[PP7a]\label{PP7a} 
+
+Перейдём от рассмотрения множеств $A_i$ к рассмотрению слоёв $B_1 = A_1$, $B_i = A_i \setminus A_{i-1}$ для всех $i \ge 2 $. Заметим, что множества $B_i$ измеримы, то есть $B_i \in \F$ и $\cup_{i=1}^{\infty} A_i = \cup_{i=1}^{\infty} B_i $. В силу сигма-аддитивности меры и того факта, что сумма ряда есть предел последовательности из его частичных сумм имеем
+
+\todo{эта формула ужасна!}
+
+\begin{multline}
+\PP(\cup_{i=1}^{\infty} A_i) = \PP(\cup_{i=1}^{\infty} B_i) = \sum_{i=1}^{\infty} \PP(B_i) = 
+\lim_{n \to \infty} \sum_{i=1}^{n} \PP(B_i) = \\ = \lim_{n \to \infty} (\PP(A_1) + \PP(A_2 \setminus A_1) + \PP(A_3 \setminus A_2) + \ldots + \PP(A_n \setminus A_{n-1}) = \\ = \lim_{n \to \infty}(\PP(A_1) + \PP(A_2) - \PP(A_1) + \PP(A_3) - \PP(A_2) + \ldots + \PP(A_n)- \PP(A_{n-1})) = \lim_{n \to \infty} \PP(A_n) 
+\end{multline}
+
+\item[PP7b] Пусть $C_i = A_1 \setminus A_i$ и $i \ge 1$. Тогда $C_1 = \varnothing$, остальные множества представляют собой нарастающие вложенные друг в друга слои, как и в предыдущем пункте. 
+
+Заметим, что $C_i \in \F$ ; $C_1 \subseteq C_2 \subseteq C_3 \subseteq \ldots$ ; $\cup_{i=1}^{\infty} C_i = A_1 \setminus (\cap_{i=1}{\infty} A_i)$.
+
+\[ \cup_{i=1}^{\infty} C_i  = \cup_{i=1}^{\infty} (A_1 \cap A^{c}) = A_1 \cap (\cup_{i=1}^{\infty} A_i^{c}) = A_1 \cap (\cap_{i=1}^{\infty} A_1)^{c} = A_1 \setminus (\cap_{i=1}^{\infty} A_i ) \]
+
+По свойству \ref{PP7a} имеем, что $\displaystyle \lim_{n \to \infty} \PP(C_n) = \PP( \cup_{i=1}^{\infty} C_i)$. Тогда с одной стороны 
+
+\[ \lim_{n \to \infty} \PP(C_n) = \lim_{n \to \infty} (\PP(A_1) - \PP(A_n)) = \PP(A_1) - \lim_{n \to \infty} \PP(A_n).\]
+
+С другой стороны $\PP(\cup_{i=1}^{\infty}) = \PP(A_1) - \PP(\cap_{i=1}^{\infty}A_i)$. А значит $\displaystyle \lim_{n \to \infty} \PP(A_n) = \PP( \cap_{i=1}^{\infty} A_i).$
+
+\item[PP7c]
+\todo{Доказать последнее свойство, вставить рисунки!}
+\end{enumerate}
+\end{proof}
+
+Еще несколько «именных» свойств, связанных с множеством $\displaystyle \limsup_{n \to \infty} A_{i}$ («произошло бесконечное количество $A_{i}$»):
+
+\textbf{Лемма Фату} \index{Лемма Фату} для вероятностей: если есть бесконечно много $A_{i}$ с вероятностью не ниже $p$, то вероятность того, что произойдет бесконечное количество $A_{i}$ не ниже $p$.
+
+\begin{myth} \[\PP(\limsup_{n \to \infty} A_{i}) \ge \limsup_{n \to \infty} \PP(A_{i})\].
+\end{myth}
+\todo{Как сделать в доказательствах автоматические отступы? И стоит ли их делать?}
+\begin{proof} \textbf{Шаг 1.} Среди $A_{i}$ выбираем подпоследовательность $B_{k}$ такую, что $\displaystyle \lim_{n \to \infty} \PP(B_{k})=\limsup_{n \to \infty} \PP(A_{i})$. Заметим, что $\displaystyle \limsup_{n \to \infty} B_{i}\subset\limsup_{n \to \infty} A_{i}$ (если произошло бесконечное количество $B_{i}$, то произошло бесконечное количество $A_{i}$, но обратное в общем случае неверно), $\displaystyle \PP(\limsup_{n \to \infty} A_{i})\ge \PP(\limsup_{n \to \infty} B_{i})$.
+
+\textbf{Шаг 2.} \[\PP(\limsup_{n \to \infty} B_{i})=\PP(\cap_{n=1}^{\infty}\cup_{k\ge n} B_{k})=\lim_{n\to\infty} \PP(\cup_{k\ge n} B_{k})\ge \lim_{n\to\infty} \PP(B_{n})\].
+\end{proof}
+
+\textbf{Первая лемма Бореля-Кантелли:} \index{лемма Бореля-Кантелли} если сумма вероятностей $A_{i}$ не «велика», то вероятность того, что произойдет бесконечное количество $A_{i}$ равна нулю. Если быть точным, «не велика» в данном случае --- меньше бесконечности:
+
+\begin{myth} Если $\sum \PP(A_{i})<\infty$, то $\displaystyle \PP(\limsup_{n \to \infty} A_{i})=0$.
+\end{myth}
+\begin{proof} \textbf{Шаг 1.} \[\PP(\limsup_{n\to \infty} A_{i})=\PP(\cap_{n=1}^{\infty}\cup_{k\geq n} A_{k})=\lim_{n\to\infty} \PP(\cup_{k\geq n} A_{k})\leq \lim_{n\to\infty}\sum_{k\geq n} \PP(A_{k}).\]
+
+\textbf{Шаг 2.} Частичные суммы $\sum_{i=1}^{n}\PP(A_{i})$ сходятся к сумме $\sum_{i=1}^{\infty}\PP(A_{i})<\infty$, а это значит, что непосчитанный «хвост» стремится к нулю, $\displaystyle \lim_{n\to\infty}\sum_{k\geq n} \PP(A_{k})=0$.
+\end{proof}
+
+\subsubsection{Задачи}
+\begin{problem}
+Пусть все числа из отрезка $[0;1]$ представлены в виде бесконечных десятичных дробей и $A$ --- множество точек из отрезка $[0;1]$ такие, что их десятичное разложение не содержит цифры "6". Найдите $\lambda(A)$, если $\lambda$ --- длина. 
+\begin{sol}
+
+Итак, $A = \{ x = 0.x_1 x_2 x_3 \ldots \in [0;1] : x_i \ne 6 \}$. Определим последовательность множеств $A_i$ следующим образом:
+
+\[A_i := \{x = 0.x_1 x_2 x_3 \ldots \in [0;1] : x_1 \ne 6, \ldots x_i \ne 6 \}, \quad i \ge 1 ,\]
+
+тогда $A = \cap_{i=1}^{\infty} A_i$ и $A_1 \supseteq A_2 \supseteq \ldots $.
+
+Множество $A_1$ будет выглядеть следующим образом. Полуинтервал $[0.6; 0.7)$ будет из него исключён, $\lambda(A_1) = 0.9$.
+
+\begin{center}
+\definecolor{qqffff}{rgb}{0.,1.,1.}
+\definecolor{xdxdff}{rgb}{0.49019607843137253,0.49019607843137253,1.}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+\clip(-3.4755942064892986,1.2240935310835253) rectangle (8.100669217719611,2.9333404796244387);
+\draw (-3.,2.)-- (7.,2.);
+\draw (-3.2,2.7585311326145727) node[anchor=north west] {$0$};
+\draw (6.7,2.7779543933934465) node[anchor=north west] {$1$};
+\draw (-2.3,2.7391078718356985) node[anchor=north west] {$0.1$};
+\draw (1.7,2.7585311326145727) node[anchor=north west] {$0.5$};
+\draw (-0.24,2.7585311326145727) node[anchor=north west] {$0.3$};
+\draw (3.7887053248095817,2.8168009149511946) node[anchor=north west] {$0.7$};
+\draw (5.6,2.7973776541723208) node[anchor=north west] {$0.9$};
+\draw (2.8,2.35) node[anchor=north west] {$\mathbf{[}$};
+\draw (3.8,2.35) node[anchor=north west] {$\mathbf{)}$};
+\draw [line width=1.2pt,color=qqffff] (3.,2.)-- (4.,2.);
+\begin{scriptsize}
+\draw [fill=xdxdff] (-2.,2.) circle (1.5pt);
+\draw [fill=xdxdff] (-1.,2.) circle (1.5pt);
+\draw [fill=xdxdff] (0.,2.) circle (1.5pt);
+\draw [fill=xdxdff] (1.,2.) circle (1.5pt);
+\draw [fill=xdxdff] (2.,2.) circle (1.5pt);
+\draw [fill=xdxdff] (5.,2.) circle (1.5pt);
+\draw [fill=xdxdff] (6.,2.) circle (1.5pt);
+\draw [fill=xdxdff] (-3.,2.) circle (1.5pt);
+\draw [fill=xdxdff] (7.,2.) circle (1.5pt);
+\end{scriptsize}
+\end{tikzpicture}
+\end{center}
+
+Аналогично для множества $A_2$ будут исключены все полуинтервалы, для которых второй знак после запятой равен 6, а именно $[0.06,0.07),[0.16,0.17), \ldots, [0.96,0.97)$. Длина множества $A_2$ составит $0.9$. В общем случае будет выполняться равенство: $\lambda(A_n) = 9/10 \cdot \lambda(A_{n-1}) = (9/10)^n$.
+
+Таким образом, по свойствам меры 
+
+\[ \lambda(A) = \lambda(\cap_{i=1}^{\infty} A_i) = \lim_{n\to \infty} \lambda(A_n) = \lim_{n \to \infty} \left(\frac{9}{10} \right)^n = 0\]
+\end{sol}
+\end{problem}
+
+\begin{problem}
+Имеется последовательность событий $A_1, A_2, \ldots,$ такая что вероятность любого $A_i$ равна $\PP(A_i) = 1$. Найдите $\PP(\cup_{i=1}^{\infty} A_i)$ и $\P( \cap_{i=1}^{\infty} A_i$.
+\begin{sol}
+Обе равны единице
+\end{sol}
+\end{problem}
+
+\begin{problem}
+Имеется последовательность событий $A_1, A_2, \ldots,$ такая что $\displaystyle \lim_{n \to \infty} \PP(A_i) = 1$. Найдите $\displaystyle \lim_{n \to \infty} \PP(B \cap A_i )$
+\begin{sol}
+$\PP(B)$
+\end{sol}
+\end{problem}
+
+\begin{problem}
+Существует ли последовательность событий $A_1, A_2, \ldots,$ такая что $\displaystyle \lim_{n \to \infty} \PP(A_i) = 1$, но $\PP( \cap_{i=k}^{\infty} A_i) = 0$ для любого числа $k$.
+\begin{sol}
+Да
+\end{sol}
+\end{problem}
+
+
+
+
+\subsection{Построение равномерной вероятности}
+
+Оказывается, что некоторые интересные вероятности нельзя определить для произвольного подмножества числовой прямой!!!
+
+Очень важный пример!
+
+\subsubsection*{У некоторых множеств на прямой нет длины!}
+
+\begin{myex} Допустим мы хотим создать равномерное распределение на полуинтервале $[0;1)$. Казалось бы, чего проще! Берем в качестве $\F$ все подмножества данного полуинтервала и в качестве вероятности попасть в данное подмножество берем его длину! Однако это не получится! Обязательно будет нарушена аксиома М2 в определении меры.
+\end{myex}
+
+Давайте разберемся. Чего мы ждем от равномерного распределения? Если взять произвольное подмножество $A$ и его копию $A'$ сдвинутую, скажем чуть правее, то мы хотим, чтобы $\PP(A)=\PP(A')$. И все. Больше нам ничего от равномерной вероятности не нужно.
+
+Для краткости будем использовать следующее обозначение:
+
+\begin{mydef} $A\oplus r$ - это множество $A$ сдвинутое вправо на $r$. Если при этом результат вылезает за пределы интервала $[0;1)$, то мы выступающую часть «внесем» обратно в $[0;1)$ с другой стороны. Например: $[0;0,5]\oplus 0,1=[0,1;0,6]$, $(0,5;0,8)\oplus 0,3=(0,8;1)\cup [0;0,1)$.
+\end{mydef}
+
+А сейчас мы построим довольно «хитрое» множество $A$. Для этого мы раскрасим весь интервал $[0;1)$ в разные цвета по следующему принципу:
+
+Числа $x\in[0;1)$ и $y\in[0;1)$ красим в один цвет, если существует рациональное число $r\in\mathbb{Q}$, такое что $x\oplus r=y$.
+
+Из этого принципа следует, что если взять любое число $x$, то есть счетное количество покрашенных в тот же цвет чисел. Так, например, есть счетное количество чисел покрашенных в тот же цвет, что и $\sqrt{2}/2$. Заметим, что все рациональные числа покрашены в тот же цвет, что и число $0$.
+
+%Весь интервал $[0;1)$ оказывается разбит на группы похожих между собой чисел.
+
+Множество $A$ создадим так: возьмем по одному числу каждого цвета. Например, от рациональных можно взять ноль, от покрашенных в тот же цвет, что и $\sqrt{2}/2$ можно взять $\sqrt{2}/2+0,1$ и т.д. Неважно какого представителя мы берем, главное от каждого цвета ровно по одному.
+
+Что у нас получилось? Если взять рациональное $r\in[0;1)$, то $A\oplus r$ не совпадает с $A$, т.к. каждый представитель своего цвета превратится в другое число своего цвета. Если взять два разных рациональных числа $r_{1}\in [0;1)$, $r_{2}\in[0;1)$, то $A\oplus r_{1}$ не пересекается с $A\oplus r_{2}$: в каждой группе представитель переходит в разных членов своей группы. Если перебрать все рациональные числа, то $\cup_{r\in\mathbb{Q}\cap [0;1)} (A\oplus r)=[0;1)$, в каждой группе представитель успеет побывать в роли каждого члена своей группы.
+
+Здесь и рождается противоречие! Напомню, что мы хотим, чтобы $\PP(A)=\PP(A\oplus r)$:
+
+С одной стороны,  $\PP(\cup_{r\in\mathbb{Q}\cap [0;1)} (A\oplus r))=\PP([0;1))=1$
+
+С другой стороны, $\PP(\cup_{r\in\mathbb{Q}\cap [0;1)} (A\oplus r))=\sum_{r\in\mathbb{Q}\cap [0;1)} \PP(A\oplus r)=\sum_{r\in\mathbb{Q}\cap [0;1)} \PP(A)$.
+
+Но сумма бесконечного количества одинаковых слагаемых не может равняться единице! Либо нулю, если складываются нули, либо бесконечности, если складываются ненулевые числа.
+
+Этот пример показал, что равномерную вероятность нельзя построить для произвольных подмножеств отрезка $[0;1)$. Поскольку от понятия длины мы ждем ровно той же неизменности при сдвиге вправо-влево на прямой, становится ясно, что нельзя присвоить понятие длины произвольному подмножеству \R.
+
+Что же делать? Нужно отказаться от определения вероятности на этом «страшном» множестве $A$! Т.е. для некоторых множеств вероятность определена и является числом от нуля до единицы и подчиняется свойствами M1, M2, а для некоторых подмножеств вероятность просто не существует. В данном случае $\PP(A\oplus r)$ и $\PP(A)$ не будут существовать и противоречия не возникнет.
+
+Возникает естественный вопрос: каким же подмножествам интервала $[0;1)$ можно присвоить вероятность, которая не менялась бы при сдвиге? Или каким подмножествам прямой можно присвоить понятие длины?
+
+\subsubsection*{Длина есть у всех борелевских множеств!}
+
+Нас спасет уже знакомая нам борелевская $\sigma$-алгебра $\mathcal{B}([0;1])$! На ней можно определить равномерную вероятность. А как мы видели эта $\sigma$-алгебра достаточно богата и включает все подмножества отрезка $[0;1]$ с которыми реально приходится работать.
+
+Борелевских множеств много и они могут иметь достаточно сложную структуру, поэтому попытка явно определить «длину» каждого борелевского множества обречена на провал. Мы поступим следующим путем. Определим понятие «длины» на очень простом наборе множеств. Этот набор множеств будет порождать борелевскую \s-алгебру. И сформулируем теорему, которая будет гарантировать, что у каждого борелевского множества есть длина.
+
+Итак, наш «простой» набор множеств это полуинтервалы вида $[a;b)$:
+
+$\mathcal{H}=\{[a;b)|0\leq a<b<1\}$.
+
+Он, конечно, \s-алгеброй на $\Omega=[0;1)$ не является: $[0.1;0.2)\in \mathcal{H}$, но $[0.1;0.2)^{c}\notin\mathcal{H}$. Зато на нем тривиально определить длину:
+\begin{equation}
+\lambda([a;b)):=b-a
+\end{equation}
+
+Кроме того, этот набор порождает борелевскую \s-алгебру, т.е. $\s(\mathcal{H})=\B ([0;1))$.
+
+Формально наш набор $\mathcal{H}$ является полу-алгеброй:
+
+\begin{mydef}
+
+\end{mydef}
+
+Спасительная теорема формулируется так:
+
+\begin{myth}[Каратеодори]
+Если функция $\mu$ задана на полу-алгебре $\mathcal{H}$ и на ней является \s-аддитивной (), то существует единственная мера $\mu{*}$, заданная на \s-алгебре $\s(\mathcal{H})$, совпадающая с $\mu$ на множестве $\mathcal{H}$.
+\end{myth}
+
+\begin{proof} Идея проста. Для каждого подмножества $\Omega$ определим «внешнюю меру» $\mu^{*}$\ldots  Эта «внешняя мера» $\mu^{*}$ не всегда будет \s-аддитивна, т.е. она не является мерой! Но если выбрать «хорошие» подмножества $\Omega$, а именно такие, на которых $\mu^{*}$ будет мерой, то они будут образовывать \s-алгебру! Единственность будет следовать из того, что каждое «хорошее» множество можно «приблизить» с помощью объединения множеств из $\mathcal{H}$, а на них любая другая мера должна совпадать с $\mu^{*}$. Полное доказательство в приложении.
+\end{proof}
+Заметим, что конкретно в нашем случае \s-алгебра «хороших» окажется строго больше $\B([0;1))=\s(\mathcal{H})$. Длина будет определена не только у борелевских множеств, но и у некоторых других. Это не страшно, и подробнее об этом чуть позже.
+
+
+\begin{myex}
+\url{http://math.stackexchange.com/questions/2949/which-one-result-in-maths-has-surprised-you-the-most/2953}
+Пример, как можно каждое рациональное число накрыть маленьким интервальчиком и в результате длина всего множества будет конечная..
+\end{myex}
+
+
+
+
+\subsubsection*{Как построить любой случайный эксперимент?}
+
+Почему так важно было установить существование равномерной вероятности? Оказывается, что имея одну равномерную случайную величину можно получить бесконечное количество независимых равномерных случайных величин! А имея бесконечно много равномерных случайных величин можно такого понастроить\ldots
+
+Пусть $X$ - равномерно распределенная случайная величина на $[0;1)$. Мы хотим на базе одной $X$ построить последовательность независимых равномерных $X_{1}$, $X_{2}$, $X_{3}$\ldots
+
+Нам окажется полезной такая неслучайная последовательность натуральных чисел:
+\begin{equation}
+[a_{i}]=[1,1,2,1,2,3,1,2,3,4,1,2,3,4,5,1,2,3,4,5,6\ldots ]
+\end{equation}
+Сначала сказали 1, потом посчитали от 1 до 2, потом от 1 до 3, потом от 1 до 4 и т.д. Эта последовательность нам будет говорить какому $X_{i}$ «отдать» очередную цифру из десятичной записи $X$.
+
+Например, пусть $X(w)=0,583601935\ldots $. Первую цифру после запятой отдаем $X_{1}$, вторую - снова $X_{1}$, третью - $X_{2}$, четвертую - снова $X_{1}$, пятую - $X_{2}$, шестую - $X_{3}$\ldots  Получаем:
+
+$X_{1}=0,5869\ldots $
+
+$X_{2}=0,303\ldots $
+
+$X_{3}=0,15\ldots $
+
+Изобразим на картинке:
+\begin{align*}
+X(w) &=0,583601935\ldots \\
+a_{i} &=\phantom{0,}1121331234\ldots \\
+X_{1}&=0,58\phantom{0}6\phantom{0}9\ldots \\
+X_{2}&=0,\phantom{00}3\phantom{0}0\phantom{00}3\ldots \\
+X_{3}&=0,\phantom{00000}1\phantom{00}5\ldots \\
+\end{align*}
+
+
+
+В последовательности $a_{i}$ каждое натуральное число $k$ упомянуто бесконечное количество раз. Значит каждая случайная величина  $X_{k}$ получит от $X$ бесконечное количество цифр. Разные цифры в десятичном разложении величины $X$ независимы, отсюда будет следовать независимость $X_{k}$. Каждая цифра в десятичном разложении $X$ равновероятно принимает значения от $0$ до $9$, значит и каждая цифра в десятичном разложении каждого $X_{k}$ также равновероятно принимает значения от $0$ до $9$. Следовательно, все $X_{k}$ равномерны на $[0;1)$.
+
+Имея последовательность независимых равномерных $X_{k}$ можно получить независимую последовательность $Y_{k}$ с произвольным законом распределения. А в главе про броуновское движение мы узнаем, как из последовательности нормальных случайных величин сварить это самое броуновское движение.
+
+Упр. докажите, что если $X$ -равномерное, то $\ldots $ - экспоненциальное, а $\ldots $ - пуассон.
+
+
+
+\todo{Нормально ли получились следующие два раздела?}
+
+
+
+
+\subsection{Вероятностная тройка}
+
+В предыдущей главе нами были построены два измеримых пространства $(\Om,\F)$ и $(\R,\B)$, связанных между собой с помощью случайной величины. Пришло время дополнить эту конструкцию мерами!
+
+\begin{mydef} 
+\indef{Измеримым пространством с мерой} называется упорядоченная тройка $(\Om,\F,\mu)$, где $(\Om,\F)$ --- измеримое пространство, а $\mu$ --- некоторая мера. 
+
+Если $\mu$ --- вероятность, т.е. $\mu = \PP$, тогда пространство $(\Om,\F,\PP)$ называется \indef{вероятностным}. Иногда упорядоченную тройку  $(\Om,\F,\PP)$ называют \indef{вероятностной тройкой}. 
+\index{Вероятностное пространство} \index{вероятностная тройка}
+\end{mydef}
+
+Теперь в нашем распоряжении имеется две вероятностные тройки $(\Om, \F, \PP)$ и $(\R,\B,\PP_X)$, связанные между собой случайной величиной $X(\om)$, которая сопоставляет каждому элементарному исходу из $\Om$ какое-то число из $\R$. Мы достаточно хорошо изучили свойства \s-алгебр и выяснили, что если случайная величина измерима относительно $\F$, то $\s(X)= \B = X^{-1}(B) \subseteq \F$, и теперь нам хотелось бы понять как взаимосвязаны между собой меры $\PP$ и $\PP_X$. 
+
+\begin{center}
+\definecolor{qqwuqq}{rgb}{0.,0.39215686274509803,0.}
+\definecolor{qqqqff}{rgb}{0.,0.,1.}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1cm,y=1cm]
+\clip(-3.3827626863468625,-1.5441992591991371) rectangle (11.069893535055346,2.3284523079232446);
+\draw [rotate around={0.:(-0.028355712177124313,0.10967956209890567)}] (-0.028355712177124313,0.10967956209890567) ellipse (2.7105978495930123cm and 1.0475403105457386cm);
+\draw [rotate around={0.:(7.348998236162356,0.015224645827628225)}] (7.348998236162356,0.015224645827628225) ellipse (2.682297941750656cm and 0.9719682342133986cm);
+\draw (-2.5337163025830254,1.9) node[anchor=north west] {\Large{$\mathbf{\Omega}$}};
+\draw (1.3152939704797038,0.7) node[anchor=north west] {$\mathbf{\omega}$};
+\draw (9.390668464944646,1.8) node[anchor=north west] {\Large{$\mathbf{\R}$}};
+\draw (5.6,0.7) node[anchor=north west] {\footnotesize {$\mathbf{X(\omega)}$}};
+\draw [->,color=qqqqff] (5.306087603642512,0.5526998820232261) -- (5.503922797047967,0.36379004948067045);
+\draw [shift={(3.6127203427975165,-1.1897319270753115)},color=qqqqff]  plot[domain=0.7996775820788836:2.363978167299978,variable=\t]({1.*2.42972452954241*cos(\t r)+0.*2.42972452954241*sin(\t r)},{0.*2.42972452954241*cos(\t r)+1.*2.42972452954241*sin(\t r)});
+\draw (3.4,1.9) node[anchor=north west] {$\mathbf{X}$};
+\draw[line width=1.2pt,color=qqqqff] (-1.9999998884610783,0.0) -- (-1.9999998884610783,0.0);
+\draw[line width=1.2pt,color=qqqqff] (-1.9999998884610783,0.0) -- (-1.9899998888540738,0.0);
+\draw[line width=1.2pt,color=qqqqff] (-1.9899998888540738,0.0) -- (-1.9799998892470692,0.0);
+\draw[line width=1.2pt,color=qqqqff] (-1.9799998892470692,0.0) -- (-1.9699998896400646,0.0);
+\draw[line width=1.2pt,color=qqqqff] (-1.9699998896400646,0.0) -- (-1.95999989003306,0.0);
+\draw[line width=1.2pt,color=qqqqff] (-1.95999989003306,0.0) -- (-1.9499998904260554,0.0);
+\draw[line width=1.2pt,color=qqqqff] (-1.9499998904260554,0.0) -- (-1.9399998908190508,0.0);
+\draw[line width=1.2pt,color=qqqqff] (-1.9399998908190508,0.0) -- (-1.9299998912120462,0.0);
+\draw[line width=1.2pt,color=qqqqff] (-1.9299998912120462,0.0) -- (-1.9199998916050416,0.0);
+\draw[line width=1.2pt,color=qqqqff] (-1.9199998916050416,0.0) -- (-1.909999891998037,0.0);
+\draw[line width=1.2pt,color=qqqqff] (-1.909999891998037,0.0) -- (-1.8999998923910324,0.001022093300809158);
+\draw[line width=1.2pt,color=qqqqff] (-1.8999998923910324,0.001022093300809158) -- (-1.8899998927840278,0.001098719290589232);
+\draw[line width=1.2pt,color=qqqqff] (-1.8899998927840278,0.001098719290589232) -- (-1.8799998931770232,0.001180639416367106);
+\draw[line width=1.2pt,color=qqqqff] (-1.8799998931770232,0.001180639416367106) -- (-1.8699998935700186,0.0012681835858234685);
+\draw[line width=1.2pt,color=qqqqff] (-1.8699998935700186,0.0012681835858234685) -- (-1.859999893963014,0.0013616995629190335);
+\draw[line width=1.2pt,color=qqqqff] (-1.859999893963014,0.0013616995629190335) -- (-1.8499998943560094,0.0014615537418047584);
+\draw[line width=1.2pt,color=qqqqff] (-1.8499998943560094,0.0014615537418047584) -- (-1.8399998947490048,0.0015681319411280385);
+\draw[line width=1.2pt,color=qqqqff] (-1.8399998947490048,0.0015681319411280385) -- (-1.8299998951420002,0.0016818402183549725);
+\draw[line width=1.2pt,color=qqqqff] (-1.8299998951420002,0.0016818402183549725) -- (-1.8199998955349956,0.0018031057036455862);
+\draw[line width=1.2pt,color=qqqqff] (-1.8199998955349956,0.0018031057036455862) -- (-1.809999895927991,0.0019323774527308579);
+\draw[line width=1.2pt,color=qqqqff] (-1.809999895927991,0.0019323774527308579) -- (-1.7999998963209864,0.002070127318147907);
+\draw[line width=1.2pt,color=qqqqff] (-1.7999998963209864,0.002070127318147907) -- (-1.7899998967139819,0.002216850838092303);
+\draw[line width=1.2pt,color=qqqqff] (-1.7899998967139819,0.002216850838092303) -- (-1.7799998971069773,0.0023730681420445813);
+\draw[line width=1.2pt,color=qqqqff] (-1.7799998971069773,0.0023730681420445813) -- (-1.7699998974999727,0.0025393248722214083);
+\draw[line width=1.2pt,color=qqqqff] (-1.7699998974999727,0.0025393248722214083) -- (-1.759999897892968,0.0027161931197906596);
+\draw[line width=1.2pt,color=qqqqff] (-1.759999897892968,0.0027161931197906596) -- (-1.7499998982859635,0.0029042723746738916);
+\draw[line width=1.2pt,color=qqqqff] (-1.7499998982859635,0.0029042723746738916) -- (-1.7399998986789589,0.00310419048763962);
+\draw[line width=1.2pt,color=qqqqff] (-1.7399998986789589,0.00310419048763962) -- (-1.7299998990719543,0.003316604643266195);
+\draw[line width=1.2pt,color=qqqqff] (-1.7299998990719543,0.003316604643266195) -- (-1.7199998994649497,0.003542202342224459);
+\draw[line width=1.2pt,color=qqqqff] (-1.7199998994649497,0.003542202342224459) -- (-1.709999899857945,0.0037817023911977045);
+\draw[line width=1.2pt,color=qqqqff] (-1.709999899857945,0.0037817023911977045) -- (-1.6999999002509405,0.004035855898619791);
+\draw[line width=1.2pt,color=qqqqff] (-1.6999999002509405,0.004035855898619791) -- (-1.689999900643936,0.0043054472742723076);
+\draw[line width=1.2pt,color=qqqqff] (-1.689999900643936,0.0043054472742723076) -- (-1.6799999010369313,0.004591295230638098);
+\draw[line width=1.2pt,color=qqqqff] (-1.6799999010369313,0.004591295230638098) -- (-1.6699999014299267,0.0048942537837618795);
+\draw[line width=1.2pt,color=qqqqff] (-1.6699999014299267,0.0048942537837618795) -- (-1.6599999018229221,0.00521521325121951);
+\draw[line width=1.2pt,color=qqqqff] (-1.6599999018229221,0.00521521325121951) -- (-1.6499999022159175,0.005555101244645616);
+\draw[line width=1.2pt,color=qqqqff] (-1.6499999022159175,0.005555101244645616) -- (-1.639999902608913,0.005914883654115535);
+\draw[line width=1.2pt,color=qqqqff] (-1.639999902608913,0.005914883654115535) -- (-1.6299999030019083,0.0062955656215222255);
+\draw[line width=1.2pt,color=qqqqff] (-1.6299999030019083,0.0062955656215222255) -- (-1.6199999033949037,0.006698192499932185);
+\draw[line width=1.2pt,color=qqqqff] (-1.6199999033949037,0.006698192499932185) -- (-1.6099999037878991,0.007123850795747116);
+\draw[line width=1.2pt,color=qqqqff] (-1.6099999037878991,0.007123850795747116) -- (-1.5999999041808945,0.007573669090340621);
+\draw[line width=1.2pt,color=qqqqff] (-1.5999999041808945,0.007573669090340621) -- (-1.58999990457389,0.008048818937682162);
+\draw[line width=1.2pt,color=qqqqff] (-1.58999990457389,0.008048818937682162) -- (-1.5799999049668854,0.008550515734304267);
+\draw[line width=1.2pt,color=qqqqff] (-1.5799999049668854,0.008550515734304267) -- (-1.5699999053598808,0.009080019557814258);
+\draw[line width=1.2pt,color=qqqqff] (-1.5699999053598808,0.009080019557814258) -- (-1.5599999057528762,0.009638635969999554);
+\draw[line width=1.2pt,color=qqqqff] (-1.5599999057528762,0.009638635969999554) -- (-1.5499999061458716,0.010227716780425642);
+\draw[line width=1.2pt,color=qqqqff] (-1.5499999061458716,0.010227716780425642) -- (-1.539999906538867,0.010848660766280258);
+\draw[line width=1.2pt,color=qqqqff] (-1.539999906538867,0.010848660766280258) -- (-1.5299999069318624,0.011502914344075027);
+\draw[line width=1.2pt,color=qqqqff] (-1.5299999069318624,0.011502914344075027) -- (-1.5199999073248578,0.01219197218867987);
+\draw[line width=1.2pt,color=qqqqff] (-1.5199999073248578,0.01219197218867987) -- (-1.5099999077178532,0.012917377795033996);
+\draw[line width=1.2pt,color=qqqqff] (-1.5099999077178532,0.012917377795033996) -- (-1.4999999081108486,0.013680723977753852);
+\draw[line width=1.2pt,color=qqqqff] (-1.4999999081108486,0.013680723977753852) -- (-1.489999908503844,0.014483653303741469);
+\draw[line width=1.2pt,color=qqqqff] (-1.489999908503844,0.014483653303741469) -- (-1.4799999088968394,0.015327858452788614);
+\draw[line width=1.2pt,color=qqqqff] (-1.4799999088968394,0.015327858452788614) -- (-1.4699999092898348,0.01621508250107358);
+\draw[line width=1.2pt,color=qqqqff] (-1.4699999092898348,0.01621508250107358) -- (-1.4599999096828302,0.01714711912235808);
+\draw[line width=1.2pt,color=qqqqff] (-1.4599999096828302,0.01714711912235808) -- (-1.4499999100758256,0.01812581270161503);
+\draw[line width=1.2pt,color=qqqqff] (-1.4499999100758256,0.01812581270161503) -- (-1.439999910468821,0.019153058355751776);
+\draw[line width=1.2pt,color=qqqqff] (-1.439999910468821,0.019153058355751776) -- (-1.4299999108618164,0.020230801856040873);
+\draw[line width=1.2pt,color=qqqqff] (-1.4299999108618164,0.020230801856040873) -- (-1.4199999112548118,0.02136103944683205);
+\draw[line width=1.2pt,color=qqqqff] (-1.4199999112548118,0.02136103944683205) -- (-1.4099999116478072,0.022545817555094768);
+\draw[line width=1.2pt,color=qqqqff] (-1.4099999116478072,0.022545817555094768) -- (-1.3999999120408027,0.02378723238533264);
+\draw[line width=1.2pt,color=qqqqff] (-1.3999999120408027,0.02378723238533264) -- (-1.389999912433798,0.025087429394419505);
+\draw[line width=1.2pt,color=qqqqff] (-1.389999912433798,0.025087429394419505) -- (-1.3799999128267935,0.026448602640933228);
+\draw[line width=1.2pt,color=qqqqff] (-1.3799999128267935,0.026448602640933228) -- (-1.3699999132197889,0.027872994003607113);
+\draw[line width=1.2pt,color=qqqqff] (-1.3699999132197889,0.027872994003607113) -- (-1.3599999136127843,0.029362892263583303);
+\draw[line width=1.2pt,color=qqqqff] (-1.3599999136127843,0.029362892263583303) -- (-1.3499999140057797,0.030920632045236034);
+\draw[line width=1.2pt,color=qqqqff] (-1.3499999140057797,0.030920632045236034) -- (-1.339999914398775,0.032548592610437514);
+\draw[line width=1.2pt,color=qqqqff] (-1.339999914398775,0.032548592610437514) -- (-1.3299999147917705,0.03424919650126591);
+\draw[line width=1.2pt,color=qqqqff] (-1.3299999147917705,0.03424919650126591) -- (-1.319999915184766,0.03602490802630371);
+\draw[line width=1.2pt,color=qqqqff] (-1.319999915184766,0.03602490802630371) -- (-1.3099999155777613,0.03787823158584702);
+\draw[line width=1.2pt,color=qqqqff] (-1.3099999155777613,0.03787823158584702) -- (-1.2999999159707567,0.03981170983154177);
+\draw[line width=1.2pt,color=qqqqff] (-1.2999999159707567,0.03981170983154177) -- (-1.289999916363752,0.04182792165618313);
+\draw[line width=1.2pt,color=qqqqff] (-1.289999916363752,0.04182792165618313) -- (-1.2799999167567475,0.04392948000965943);
+\draw[line width=1.2pt,color=qqqqff] (-1.2799999167567475,0.04392948000965943) -- (-1.269999917149743,0.04611902953729086);
+\draw[line width=1.2pt,color=qqqqff] (-1.269999917149743,0.04611902953729086) -- (-1.2599999175427383,0.04839924403710973);
+\draw[line width=1.2pt,color=qqqqff] (-1.2599999175427383,0.04839924403710973) -- (-1.2499999179357337,0.0507728237329499);
+\draw[line width=1.2pt,color=qqqqff] (-1.2499999179357337,0.0507728237329499) -- (-1.2399999183287291,0.05324249236055974);
+\draw[line width=1.2pt,color=qqqqff] (-1.2399999183287291,0.05324249236055974) -- (-1.2299999187217245,0.05581099406432626);
+\draw[line width=1.2pt,color=qqqqff] (-1.2299999187217245,0.05581099406432626) -- (-1.21999991911472,0.05848109010259791);
+\draw[line width=1.2pt,color=qqqqff] (-1.21999991911472,0.05848109010259791) -- (-1.2099999195077153,0.061255555360017);
+\draw[line width=1.2pt,color=qqqqff] (-1.2099999195077153,0.061255555360017) -- (-1.1999999199007108,0.06413717466572474);
+\draw[line width=1.2pt,color=qqqqff] (-1.1999999199007108,0.06413717466572474) -- (-1.1899999202937062,0.06712873891677706);
+\draw[line width=1.2pt,color=qqqqff] (-1.1899999202937062,0.06712873891677706) -- (-1.1799999206867016,0.07023304100660954);
+\draw[line width=1.2pt,color=qqqqff] (-1.1799999206867016,0.07023304100660954) -- (-1.169999921079697,0.07345287155891661);
+\draw[line width=1.2pt,color=qqqqff] (-1.169999921079697,0.07345287155891661) -- (-1.1599999214726924,0.0767910144678556);
+\draw[line width=1.2pt,color=qqqqff] (-1.1599999214726924,0.0767910144678556) -- (-1.1499999218656878,0.08025024224606113);
+\draw[line width=1.2pt,color=qqqqff] (-1.1499999218656878,0.08025024224606113) -- (-1.1399999222586832,0.08383331118254495);
+\draw[line width=1.2pt,color=qqqqff] (-1.1399999222586832,0.08383331118254495) -- (-1.1299999226516786,0.08754295631317233);
+\draw[line width=1.2pt,color=qqqqff] (-1.1299999226516786,0.08754295631317233) -- (-1.119999923044674,0.09138188620703812);
+\draw[line width=1.2pt,color=qqqqff] (-1.119999923044674,0.09138188620703812) -- (-1.1099999234376694,0.09535277757271751);
+\draw[line width=1.2pt,color=qqqqff] (-1.1099999234376694,0.09535277757271751) -- (-1.0999999238306648,0.09945826968903447);
+\draw[line width=1.2pt,color=qqqqff] (-1.0999999238306648,0.09945826968903447) -- (-1.0899999242236602,0.10370095866567318);
+\draw[line width=1.2pt,color=qqqqff] (-1.0899999242236602,0.10370095866567318) -- (-1.0799999246166556,0.10808339153965613);
+\draw[line width=1.2pt,color=qqqqff] (-1.0799999246166556,0.10808339153965613) -- (-1.069999925009651,0.11260806021441742);
+\draw[line width=1.2pt,color=qqqqff] (-1.069999925009651,0.11260806021441742) -- (-1.0599999254026464,0.11727739524892151);
+\draw[line width=1.2pt,color=qqqqff] (-1.0599999254026464,0.11727739524892151) -- (-1.0499999257956418,0.12209375950499737);
+\draw[line width=1.2pt,color=qqqqff] (-1.0499999257956418,0.12209375950499737) -- (-1.0399999261886372,0.1270594416617932);
+\draw[line width=1.2pt,color=qqqqff] (-1.0399999261886372,0.1270594416617932) -- (-1.0299999265816326,0.1321766496069854);
+\draw[line width=1.2pt,color=qqqqff] (-1.0299999265816326,0.1321766496069854) -- (-1.019999926974628,0.13744750371511194);
+\draw[line width=1.2pt,color=qqqqff] (-1.019999926974628,0.13744750371511194) -- (-1.0099999273676235,0.142874030024129);
+\draw[line width=1.2pt,color=qqqqff] (-1.0099999273676235,0.142874030024129) -- (-0.9999999277606187,0.1484581533220175);
+\draw[line width=1.2pt,color=qqqqff] (-0.9999999277606187,0.1484581533220175) -- (-0.989999928153614,0.15420169015598417);
+\draw[line width=1.2pt,color=qqqqff] (-0.989999928153614,0.15420169015598417) -- (-0.9799999285466093,0.16010634177751068);
+\draw[line width=1.2pt,color=qqqqff] (-0.9799999285466093,0.16010634177751068) -- (-0.9699999289396046,0.16617368703719815);
+\draw[line width=1.2pt,color=qqqqff] (-0.9699999289396046,0.16617368703719815) -- (-0.9599999293325999,0.17240517524403556);
+\draw[line width=1.2pt,color=qqqqff] (-0.9599999293325999,0.17240517524403556) -- (-0.9499999297255952,0.17880211900437687);
+\draw[line width=1.2pt,color=qqqqff] (-0.9499999297255952,0.17880211900437687) -- (-0.9399999301185905,0.18536568705655282);
+\draw[line width=1.2pt,color=qqqqff] (-0.9399999301185905,0.18536568705655282) -- (-0.9299999305115858,0.19209689711765257);
+\draw[line width=1.2pt,color=qqqqff] (-0.9299999305115858,0.19209689711765257) -- (-0.9199999309045811,0.19899660875959457);
+\draw[line width=1.2pt,color=qqqqff] (-0.9199999309045811,0.19899660875959457) -- (-0.9099999312975764,0.20606551633215994);
+\draw[line width=1.2pt,color=qqqqff] (-0.9099999312975764,0.20606551633215994) -- (-0.8999999316905717,0.2133041419511758);
+\draw[line width=1.2pt,color=qqqqff] (-0.8999999316905717,0.2133041419511758) -- (-0.889999932083567,0.2207128285705187);
+\draw[line width=1.2pt,color=qqqqff] (-0.889999932083567,0.2207128285705187) -- (-0.8799999324765623,0.22829173315704615);
+\draw[line width=1.2pt,color=qqqqff] (-0.8799999324765623,0.22829173315704615) -- (-0.8699999328695576,0.23604081998795912);
+\draw[line width=1.2pt,color=qqqqff] (-0.8699999328695576,0.23604081998795912) -- (-0.8599999332625529,0.24395985409044754);
+\draw[line width=1.2pt,color=qqqqff] (-0.8599999332625529,0.24395985409044754) -- (-0.8499999336555482,0.25204839484376995);
+\draw[line width=1.2pt,color=qqqqff] (-0.8499999336555482,0.25204839484376995) -- (-0.8399999340485435,0.26030578976416563);
+\draw[line width=1.2pt,color=qqqqff] (-0.8399999340485435,0.26030578976416563) -- (-0.8299999344415387,0.2687311684931888);
+\draw[line width=1.2pt,color=qqqqff] (-0.8299999344415387,0.2687311684931888) -- (-0.819999934834534,0.27732343701018947);
+\draw[line width=1.2pt,color=qqqqff] (-0.819999934834534,0.27732343701018947) -- (-0.8099999352275293,0.28608127208974066);
+\draw[line width=1.2pt,color=qqqqff] (-0.8099999352275293,0.28608127208974066) -- (-0.7999999356205246,0.295003116024824);
+\draw[line width=1.2pt,color=qqqqff] (-0.7999999356205246,0.295003116024824) -- (-0.7899999360135199,0.30408717163653465);
+\draw[line width=1.2pt,color=qqqqff] (-0.7899999360135199,0.30408717163653465) -- (-0.7799999364065152,0.3133313975909489);
+\draw[line width=1.2pt,color=qqqqff] (-0.7799999364065152,0.3133313975909489) -- (-0.7699999367995105,0.32273350404361373);
+\draw[line width=1.2pt,color=qqqqff] (-0.7699999367995105,0.32273350404361373) -- (-0.7599999371925058,0.33229094863186176);
+\draw[line width=1.2pt,color=qqqqff] (-0.7599999371925058,0.33229094863186176) -- (-0.7499999375855011,0.3420009328348328);
+\draw[line width=1.2pt,color=qqqqff] (-0.7499999375855011,0.3420009328348328) -- (-0.7399999379784964,0.3518603987206853);
+\draw[line width=1.2pt,color=qqqqff] (-0.7399999379784964,0.3518603987206853) -- (-0.7299999383714917,0.36186602610001484);
+\draw[line width=1.2pt,color=qqqqff] (-0.7299999383714917,0.36186602610001484) -- (-0.719999938764487,0.3720142301039532);
+\draw[line width=1.2pt,color=qqqqff] (-0.719999938764487,0.3720142301039532) -- (-0.7099999391574823,0.38230115920481106);
+\draw[line width=1.2pt,color=qqqqff] (-0.7099999391574823,0.38230115920481106) -- (-0.6999999395504776,0.3927226936964387);
+\draw[line width=1.2pt,color=qqqqff] (-0.6999999395504776,0.3927226936964387) -- (-0.6899999399434729,0.403274444650719);
+\draw[line width=1.2pt,color=qqqqff] (-0.6899999399434729,0.403274444650719) -- (-0.6799999403364682,0.4139517533657783);
+\draw[line width=1.2pt,color=qqqqff] (-0.6799999403364682,0.4139517533657783) -- (-0.6699999407294635,0.42474969132059465);
+\draw[line width=1.2pt,color=qqqqff] (-0.6699999407294635,0.42474969132059465) -- (-0.6599999411224587,0.4356630606497133);
+\draw[line width=1.2pt,color=qqqqff] (-0.6599999411224587,0.4356630606497133) -- (-0.649999941515454,0.44668639515073666);
+\draw[line width=1.2pt,color=qqqqff] (-0.649999941515454,0.44668639515073666) -- (-0.6399999419084493,0.45781396183614786);
+\draw[line width=1.2pt,color=qqqqff] (-0.6399999419084493,0.45781396183614786) -- (-0.6299999423014446,0.4690397630398557);
+\draw[line width=1.2pt,color=qqqqff] (-0.6299999423014446,0.4690397630398557) -- (-0.6199999426944399,0.48035753908761325);
+\draw[line width=1.2pt,color=qqqqff] (-0.6199999426944399,0.48035753908761325) -- (-0.6099999430874352,0.4917607715391698);
+\draw[line width=1.2pt,color=qqqqff] (-0.6099999430874352,0.4917607715391698) -- (-0.5999999434804305,0.5032426870086613);
+\draw[line width=1.2pt,color=qqqqff] (-0.5999999434804305,0.5032426870086613) -- (-0.5899999438734258,0.5147962615683459);
+\draw[line width=1.2pt,color=qqqqff] (-0.5899999438734258,0.5147962615683459) -- (-0.5799999442664211,0.5264142257393343);
+\draw[line width=1.2pt,color=qqqqff] (-0.5799999442664211,0.5264142257393343) -- (-0.5699999446594164,0.5380890700714659);
+\draw[line width=1.2pt,color=qqqqff] (-0.5699999446594164,0.5380890700714659) -- (-0.5599999450524117,0.5498130513129406);
+\draw[line width=1.2pt,color=qqqqff] (-0.5599999450524117,0.5498130513129406) -- (-0.549999945445407,0.5615781991687404);
+\draw[line width=1.2pt,color=qqqqff] (-0.549999945445407,0.5615781991687404) -- (-0.5399999458384023,0.5733763236452614);
+\draw[line width=1.2pt,color=qqqqff] (-0.5399999458384023,0.5733763236452614) -- (-0.5299999462313976,0.5851990229769377);
+\draw[line width=1.2pt,color=qqqqff] (-0.5299999462313976,0.5851990229769377) -- (-0.5199999466243929,0.5970376921289828);
+\draw[line width=1.2pt,color=qqqqff] (-0.5199999466243929,0.5970376921289828) -- (-0.5099999470173882,0.6088835318686886);
+\draw[line width=1.2pt,color=qqqqff] (-0.5099999470173882,0.6088835318686886) -- (-0.4999999474103835,0.6207275583960358);
+\draw[line width=1.2pt,color=qqqqff] (-0.4999999474103835,0.6207275583960358) -- (-0.48999994780337885,0.6325606135226725);
+\draw[line width=1.2pt,color=qqqqff] (-0.48999994780337885,0.6325606135226725) -- (-0.4799999481963742,0.6443733753866182);
+\draw[line width=1.2pt,color=qqqqff] (-0.4799999481963742,0.6443733753866182) -- (-0.46999994858936955,0.6561563696883596);
+\draw[line width=1.2pt,color=qqqqff] (-0.46999994858936955,0.6561563696883596) -- (-0.4599999489823649,0.6678999814323234);
+\draw[line width=1.2pt,color=qqqqff] (-0.4599999489823649,0.6678999814323234) -- (-0.44999994937536025,0.6795944671560482);
+\draw[line width=1.2pt,color=qqqqff] (-0.44999994937536025,0.6795944671560482) -- (-0.4399999497683556,0.6912299676277346);
+\draw[line width=1.2pt,color=qqqqff] (-0.4399999497683556,0.6912299676277346) -- (-0.42999995016135095,0.702796520991246);
+\draw[line width=1.2pt,color=qqqqff] (-0.42999995016135095,0.702796520991246) -- (-0.4199999505543463,0.7142840763360532);
+\draw[line width=1.2pt,color=qqqqff] (-0.4199999505543463,0.7142840763360532) -- (-0.40999995094734165,0.7256825076680842);
+\draw[line width=1.2pt,color=qqqqff] (-0.40999995094734165,0.7256825076680842) -- (-0.399999951340337,0.736981628255956);
+\draw[line width=1.2pt,color=qqqqff] (-0.399999951340337,0.736981628255956) -- (-0.38999995173333235,0.7481712053256292);
+\draw[line width=1.2pt,color=qqqqff] (-0.38999995173333235,0.7481712053256292) -- (-0.3799999521263277,0.7592409750751565);
+\draw[line width=1.2pt,color=qqqqff] (-0.3799999521263277,0.7592409750751565) -- (-0.36999995251932305,0.7701806579798885);
+\draw[line width=1.2pt,color=qqqqff] (-0.36999995251932305,0.7701806579798885) -- (-0.3599999529123184,0.7809799743572619);
+\draw[line width=1.2pt,color=qqqqff] (-0.3599999529123184,0.7809799743572619) -- (-0.34999995330531375,0.7916286601591339);
+\draw[line width=1.2pt,color=qqqqff] (-0.34999995330531375,0.7916286601591339) -- (-0.3399999536983091,0.8021164829585513);
+\draw[line width=1.2pt,color=qqqqff] (-0.3399999536983091,0.8021164829585513) -- (-0.32999995409130445,0.8124332580968434);
+\draw[line width=1.2pt,color=qqqqff] (-0.32999995409130445,0.8124332580968434) -- (-0.3199999544842998,0.8225688649560311);
+\draw[line width=1.2pt,color=qqqqff] (-0.3199999544842998,0.8225688649560311) -- (-0.30999995487729515,0.8325132633207327);
+\draw[line width=1.2pt,color=qqqqff] (-0.30999995487729515,0.8325132633207327) -- (-0.2999999552702905,0.8422565097930435);
+\draw[line width=1.2pt,color=qqqqff] (-0.2999999552702905,0.8422565097930435) -- (-0.28999995566328585,0.8517887742232566);
+\draw[line width=1.2pt,color=qqqqff] (-0.28999995566328585,0.8517887742232566) -- (-0.2799999560562812,0.8611003561187979);
+\draw[line width=1.2pt,color=qqqqff] (-0.2799999560562812,0.8611003561187979) -- (-0.26999995644927655,0.8701817009933565);
+\draw[line width=1.2pt,color=qqqqff] (-0.26999995644927655,0.8701817009933565) -- (-0.2599999568422719,0.8790234166179167);
+\draw[line width=1.2pt,color=qqqqff] (-0.2599999568422719,0.8790234166179167) -- (-0.24999995723526725,0.8876162891352337);
+\draw[line width=1.2pt,color=qqqqff] (-0.24999995723526725,0.8876162891352337) -- (-0.2399999576282626,0.8959512989992489);
+\draw[line width=1.2pt,color=qqqqff] (-0.2399999576282626,0.8959512989992489) -- (-0.22999995802125794,0.9040196367010129);
+\draw[line width=1.2pt,color=qqqqff] (-0.22999995802125794,0.9040196367010129) -- (-0.2199999584142533,0.9118127182428734);
+\draw[line width=1.2pt,color=qqqqff] (-0.2199999584142533,0.9118127182428734) -- (-0.20999995880724864,0.9193222003229915);
+\draw[line width=1.2pt,color=qqqqff] (-0.20999995880724864,0.9193222003229915) -- (-0.199999959200244,0.9265399951926838);
+\draw[line width=1.2pt,color=qqqqff] (-0.199999959200244,0.9265399951926838) -- (-0.18999995959323934,0.9334582851496273);
+\draw[line width=1.2pt,color=qqqqff] (-0.18999995959323934,0.9334582851496273) -- (-0.1799999599862347,0.9400695366306326);
+\draw[line width=1.2pt,color=qqqqff] (-0.1799999599862347,0.9400695366306326) -- (-0.16999996037923004,0.9463665138684741);
+\draw[line width=1.2pt,color=qqqqff] (-0.16999996037923004,0.9463665138684741) -- (-0.1599999607722254,0.9523422920781552);
+\draw[line width=1.2pt,color=qqqqff] (-0.1599999607722254,0.9523422920781552) -- (-0.14999996116522074,0.9579902701390033);
+\draw[line width=1.2pt,color=qqqqff] (-0.14999996116522074,0.9579902701390033) -- (-0.1399999615582161,0.9633041827401021);
+\draw[line width=1.2pt,color=qqqqff] (-0.1399999615582161,0.9633041827401021) -- (-0.12999996195121144,0.968278111957798);
+\draw[line width=1.2pt,color=qqqqff] (-0.12999996195121144,0.968278111957798) -- (-0.11999996234420679,0.9729064982353449);
+\draw[line width=1.2pt,color=qqqqff] (-0.11999996234420679,0.9729064982353449) -- (-0.10999996273720214,0.9771841507361804);
+\draw[line width=1.2pt,color=qqqqff] (-0.10999996273720214,0.9771841507361804) -- (-0.09999996313019749,0.981106257043851);
+\draw[line width=1.2pt,color=qqqqff] (-0.09999996313019749,0.981106257043851) -- (-0.08999996352319284,0.984668392183218);
+\draw[line width=1.2pt,color=qqqqff] (-0.08999996352319284,0.984668392183218) -- (-0.07999996391618819,0.9878665269392725);
+\draw[line width=1.2pt,color=qqqqff] (-0.07999996391618819,0.9878665269392725) -- (-0.06999996430918354,0.9906970354516723);
+\draw[line width=1.2pt,color=qqqqff] (-0.06999996430918354,0.9906970354516723) -- (-0.05999996470217888,0.9931567020649613);
+\draw[line width=1.2pt,color=qqqqff] (-0.05999996470217888,0.9931567020649613) -- (-0.04999996509517422,0.9952427274163567);
+\draw[line width=1.2pt,color=qqqqff] (-0.04999996509517422,0.9952427274163567) -- (-0.039999965488169566,0.9969527337449711);
+\draw[line width=1.2pt,color=qqqqff] (-0.039999965488169566,0.9969527337449711) -- (-0.02999996588116491,0.9982847694083736);
+\draw[line width=1.2pt,color=qqqqff] (-0.02999996588116491,0.9982847694083736) -- (-0.01999996627416025,0.9992373125944827);
+\draw[line width=1.2pt,color=qqqqff] (-0.01999996627416025,0.9992373125944827) -- (-0.009999966667155595,0.9998092742189041);
+\draw[line width=1.2pt,color=qqqqff] (-0.009999966667155595,0.9998092742189041) -- (0.0,0.9999999999999979);
+\draw[line width=1.2pt,color=qqqqff] (0.0,0.9999999999999979) -- (0.009999999607004656,0.999809272962522);
+\draw[line width=1.2pt,color=qqqqff] (0.009999999607004656,0.999809272962522) -- (0.01999999921400931,0.9992373100831539);
+\draw[line width=1.2pt,color=qqqqff] (0.01999999921400931,0.9992373100831539) -- (0.029999998821013965,0.9982847656449704);
+\draw[line width=1.2pt,color=qqqqff] (0.029999998821013965,0.9982847656449704) -- (0.03999999842801862,0.9969527287337948);
+\draw[line width=1.2pt,color=qqqqff] (0.03999999842801862,0.9969527287337948) -- (0.04999999803502328,0.9952427211631301);
+\draw[line width=1.2pt,color=qqqqff] (0.04999999803502328,0.9952427211631301) -- (0.05999999764202794,0.993156694576817);
+\draw[line width=1.2pt,color=qqqqff] (0.05999999764202794,0.993156694576817) -- (0.0699999972490326,0.9906970267371397);
+\draw[line width=1.2pt,color=qqqqff] (0.0699999972490326,0.9906970267371397) -- (0.07999999685603724,0.9878665170082614);
+\draw[line width=1.2pt,color=qqqqff] (0.07999999685603724,0.9878665170082614) -- (0.0899999964630419,0.9846683810469999);
+\draw[line width=1.2pt,color=qqqqff] (0.0899999964630419,0.9846683810469999) -- (0.09999999607004655,0.9811062447150378);
+\draw[line width=1.2pt,color=qqqqff] (0.09999999607004655,0.9811062447150378) -- (0.1099999956770512,0.9771841372287005);
+\draw[line width=1.2pt,color=qqqqff] (0.1099999956770512,0.9771841372287005) -- (0.11999999528405585,0.9729064835644169);
+\draw[line width=1.2pt,color=qqqqff] (0.11999999528405585,0.9729064835644169) -- (0.1299999948910605,0.9682780961399022);
+\draw[line width=1.2pt,color=qqqqff] (0.1299999948910605,0.9682780961399022) -- (0.13999999449806516,0.96330416579295);
+\draw[line width=1.2pt,color=qqqqff] (0.13999999449806516,0.96330416579295) -- (0.1499999941050698,0.957990252081504);
+\draw[line width=1.2pt,color=qqqqff] (0.1499999941050698,0.957990252081504) -- (0.15999999371207446,0.9523422729303807);
+\draw[line width=1.2pt,color=qqqqff] (0.15999999371207446,0.9523422729303807) -- (0.1699999933190791,0.9463664936516217);
+\draw[line width=1.2pt,color=qqqqff] (0.1699999933190791,0.9463664936516217) -- (0.17999999292608376,0.9400695153669864);
+\draw[line width=1.2pt,color=qqqqff] (0.17999999292608376,0.9400695153669864) -- (0.1899999925330884,0.9334582628625164);
+\draw[line width=1.2pt,color=qqqqff] (0.1899999925330884,0.9334582628625164) -- (0.19999999214009306,0.9265399719064409);
+\draw[line width=1.2pt,color=qqqqff] (0.19999999214009306,0.9265399719064409) -- (0.20999999174709771,0.9193221760629073);
+\draw[line width=1.2pt,color=qqqqff] (0.20999999174709771,0.9193221760629073) -- (0.21999999135410236,0.9118126930351521);
+\draw[line width=1.2pt,color=qqqqff] (0.21999999135410236,0.9118126930351521) -- (0.22999999096110701,0.9040196105727245);
+\draw[line width=1.2pt,color=qqqqff] (0.22999999096110701,0.9040196105727245) -- (0.23999999056811167,0.8959512719782805);
+\draw[line width=1.2pt,color=qqqqff] (0.23999999056811167,0.8959512719782805) -- (0.24999999017511632,0.887616261250241);
+\draw[line width=1.2pt,color=qqqqff] (0.24999999017511632,0.887616261250241) -- (0.25999998978212097,0.8790233878982724);
+\draw[line width=1.2pt,color=qqqqff] (0.25999998978212097,0.8790233878982724) -- (0.2699999893891256,0.8701816714690995);
+\draw[line width=1.2pt,color=qqqqff] (0.2699999893891256,0.8701816714690995) -- (0.27999998899613027,0.8611003258205813);
+\draw[line width=1.2pt,color=qqqqff] (0.27999998899613027,0.8611003258205813) -- (0.2899999886031349,0.8517887431822943);
+\draw[line width=1.2pt,color=qqqqff] (0.2899999886031349,0.8517887431822943) -- (0.29999998821013957,0.8422564780410572);
+\draw[line width=1.2pt,color=qqqqff] (0.29999998821013957,0.8422564780410572) -- (0.3099999878171442,0.8325132308898983);
+\draw[line width=1.2pt,color=qqqqff] (0.3099999878171442,0.8325132308898983) -- (0.31999998742414887,0.8225688318789244);
+\draw[line width=1.2pt,color=qqqqff] (0.31999998742414887,0.8225688318789244) -- (0.3299999870311535,0.8124332244063864);
+\draw[line width=1.2pt,color=qqqqff] (0.3299999870311535,0.8124332244063864) -- (0.33999998663815817,0.8021164486879577);
+\draw[line width=1.2pt,color=qqqqff] (0.33999998663815817,0.8021164486879577) -- (0.3499999862451628,0.7916286253418553);
+\draw[line width=1.2pt,color=qqqqff] (0.3499999862451628,0.7916286253418553) -- (0.35999998585216747,0.780979939026934);
+\draw[line width=1.2pt,color=qqqqff] (0.35999998585216747,0.780979939026934) -- (0.3699999854591721,0.7701806221702776);
+\draw[line width=1.2pt,color=qqqqff] (0.3699999854591721,0.7701806221702776) -- (0.37999998506617677,0.7592409388201067);
+\draw[line width=1.2pt,color=qqqqff] (0.37999998506617677,0.7592409388201067) -- (0.3899999846731814,0.7481711686590101);
+\draw[line width=1.2pt,color=qqqqff] (0.3899999846731814,0.7481711686590101) -- (0.39999998428018607,0.7369815912116108);
+\draw[line width=1.2pt,color=qqqqff] (0.39999998428018607,0.7369815912116108) -- (0.4099999838871907,0.7256824702797787);
+\draw[line width=1.2pt,color=qqqqff] (0.4099999838871907,0.7256824702797787) -- (0.4199999834941954,0.7142840386374264);
+\draw[line width=1.2pt,color=qqqqff] (0.4199999834941954,0.7142840386374264) -- (0.4299999831012,0.7027964830157609);
+\draw[line width=1.2pt,color=qqqqff] (0.4299999831012,0.7027964830157609) -- (0.4399999827082047,0.6912299294086302);
+\draw[line width=1.2pt,color=qqqqff] (0.4399999827082047,0.6912299294086302) -- (0.4499999823152093,0.6795944287262928);
+\draw[line width=1.2pt,color=qqqqff] (0.4499999823152093,0.6795944287262928) -- (0.459999981922214,0.6678999428245697);
+\draw[line width=1.2pt,color=qqqqff] (0.459999981922214,0.6678999428245697) -- (0.4699999815292186,0.6561563309348999);
+\draw[line width=1.2pt,color=qqqqff] (0.4699999815292186,0.6561563309348999) -- (0.4799999811362233,0.6443733365193429);
+\draw[line width=1.2pt,color=qqqqff] (0.4799999811362233,0.6443733365193429) -- (0.4899999807432279,0.632560574573028);
+\draw[line width=1.2pt,color=qqqqff] (0.4899999807432279,0.632560574573028) -- (0.4999999803502326,0.6207275193949854);
+\draw[line width=1.2pt,color=qqqqff] (0.4999999803502326,0.6207275193949854) -- (0.5099999799572372,0.608883492846675);
+\draw[line width=1.2pt,color=qqqqff] (0.5099999799572372,0.608883492846675) -- (0.5199999795642419,0.5970376531158914);
+\draw[line width=1.2pt,color=qqqqff] (0.5199999795642419,0.5970376531158914) -- (0.5299999791712466,0.5851989840020624);
+\draw[line width=1.2pt,color=qqqqff] (0.5299999791712466,0.5851989840020624) -- (0.5399999787782513,0.5733762847372721);
+\draw[line width=1.2pt,color=qqqqff] (0.5399999787782513,0.5733762847372721) -- (0.549999978385256,0.5615781603556521);
+\draw[line width=1.2pt,color=qqqqff] (0.549999978385256,0.5615781603556521) -- (0.5599999779922608,0.549813012622084);
+\draw[line width=1.2pt,color=qqqqff] (0.5599999779922608,0.549813012622084) -- (0.5699999775992655,0.5380890315294613);
+\draw[line width=1.2pt,color=qqqqff] (0.5699999775992655,0.5380890315294613) -- (0.5799999772062702,0.5264141873720657);
+\draw[line width=1.2pt,color=qqqqff] (0.5799999772062702,0.5264141873720657) -- (0.5899999768132749,0.5147962234009378);
+\draw[line width=1.2pt,color=qqqqff] (0.5899999768132749,0.5147962234009378) -- (0.5999999764202796,0.5032426490654578);
+\draw[line width=1.2pt,color=qqqqff] (0.5999999764202796,0.5032426490654578) -- (0.6099999760272843,0.491760733843715);
+\draw[line width=1.2pt,color=qqqqff] (0.6099999760272843,0.491760733843715) -- (0.619999975634289,0.4803575016626337);
+\draw[line width=1.2pt,color=qqqqff] (0.619999975634289,0.4803575016626337) -- (0.6299999752412937,0.4690397259072451);
+\draw[line width=1.2pt,color=qqqqff] (0.6299999752412937,0.4690397259072451) -- (0.6399999748482984,0.4578139250169537);
+\draw[line width=1.2pt,color=qqqqff] (0.6399999748482984,0.4578139250169537) -- (0.6499999744553031,0.4466863586651484);
+\draw[line width=1.2pt,color=qqqqff] (0.6499999744553031,0.4466863586651484) -- (0.6599999740623078,0.43566302451705247);
+\draw[line width=1.2pt,color=qqqqff] (0.6599999740623078,0.43566302451705247) -- (0.6699999736693125,0.42474965555930716);
+\draw[line width=1.2pt,color=qqqqff] (0.6699999736693125,0.42474965555930716) -- (0.6799999732763172,0.41395171799342856);
+\draw[line width=1.2pt,color=qqqqff] (0.6799999732763172,0.41395171799342856) -- (0.6899999728833219,0.40327440968398554);
+\draw[line width=1.2pt,color=qqqqff] (0.6899999728833219,0.40327440968398554) -- (0.6999999724903266,0.3927226591511117);
+\draw[line width=1.2pt,color=qqqqff] (0.6999999724903266,0.3927226591511117) -- (0.7099999720973313,0.38230112509579167);
+\draw[line width=1.2pt,color=qqqqff] (0.7099999720973313,0.38230112509579167) -- (0.719999971704336,0.3720141964452546);
+\draw[line width=1.2pt,color=qqqqff] (0.719999971704336,0.3720141964452546) -- (0.7299999713113408,0.361865992904765);
+\draw[line width=1.2pt,color=qqqqff] (0.7299999713113408,0.361865992904765) -- (0.7399999709183455,0.35186036600113096);
+\draw[line width=1.2pt,color=qqqqff] (0.7399999709183455,0.35186036600113096) -- (0.7499999705253502,0.34200090060234517);
+\draw[line width=1.2pt,color=qqqqff] (0.7499999705253502,0.34200090060234517) -- (0.7599999701323549,0.33229091689694423);
+\draw[line width=1.2pt,color=qqqqff] (0.7599999701323549,0.33229091689694423) -- (0.7699999697393596,0.3227334728159102);
+\draw[line width=1.2pt,color=qqqqff] (0.7699999697393596,0.3227334728159102) -- (0.7799999693463643,0.3133313668792537);
+\draw[line width=1.2pt,color=qqqqff] (0.7799999693463643,0.3133313668792537) -- (0.789999968953369,0.3040871414488044);
+\draw[line width=1.2pt,color=qqqqff] (0.789999968953369,0.3040871414488044) -- (0.7999999685603737,0.29500308636818984);
+\draw[line width=1.2pt,color=qqqqff] (0.7999999685603737,0.29500308636818984) -- (0.8099999681673784,0.28608124297052206);
+\draw[line width=1.2pt,color=qqqqff] (0.8099999681673784,0.28608124297052206) -- (0.8199999677743831,0.2773234084339093);
+\draw[line width=1.2pt,color=qqqqff] (0.8199999677743831,0.2773234084339093) -- (0.8299999673813878,0.26873114046458907);
+\draw[line width=1.2pt,color=qqqqff] (0.8299999673813878,0.26873114046458907) -- (0.8399999669883925,0.2603057622872245);
+\draw[line width=1.2pt,color=qqqqff] (0.8399999669883925,0.2603057622872245) -- (0.8499999665953972,0.2520483679217197);
+\draw[line width=1.2pt,color=qqqqff] (0.8499999665953972,0.2520483679217197) -- (0.8599999662024019,0.24395982772579305);
+\draw[line width=1.2pt,color=qqqqff] (0.8599999662024019,0.24395982772579305) -- (0.8699999658094066,0.23604079418249738);
+\draw[line width=1.2pt,color=qqqqff] (0.8699999658094066,0.23604079418249738) -- (0.8799999654164113,0.2282917079118863);
+\draw[line width=1.2pt,color=qqqqff] (0.8799999654164113,0.2282917079118863) -- (0.889999965023416,0.22071280388610304);
+\draw[line width=1.2pt,color=qqqqff] (0.889999965023416,0.22071280388610304) -- (0.8999999646304208,0.21330411782730097);
+\draw[line width=1.2pt,color=qqqqff] (0.8999999646304208,0.21330411782730097) -- (0.9099999642374255,0.206065492767999);
+\draw[line width=1.2pt,color=qqqqff] (0.9099999642374255,0.206065492767999) -- (0.9199999638444302,0.19899658575371884);
+\draw[line width=1.2pt,color=qqqqff] (0.9199999638444302,0.19899658575371884) -- (0.9299999634514349,0.1920968746680547);
+\draw[line width=1.2pt,color=qqqqff] (0.9299999634514349,0.1920968746680547) -- (0.9399999630584396,0.18536566516066974);
+\draw[line width=1.2pt,color=qqqqff] (0.9399999630584396,0.18536566516066974) -- (0.9499999626654443,0.17880209765911276);
+\draw[line width=1.2pt,color=qqqqff] (0.9499999626654443,0.17880209765911276) -- (0.959999962272449,0.17240515444578544);
+\draw[line width=1.2pt,color=qqqqff] (0.959999962272449,0.17240515444578544) -- (0.9699999618794537,0.1661736667818713);
+\draw[line width=1.2pt,color=qqqqff] (0.9699999618794537,0.1661736667818713) -- (0.9799999614864584,0.16010632206055422);
+\draw[line width=1.2pt,color=qqqqff] (0.9799999614864584,0.16010632206055422) -- (0.9899999610934631,0.154201670972407);
+\draw[line width=1.2pt,color=qqqqff] (0.9899999610934631,0.154201670972407) -- (0.9999999607004678,0.14845813466641325);
+\draw[line width=1.2pt,color=qqqqff] (0.9999999607004678,0.14845813466641325) -- (1.0099999603074725,0.14287401189070012);
+\draw[line width=1.2pt,color=qqqqff] (1.0099999603074725,0.14287401189070012) -- (1.0199999599144771,0.13744748609769253);
+\draw[line width=1.2pt,color=qqqqff] (1.0199999599144771,0.13744748609769253) -- (1.0299999595214817,0.13217663249906472);
+\draw[line width=1.2pt,color=qqqqff] (1.0299999595214817,0.13217663249906472) -- (1.0399999591284863,0.12705942505653825);
+\draw[line width=1.2pt,color=qqqqff] (1.0399999591284863,0.12705942505653825) -- (1.049999958735491,0.12209374339527597);
+\draw[line width=1.2pt,color=qqqqff] (1.049999958735491,0.12209374339527597) -- (1.0599999583424955,0.1172773796273241);
+\draw[line width=1.2pt,color=qqqqff] (1.0599999583424955,0.1172773796273241) -- (1.0699999579495,0.1126080450732794);
+\draw[line width=1.2pt,color=qqqqff] (1.0699999579495,0.1126080450732794) -- (1.0799999575565047,0.10808337687107915);
+\draw[line width=1.2pt,color=qqqqff] (1.0799999575565047,0.10808337687107915) -- (1.0899999571635093,0.10370094446154665);
+\draw[line width=1.2pt,color=qqqqff] (1.0899999571635093,0.10370094446154665) -- (1.0999999567705139,0.09945825594105583);
+\draw[line width=1.2pt,color=qqqqff] (1.0999999567705139,0.09945825594105583) -- (1.1099999563775185,0.09535276427241285);
+\draw[line width=1.2pt,color=qqqqff] (1.1099999563775185,0.09535276427241285) -- (1.119999955984523,0.0913818733457815);
+\draw[line width=1.2pt,color=qqqqff] (1.119999955984523,0.0913818733457815) -- (1.1299999555915277,0.08754294388220529);
+\draw[line width=1.2pt,color=qqqqff] (1.1299999555915277,0.08754294388220529) -- (1.1399999551985323,0.083833299172995);
+\draw[line width=1.2pt,color=qqqqff] (1.1399999551985323,0.083833299172995) -- (1.1499999548055369,0.08025023064895973);
+\draw[line width=1.2pt,color=qqqqff] (1.1499999548055369,0.08025023064895973) -- (1.1599999544125414,0.07679100327415578);
+\draw[line width=1.2pt,color=qqqqff] (1.1599999544125414,0.07679100327415578) -- (1.169999954019546,0.07345286075950977);
+\draw[line width=1.2pt,color=qqqqff] (1.169999954019546,0.07345286075950977) -- (1.1799999536265506,0.07023303059234175);
+\draw[line width=1.2pt,color=qqqqff] (1.1799999536265506,0.07023303059234175) -- (1.1899999532335552,0.06712872887846456);
+\draw[line width=1.2pt,color=qqqqff] (1.1899999532335552,0.06712872887846456) -- (1.1999999528405598,0.06413716499416919);
+\draw[line width=1.2pt,color=qqqqff] (1.1999999528405598,0.06413716499416919) -- (1.2099999524475644,0.061255546046019585);
+\draw[line width=1.2pt,color=qqqqff] (1.2099999524475644,0.061255546046019585) -- (1.219999952054569,0.05848108113697332);
+\draw[line width=1.2pt,color=qqqqff] (1.219999952054569,0.05848108113697332) -- (1.2299999516615736,0.055810985437915586);
+\draw[line width=1.2pt,color=qqqqff] (1.2299999516615736,0.055810985437915586) -- (1.2399999512685782,0.05324248406424302);
+\draw[line width=1.2pt,color=qqqqff] (1.2399999512685782,0.05324248406424302) -- (1.2499999508755828,0.05077281575765798);
+\draw[line width=1.2pt,color=qqqqff] (1.2499999508755828,0.05077281575765798) -- (1.2599999504825874,0.048399236373835204);
+\draw[line width=1.2pt,color=qqqqff] (1.2599999504825874,0.048399236373835204) -- (1.269999950089592,0.04611902217709892);
+\draw[line width=1.2pt,color=qqqqff] (1.269999950089592,0.04611902217709892) -- (1.2799999496965966,0.04392947294369755);
+\draw[line width=1.2pt,color=qqqqff] (1.2799999496965966,0.04392947294369755) -- (1.2899999493036012,0.041827914875690396);
+\draw[line width=1.2pt,color=qqqqff] (1.2899999493036012,0.041827914875690396) -- (1.2999999489106058,0.03981170332785762);
+\draw[line width=1.2pt,color=qqqqff] (1.2999999489106058,0.03981170332785762) -- (1.3099999485176104,0.037878225350419306);
+\draw[line width=1.2pt,color=qqqqff] (1.3099999485176104,0.037878225350419306) -- (1.319999948124615,0.03602490205069614);
+\draw[line width=1.2pt,color=qqqqff] (1.319999948124615,0.03602490205069614) -- (1.3299999477316196,0.03424919077716492);
+\draw[line width=1.2pt,color=qqqqff] (1.3299999477316196,0.03424919077716492) -- (1.3399999473386242,0.03254858712965876);
+\draw[line width=1.2pt,color=qqqqff] (1.3399999473386242,0.03254858712965876) -- (1.3499999469456287,0.03092062679973003);
+\draw[line width=1.2pt,color=qqqqff] (1.3499999469456287,0.03092062679973003) -- (1.3599999465526333,0.02936288724544071);
+\draw[line width=1.2pt,color=qqqqff] (1.3599999465526333,0.02936288724544071) -- (1.369999946159638,0.027872989205063512);
+\draw[line width=1.2pt,color=qqqqff] (1.369999946159638,0.027872989205063512) -- (1.3799999457666425,0.026448598054373267);
+\draw[line width=1.2pt,color=qqqqff] (1.3799999457666425,0.026448598054373267) -- (1.3899999453736471,0.025087425012380694);
+\draw[line width=1.2pt,color=qqqqff] (1.3899999453736471,0.025087425012380694) -- (1.3999999449806517,0.02378722820050854);
+\draw[line width=1.2pt,color=qqqqff] (1.3999999449806517,0.02378722820050854) -- (1.4099999445876563,0.022545813560337857);
+\draw[line width=1.2pt,color=qqqqff] (1.4099999445876563,0.022545813560337857) -- (1.419999944194661,0.021361035635156005);
+\draw[line width=1.2pt,color=qqqqff] (1.419999944194661,0.021361035635156005) -- (1.4299999438016655,0.02023079822062256);
+\draw[line width=1.2pt,color=qqqqff] (1.4299999438016655,0.02023079822062256) -- (1.43999994340867,0.019153054889932766);
+\draw[line width=1.2pt,color=qqqqff] (1.43999994340867,0.019153054889932766) -- (1.4499999430156747,0.018125809398902733);
+\draw[line width=1.2pt,color=qqqqff] (1.4499999430156747,0.018125809398902733) -- (1.4599999426226793,0.01714711597642648);
+\draw[line width=1.2pt,color=qqqqff] (1.4599999426226793,0.01714711597642648) -- (1.4699999422296839,0.01621507950576375);
+\draw[line width=1.2pt,color=qqqqff] (1.4699999422296839,0.01621507950576375) -- (1.4799999418366885,0.01532785560210873);
+\draw[line width=1.2pt,color=qqqqff] (1.4799999418366885,0.01532785560210873) -- (1.489999941443693,0.014483650591866615);
+\draw[line width=1.2pt,color=qqqqff] (1.489999941443693,0.014483650591866615) -- (1.4999999410506977,0.013680721399025509);
+\draw[line width=1.2pt,color=qqqqff] (1.4999999410506977,0.013680721399025509) -- (1.5099999406577023,0.01291737534395922);
+\draw[line width=1.2pt,color=qqqqff] (1.5099999406577023,0.01291737534395922) -- (1.5199999402647069,0.012191969859930214);
+\draw[line width=1.2pt,color=qqqqff] (1.5199999402647069,0.012191969859930214) -- (1.5299999398717115,0.011502912132485273);
+\draw[line width=1.2pt,color=qqqqff] (1.5299999398717115,0.011502912132485273) -- (1.539999939478716,0.010848658666846853);
+\draw[line width=1.2pt,color=qqqqff] (1.539999939478716,0.010848658666846853) -- (1.5499999390857206,0.010227714788304964);
+\draw[line width=1.2pt,color=qqqqff] (1.5499999390857206,0.010227714788304964) -- (1.5599999386927252,0.009638634080505937);
+\draw[line width=1.2pt,color=qqqqff] (1.5599999386927252,0.009638634080505937) -- (1.5699999382997298,0.009080017766417897);
+\draw[line width=1.2pt,color=qqqqff] (1.5699999382997298,0.009080017766417897) -- (1.5799999379067344,0.008550514036628884);
+\draw[line width=1.2pt,color=qqqqff] (1.5799999379067344,0.008550514036628884) -- (1.589999937513739,0.008048817329502614);
+\draw[line width=1.2pt,color=qqqqff] (1.589999937513739,0.008048817329502614) -- (1.5999999371207436,0.007573667567580267);
+\draw[line width=1.2pt,color=qqqqff] (1.5999999371207436,0.007573667567580267) -- (1.6099999367277482,0.007123849354475138);
+\draw[line width=1.2pt,color=qqqqff] (1.6099999367277482,0.007123849354475138) -- (1.6199999363347528,0.006698191136360765);
+\draw[line width=1.2pt,color=qqqqff] (1.6199999363347528,0.006698191136360765) -- (1.6299999359417574,0.006295564332003625);
+\draw[line width=1.2pt,color=qqqqff] (1.6299999359417574,0.006295564332003625) -- (1.639999935548762,0.005914882435139115);
+\draw[line width=1.2pt,color=qqqqff] (1.639999935548762,0.005914882435139115) -- (1.6499999351557666,0.005555100092834748);
+\draw[line width=1.2pt,color=qqqqff] (1.6499999351557666,0.005555100092834748) -- (1.6599999347627712,0.005215212163328447);
+\draw[line width=1.2pt,color=qqqqff] (1.6599999347627712,0.005215212163328447) -- (1.6699999343697758,0.004894252756672572);
+\draw[line width=1.2pt,color=qqqqff] (1.6699999343697758,0.004894252756672572) -- (1.6799999339767804,0.0045912942613569865);
+\draw[line width=1.2pt,color=qqqqff] (1.6799999339767804,0.0045912942613569865) -- (1.689999933583785,0.004305446359927026);
+\draw[line width=1.2pt,color=qqqqff] (1.689999933583785,0.004305446359927026) -- (1.6999999331907896,0.004035855036455917);
+\draw[line width=1.2pt,color=qqqqff] (1.6999999331907896,0.004035855036455917) -- (1.7099999327977942,0.0037817015785754577);
+\draw[line width=1.2pt,color=qqqqff] (1.7099999327977942,0.0037817015785754577) -- (1.7199999324047988,0.0035422015766154026);
+\draw[line width=1.2pt,color=qqqqff] (1.7199999324047988,0.0035422015766154026) -- (1.7299999320118034,0.0033166039222499374);
+\draw[line width=1.2pt,color=qqqqff] (1.7299999320118034,0.0033166039222499374) -- (1.739999931618808,0.0031041898089005367);
+\draw[line width=1.2pt,color=qqqqff] (1.739999931618808,0.0031041898089005367) -- (1.7499999312258125,0.002904271735997827);
+\draw[line width=1.2pt,color=qqqqff] (1.7499999312258125,0.002904271735997827) -- (1.7599999308328171,0.002716192519061711);
+\draw[line width=1.2pt,color=qqqqff] (1.7599999308328171,0.002716192519061711) -- (1.7699999304398217,0.0025393243074186885);
+\draw[line width=1.2pt,color=qqqqff] (1.7699999304398217,0.0025393243074186885) -- (1.7799999300468263,0.002373067611239025);
+\draw[line width=1.2pt,color=qqqqff] (1.7799999300468263,0.002373067611239025) -- (1.789999929653831,0.002216850339443532);
+\draw[line width=1.2pt,color=qqqqff] (1.789999929653831,0.002216850339443532) -- (1.7999999292608355,0.0020701268499011168);
+\draw[line width=1.2pt,color=qqqqff] (1.7999999292608355,0.0020701268499011168) -- (1.8099999288678401,0.0019323770132137505);
+\draw[line width=1.2pt,color=qqqqff] (1.8099999288678401,0.0019323770132137505) -- (1.8199999284748447,0.001803105291265369);
+\draw[line width=1.2pt,color=qqqqff] (1.8199999284748447,0.001803105291265369) -- (1.8299999280818493,0.001681839831595402);
+\draw[line width=1.2pt,color=qqqqff] (1.8299999280818493,0.001681839831595402) -- (1.839999927688854,0.0015681315785465143);
+\draw[line width=1.2pt,color=qqqqff] (1.839999927688854,0.0015681315785465143) -- (1.8499999272958585,0.0014615534020294902);
+\draw[line width=1.2pt,color=qqqqff] (1.8499999272958585,0.0014615534020294902) -- (1.859999926902863,0.00136169924464626);
+\draw[line width=1.2pt,color=qqqqff] (1.859999926902863,0.00136169924464626) -- (1.8699999265098677,0.0012681832878147438);
+\draw[line width=1.2pt,color=qqqqff] (1.8699999265098677,0.0012681832878147438) -- (1.8799999261168723,0.001180639137446646);
+\draw[line width=1.2pt,color=qqqqff] (1.8799999261168723,0.001180639137446646) -- (1.8899999257238769,0.0010987190296413375);
+\draw[line width=1.2pt,color=qqqqff] (1.8899999257238769,0.0010987190296413375) -- (1.8999999253308815,0.001022093056775692);
+\draw[line width=1.2pt,color=qqqqff] (1.8999999253308815,0.001022093056775692) -- (1.909999924937886,0.0);
+\draw[line width=1.2pt,color=qqqqff] (1.909999924937886,0.0) -- (1.9199999245448907,0.0);
+\draw[line width=1.2pt,color=qqqqff] (1.9199999245448907,0.0) -- (1.9299999241518953,0.0);
+\draw[line width=1.2pt,color=qqqqff] (1.9299999241518953,0.0) -- (1.9399999237588998,0.0);
+\draw[line width=1.2pt,color=qqqqff] (1.9399999237588998,0.0) -- (1.9499999233659044,0.0);
+\draw[line width=1.2pt,color=qqqqff] (1.9499999233659044,0.0) -- (1.959999922972909,0.0);
+\draw[line width=1.2pt,color=qqqqff] (1.959999922972909,0.0) -- (1.9699999225799136,0.0);
+\draw[line width=1.2pt,color=qqqqff] (1.9699999225799136,0.0) -- (1.9799999221869182,0.0);
+\draw[line width=1.2pt,color=qqqqff] (1.9799999221869182,0.0) -- (1.9899999217939228,0.0);
+\draw[line width=1.2pt,color=qqqqff] (1.9899999217939228,0.0) -- (1.9999999214009274,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.000000010649795,0.0) -- (6.000000010649795,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.000000010649795,0.0) -- (6.0075000055383185,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.0075000055383185,0.0) -- (6.015000000426842,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.015000000426842,0.0) -- (6.022499995315366,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.022499995315366,0.0) -- (6.02999999020389,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.02999999020389,0.0) -- (6.037499985092413,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.037499985092413,0.0) -- (6.044999979980937,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.044999979980937,0.0) -- (6.052499974869461,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.052499974869461,0.0) -- (6.0599999697579845,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.0599999697579845,0.0) -- (6.067499964646508,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.067499964646508,0.0) -- (6.074999959535032,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.074999959535032,0.0) -- (6.082499954423556,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.082499954423556,0.0) -- (6.089999949312079,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.089999949312079,0.0) -- (6.097499944200603,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.097499944200603,0.0) -- (6.104999939089127,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.104999939089127,0.0) -- (6.1124999339776505,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.1124999339776505,0.0) -- (6.119999928866174,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.119999928866174,0.0) -- (6.127499923754698,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.127499923754698,0.0) -- (6.134999918643222,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.134999918643222,0.0) -- (6.142499913531745,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.142499913531745,0.0) -- (6.149999908420269,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.149999908420269,0.0) -- (6.157499903308793,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.157499903308793,0.0) -- (6.164999898197316,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.164999898197316,0.0) -- (6.17249989308584,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.17249989308584,0.0) -- (6.179999887974364,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.179999887974364,0.0) -- (6.1874998828628875,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.1874998828628875,0.0) -- (6.194999877751411,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.194999877751411,0.0) -- (6.202499872639935,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.202499872639935,0.0) -- (6.209999867528459,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.209999867528459,0.0) -- (6.217499862416982,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.217499862416982,0.0) -- (6.224999857305506,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.224999857305506,0.0) -- (6.23249985219403,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.23249985219403,0.0) -- (6.2399998470825535,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.2399998470825535,0.0) -- (6.247499841971077,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.247499841971077,0.0) -- (6.254999836859601,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.254999836859601,0.0) -- (6.262499831748125,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.262499831748125,0.0) -- (6.269999826636648,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.269999826636648,0.0) -- (6.277499821525172,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.277499821525172,0.0) -- (6.284999816413696,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.284999816413696,0.0) -- (6.2924998113022195,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.2924998113022195,0.0) -- (6.299999806190743,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.299999806190743,0.0) -- (6.307499801079267,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.307499801079267,0.0) -- (6.314999795967791,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.314999795967791,0.0) -- (6.322499790856314,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.322499790856314,0.0) -- (6.329999785744838,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.329999785744838,0.0) -- (6.337499780633362,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.337499780633362,0.0) -- (6.344999775521885,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.344999775521885,0.0) -- (6.352499770410409,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.352499770410409,0.0) -- (6.359999765298933,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.359999765298933,0.0) -- (6.367499760187457,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.367499760187457,0.0) -- (6.37499975507598,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.37499975507598,0.0) -- (6.382499749964504,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.382499749964504,0.0) -- (6.389999744853028,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.389999744853028,0.0) -- (6.397499739741551,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.397499739741551,0.0) -- (6.404999734630075,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.404999734630075,0.0) -- (6.412499729518599,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.412499729518599,0.0) -- (6.4199997244071225,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.4199997244071225,0.0) -- (6.427499719295646,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.427499719295646,0.0) -- (6.43499971418417,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.43499971418417,0.0) -- (6.442499709072694,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.442499709072694,0.0) -- (6.449999703961217,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.449999703961217,0.0) -- (6.457499698849741,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.457499698849741,0.0) -- (6.464999693738265,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.464999693738265,0.0) -- (6.4724996886267885,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.4724996886267885,0.0) -- (6.479999683515312,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (6.479999683515312,0.0) -- (6.487499678403836,0.0010657962730246566);
+\draw[line width=1.2pt,color=qqwuqq] (6.487499678403836,0.0010657962730246566) -- (6.49499967329236,0.0011790860992484864);
+\draw[line width=1.2pt,color=qqwuqq] (6.49499967329236,0.0011790860992484864) -- (6.502499668180883,0.0013034388486782775);
+\draw[line width=1.2pt,color=qqwuqq] (6.502499668180883,0.0013034388486782775) -- (6.509999663069407,0.0014398247079995107);
+\draw[line width=1.2pt,color=qqwuqq] (6.509999663069407,0.0014398247079995107) -- (6.517499657957931,0.0015892872618674073);
+\draw[line width=1.2pt,color=qqwuqq] (6.517499657957931,0.0015892872618674073) -- (6.5249996528464544,0.0017529478763347863);
+\draw[line width=1.2pt,color=qqwuqq] (6.5249996528464544,0.0017529478763347863) -- (6.532499647734978,0.0019320102321282793);
+\draw[line width=1.2pt,color=qqwuqq] (6.532499647734978,0.0019320102321282793) -- (6.539999642623502,0.0021277650018684123);
+\draw[line width=1.2pt,color=qqwuqq] (6.539999642623502,0.0021277650018684123) -- (6.547499637512026,0.002341594663924381);
+\draw[line width=1.2pt,color=qqwuqq] (6.547499637512026,0.002341594663924381) -- (6.554999632400549,0.0025749784440911925);
+\draw[line width=1.2pt,color=qqwuqq] (6.554999632400549,0.0025749784440911925) -- (6.562499627289073,0.002829497374675741);
+\draw[line width=1.2pt,color=qqwuqq] (6.562499627289073,0.002829497374675741) -- (6.569999622177597,0.003106839458880822);
+\draw[line width=1.2pt,color=qqwuqq] (6.569999622177597,0.003106839458880822) -- (6.57749961706612,0.0034088049265841923);
+\draw[line width=1.2pt,color=qqwuqq] (6.57749961706612,0.0034088049265841923) -- (6.584999611954644,0.0037373115657270283);
+\draw[line width=1.2pt,color=qqwuqq] (6.584999611954644,0.0037373115657270283) -- (6.592499606843168,0.0040944001115567055);
+\draw[line width=1.2pt,color=qqwuqq] (6.592499606843168,0.0040944001115567055) -- (6.5999996017316915,0.004482239673918071);
+\draw[line width=1.2pt,color=qqwuqq] (6.5999996017316915,0.004482239673918071) -- (6.607499596620215,0.004903133180662152);
+\draw[line width=1.2pt,color=qqwuqq] (6.607499596620215,0.004903133180662152) -- (6.614999591508739,0.005359522813048996);
+\draw[line width=1.2pt,color=qqwuqq] (6.614999591508739,0.005359522813048996) -- (6.622499586397263,0.005853995406771474);
+\draw[line width=1.2pt,color=qqwuqq] (6.622499586397263,0.005853995406771474) -- (6.629999581285786,0.006389287789929589);
+\draw[line width=1.2pt,color=qqwuqq] (6.629999581285786,0.006389287789929589) -- (6.63749957617431,0.0069682920269521255);
+\draw[line width=1.2pt,color=qqwuqq] (6.63749957617431,0.0069682920269521255) -- (6.644999571062834,0.007594060535107064);
+\draw[line width=1.2pt,color=qqwuqq] (6.644999571062834,0.007594060535107064) -- (6.6524995659513575,0.008269811037879311);
+\draw[line width=1.2pt,color=qqwuqq] (6.6524995659513575,0.008269811037879311) -- (6.659999560839881,0.008998931317139035);
+\draw[line width=1.2pt,color=qqwuqq] (6.659999560839881,0.008998931317139035) -- (6.667499555728405,0.009784983723694666);
+\draw[line width=1.2pt,color=qqwuqq] (6.667499555728405,0.009784983723694666) -- (6.674999550616929,0.010631709403538765);
+\draw[line width=1.2pt,color=qqwuqq] (6.674999550616929,0.010631709403538765) -- (6.682499545505452,0.011543032194874249);
+\draw[line width=1.2pt,color=qqwuqq] (6.682499545505452,0.011543032194874249) -- (6.689999540393976,0.012523062148872435);
+\draw[line width=1.2pt,color=qqwuqq] (6.689999540393976,0.012523062148872435) -- (6.6974995352825,0.013576098625086925);
+\draw[line width=1.2pt,color=qqwuqq] (6.6974995352825,0.013576098625086925) -- (6.7049995301710235,0.014706632910551722);
+\draw[line width=1.2pt,color=qqwuqq] (6.7049995301710235,0.014706632910551722) -- (6.712499525059547,0.01591935030985224);
+\draw[line width=1.2pt,color=qqwuqq] (6.712499525059547,0.01591935030985224) -- (6.719999519948071,0.01721913165190103);
+\draw[line width=1.2pt,color=qqwuqq] (6.719999519948071,0.01721913165190103) -- (6.727499514836595,0.01861105415780046);
+\draw[line width=1.2pt,color=qqwuqq] (6.727499514836595,0.01861105415780046) -- (6.734999509725118,0.02010039161306147);
+\draw[line width=1.2pt,color=qqwuqq] (6.734999509725118,0.02010039161306147) -- (6.742499504613642,0.021692613786595708);
+\draw[line width=1.2pt,color=qqwuqq] (6.742499504613642,0.021692613786595708) -- (6.749999499502166,0.02339338503833792);
+\draw[line width=1.2pt,color=qqwuqq] (6.749999499502166,0.02339338503833792) -- (6.757499494390689,0.02520856205711118);
+\draw[line width=1.2pt,color=qqwuqq] (6.757499494390689,0.02520856205711118) -- (6.764999489279213,0.027144190670449493);
+\draw[line width=1.2pt,color=qqwuqq] (6.764999489279213,0.027144190670449493) -- (6.772499484167737,0.029206501668564394);
+\draw[line width=1.2pt,color=qqwuqq] (6.772499484167737,0.029206501668564394) -- (6.7799994790562605,0.03140190558551316);
+\draw[line width=1.2pt,color=qqwuqq] (6.7799994790562605,0.03140190558551316) -- (6.787499473944784,0.03373698638191824);
+\draw[line width=1.2pt,color=qqwuqq] (6.787499473944784,0.03373698638191824) -- (6.794999468833308,0.036218493975325894);
+\draw[line width=1.2pt,color=qqwuqq] (6.794999468833308,0.036218493975325894) -- (6.802499463721832,0.038853335566499225);
+\draw[line width=1.2pt,color=qqwuqq] (6.802499463721832,0.038853335566499225) -- (6.809999458610355,0.041648565712633354);
+\draw[line width=1.2pt,color=qqwuqq] (6.809999458610355,0.041648565712633354) -- (6.817499453498879,0.04461137510167996);
+\draw[line width=1.2pt,color=qqwuqq] (6.817499453498879,0.04461137510167996) -- (6.824999448387403,0.04774907798568831);
+\draw[line width=1.2pt,color=qqwuqq] (6.824999448387403,0.04774907798568831) -- (6.8324994432759265,0.051069098235319514);
+\draw[line width=1.2pt,color=qqwuqq] (6.8324994432759265,0.051069098235319514) -- (6.83999943816445,0.054578953982484836);
+\draw[line width=1.2pt,color=qqwuqq] (6.83999943816445,0.054578953982484836) -- (6.847499433052974,0.058286240823395404);
+\draw[line width=1.2pt,color=qqwuqq] (6.847499433052974,0.058286240823395404) -- (6.854999427941498,0.0621986135601978);
+\draw[line width=1.2pt,color=qqwuqq] (6.854999427941498,0.0621986135601978) -- (6.862499422830021,0.06632376646579877);
+\draw[line width=1.2pt,color=qqwuqq] (6.862499422830021,0.06632376646579877) -- (6.869999417718545,0.0706694120634508);
+\draw[line width=1.2pt,color=qqwuqq] (6.869999417718545,0.0706694120634508) -- (6.877499412607069,0.0752432584201627);
+\draw[line width=1.2pt,color=qqwuqq] (6.877499412607069,0.0752432584201627) -- (6.8849994074955925,0.08005298496099969);
+\draw[line width=1.2pt,color=qqwuqq] (6.8849994074955925,0.08005298496099969) -- (6.892499402384116,0.08510621681982668);
+\draw[line width=1.2pt,color=qqwuqq] (6.892499402384116,0.08510621681982668) -- (6.89999939727264,0.09041049775099474);
+\draw[line width=1.2pt,color=qqwuqq] (6.89999939727264,0.09041049775099474) -- (6.907499392161164,0.09597326163584495);
+\draw[line width=1.2pt,color=qqwuqq] (6.907499392161164,0.09597326163584495) -- (6.914999387049687,0.10180180262766755);
+\draw[line width=1.2pt,color=qqwuqq] (6.914999387049687,0.10180180262766755) -- (6.922499381938211,0.1079032439888643);
+\draw[line width=1.2pt,color=qqwuqq] (6.922499381938211,0.1079032439888643) -- (6.929999376826735,0.1142845056844669);
+\draw[line width=1.2pt,color=qqwuqq] (6.929999376826735,0.1142845056844669) -- (6.937499371715258,0.1209522708068149);
+\draw[line width=1.2pt,color=qqwuqq] (6.937499371715258,0.1209522708068149) -- (6.944999366603782,0.12791295091703128);
+\draw[line width=1.2pt,color=qqwuqq] (6.944999366603782,0.12791295091703128) -- (6.952499361492306,0.13517265039988488);
+\draw[line width=1.2pt,color=qqwuqq] (6.952499361492306,0.13517265039988488) -- (6.95999935638083,0.1427371299396352);
+\draw[line width=1.2pt,color=qqwuqq] (6.95999935638083,0.1427371299396352) -- (6.967499351269353,0.15061176923543523);
+\draw[line width=1.2pt,color=qqwuqq] (6.967499351269353,0.15061176923543523) -- (6.974999346157877,0.15880152908574874);
+\draw[line width=1.2pt,color=qqwuqq] (6.974999346157877,0.15880152908574874) -- (6.982499341046401,0.1673109129819404);
+\draw[line width=1.2pt,color=qqwuqq] (6.982499341046401,0.1673109129819404) -- (6.989999335934924,0.1761439283616256);
+\draw[line width=1.2pt,color=qqwuqq] (6.989999335934924,0.1761439283616256) -- (6.997499330823448,0.18530404768245223);
+\draw[line width=1.2pt,color=qqwuqq] (6.997499330823448,0.18530404768245223) -- (7.004999325711972,0.19479416948662112);
+\draw[line width=1.2pt,color=qqwuqq] (7.004999325711972,0.19479416948662112) -- (7.0124993206004955,0.2046165796355558);
+\draw[line width=1.2pt,color=qqwuqq] (7.0124993206004955,0.2046165796355558) -- (7.019999315489019,0.21477291290261516);
+\draw[line width=1.2pt,color=qqwuqq] (7.019999315489019,0.21477291290261516) -- (7.027499310377543,0.22526411511950303);
+\draw[line width=1.2pt,color=qqwuqq] (7.027499310377543,0.22526411511950303) -- (7.034999305266067,0.23609040607898724);
+\draw[line width=1.2pt,color=qqwuqq] (7.034999305266067,0.23609040607898724) -- (7.04249930015459,0.2472512434026026);
+\draw[line width=1.2pt,color=qqwuqq] (7.04249930015459,0.2472512434026026) -- (7.049999295043114,0.25874528758708903);
+\draw[line width=1.2pt,color=qqwuqq] (7.049999295043114,0.25874528758708903) -- (7.057499289931638,0.2705703684473297);
+\draw[line width=1.2pt,color=qqwuqq] (7.057499289931638,0.2705703684473297) -- (7.0649992848201615,0.2827234531764215);
+\draw[line width=1.2pt,color=qqwuqq] (7.0649992848201615,0.2827234531764215) -- (7.072499279708685,0.295200616245156);
+\draw[line width=1.2pt,color=qqwuqq] (7.072499279708685,0.295200616245156) -- (7.079999274597209,0.30799701136354884);
+\draw[line width=1.2pt,color=qqwuqq] (7.079999274597209,0.30799701136354884) -- (7.087499269485733,0.3211068457260648);
+\draw[line width=1.2pt,color=qqwuqq] (7.087499269485733,0.3211068457260648) -- (7.094999264374256,0.3345233567597876);
+\draw[line width=1.2pt,color=qqwuqq] (7.094999264374256,0.3345233567597876) -- (7.10249925926278,0.3482387915909409);
+\draw[line width=1.2pt,color=qqwuqq] (7.10249925926278,0.3482387915909409) -- (7.109999254151304,0.362244389439829);
+\draw[line width=1.2pt,color=qqwuqq] (7.109999254151304,0.362244389439829) -- (7.1174992490398274,0.376530367147422);
+\draw[line width=1.2pt,color=qqwuqq] (7.1174992490398274,0.376530367147422) -- (7.124999243928351,0.39108590802842796);
+\draw[line width=1.2pt,color=qqwuqq] (7.124999243928351,0.39108590802842796) -- (7.132499238816875,0.4058991542357808);
+\draw[line width=1.2pt,color=qqwuqq] (7.132499238816875,0.4058991542357808) -- (7.139999233705399,0.4209572028100248);
+\draw[line width=1.2pt,color=qqwuqq] (7.139999233705399,0.4209572028100248) -- (7.147499228593922,0.4362461055741199);
+\draw[line width=1.2pt,color=qqwuqq] (7.147499228593922,0.4362461055741199) -- (7.154999223482446,0.45175087301974604);
+\draw[line width=1.2pt,color=qqwuqq] (7.154999223482446,0.45175087301974604) -- (7.16249921837097,0.4674554823153077);
+\draw[line width=1.2pt,color=qqwuqq] (7.16249921837097,0.4674554823153077) -- (7.169999213259493,0.48334288954856947);
+\draw[line width=1.2pt,color=qqwuqq] (7.169999213259493,0.48334288954856947) -- (7.177499208148017,0.49939504629827136);
+\draw[line width=1.2pt,color=qqwuqq] (7.177499208148017,0.49939504629827136) -- (7.184999203036541,0.5155929206092528);
+\draw[line width=1.2pt,color=qqwuqq] (7.184999203036541,0.5155929206092528) -- (7.1924991979250645,0.5319165224246514);
+\draw[line width=1.2pt,color=qqwuqq] (7.1924991979250645,0.5319165224246514) -- (7.199999192813588,0.5483449335067361);
+\draw[line width=1.2pt,color=qqwuqq] (7.199999192813588,0.5483449335067361) -- (7.207499187702112,0.5648563418550151);
+\draw[line width=1.2pt,color=qqwuqq] (7.207499187702112,0.5648563418550151) -- (7.214999182590636,0.5814280806065313);
+\draw[line width=1.2pt,color=qqwuqq] (7.214999182590636,0.5814280806065313) -- (7.222499177479159,0.5980366713788807);
+\draw[line width=1.2pt,color=qqwuqq] (7.222499177479159,0.5980366713788807) -- (7.229999172367683,0.6146578719915978);
+\draw[line width=1.2pt,color=qqwuqq] (7.229999172367683,0.6146578719915978) -- (7.237499167256207,0.6312667284762997);
+\draw[line width=1.2pt,color=qqwuqq] (7.237499167256207,0.6312667284762997) -- (7.2449991621447305,0.6478376312605401);
+\draw[line width=1.2pt,color=qqwuqq] (7.2449991621447305,0.6478376312605401) -- (7.252499157033254,0.66434437538485);
+\draw[line width=1.2pt,color=qqwuqq] (7.252499157033254,0.66434437538485) -- (7.259999151921778,0.6807602245871248);
+\draw[line width=1.2pt,color=qqwuqq] (7.259999151921778,0.6807602245871248) -- (7.267499146810302,0.6970579790635131);
+\draw[line width=1.2pt,color=qqwuqq] (7.267499146810302,0.6970579790635131) -- (7.274999141698825,0.7132100466904746);
+\draw[line width=1.2pt,color=qqwuqq] (7.274999141698825,0.7132100466904746) -- (7.282499136587349,0.7291885174688654);
+\draw[line width=1.2pt,color=qqwuqq] (7.282499136587349,0.7291885174688654) -- (7.289999131475873,0.7449652409279621);
+\draw[line width=1.2pt,color=qqwuqq] (7.289999131475873,0.7449652409279621) -- (7.2974991263643965,0.760511906205442);
+\draw[line width=1.2pt,color=qqwuqq] (7.2974991263643965,0.760511906205442) -- (7.30499912125292,0.7758001244986469);
+\draw[line width=1.2pt,color=qqwuqq] (7.30499912125292,0.7758001244986469) -- (7.312499116141444,0.7908015135631664);
+\draw[line width=1.2pt,color=qqwuqq] (7.312499116141444,0.7908015135631664) -- (7.319999111029968,0.8054877839170224);
+\draw[line width=1.2pt,color=qqwuqq] (7.319999111029968,0.8054877839170224) -- (7.327499105918491,0.819830826392692);
+\draw[line width=1.2pt,color=qqwuqq] (7.327499105918491,0.819830826392692) -- (7.334999100807015,0.8338028006650055);
+\draw[line width=1.2pt,color=qqwuqq] (7.334999100807015,0.8338028006650055) -- (7.342499095695539,0.8473762243707325);
+\draw[line width=1.2pt,color=qqwuqq] (7.342499095695539,0.8473762243707325) -- (7.349999090584062,0.8605240624255508);
+\draw[line width=1.2pt,color=qqwuqq] (7.349999090584062,0.8605240624255508) -- (7.357499085472586,0.8732198161361775);
+\draw[line width=1.2pt,color=qqwuqq] (7.357499085472586,0.8732198161361775) -- (7.36499908036111,0.8854376116998306);
+\draw[line width=1.2pt,color=qqwuqq] (7.36499908036111,0.8854376116998306) -- (7.3724990752496335,0.8971522876799491);
+\draw[line width=1.2pt,color=qqwuqq] (7.3724990752496335,0.8971522876799491) -- (7.379999070138157,0.9083394810463024);
+\draw[line width=1.2pt,color=qqwuqq] (7.379999070138157,0.9083394810463024) -- (7.387499065026681,0.9189757113692936);
+\draw[line width=1.2pt,color=qqwuqq] (7.387499065026681,0.9189757113692936) -- (7.394999059915205,0.9290384627624452);
+\draw[line width=1.2pt,color=qqwuqq] (7.394999059915205,0.9290384627624452) -- (7.402499054803728,0.9385062631737408);
+\draw[line width=1.2pt,color=qqwuqq] (7.402499054803728,0.9385062631737408) -- (7.409999049692252,0.9473587606356818);
+\draw[line width=1.2pt,color=qqwuqq] (7.409999049692252,0.9473587606356818) -- (7.417499044580776,0.9555767960955647);
+\draw[line width=1.2pt,color=qqwuqq] (7.417499044580776,0.9555767960955647) -- (7.4249990394692995,0.963142472461541);
+\draw[line width=1.2pt,color=qqwuqq] (7.4249990394692995,0.963142472461541) -- (7.432499034357823,0.9700392195164232);
+\draw[line width=1.2pt,color=qqwuqq] (7.432499034357823,0.9700392195164232) -- (7.439999029246347,0.9762518543698513);
+\draw[line width=1.2pt,color=qqwuqq] (7.439999029246347,0.9762518543698513) -- (7.447499024134871,0.9817666371402369);
+\draw[line width=1.2pt,color=qqwuqq] (7.447499024134871,0.9817666371402369) -- (7.454999019023394,0.9865713215807245);
+\draw[line width=1.2pt,color=qqwuqq] (7.454999019023394,0.9865713215807245) -- (7.462499013911918,0.9906552003881197);
+\draw[line width=1.2pt,color=qqwuqq] (7.462499013911918,0.9906552003881197) -- (7.469999008800442,0.9940091449601725);
+\draw[line width=1.2pt,color=qqwuqq] (7.469999008800442,0.9940091449601725) -- (7.4774990036889655,0.9966256393946044);
+\draw[line width=1.2pt,color=qqwuqq] (7.4774990036889655,0.9966256393946044) -- (7.484998998577489,0.9984988085526494);
+\draw[line width=1.2pt,color=qqwuqq] (7.484998998577489,0.9984988085526494) -- (7.492498993466013,0.9996244400404454);
+\draw[line width=1.2pt,color=qqwuqq] (7.492498993466013,0.9996244400404454) -- (7.499998988354537,0.9999999999931675);
+\draw[line width=1.2pt,color=qqwuqq] (7.499998988354537,0.9999999999931675) -- (7.50749898324306,0.9996246425791218);
+\draw[line width=1.2pt,color=qqwuqq] (7.50749898324306,0.9996246425791218) -- (7.514998978131584,0.9984992131739039);
+\draw[line width=1.2pt,color=qqwuqq] (7.514998978131584,0.9984992131739039) -- (7.522498973020108,0.9966262451879523);
+\draw[line width=1.2pt,color=qqwuqq] (7.522498973020108,0.9966262451879523) -- (7.529998967908631,0.9940099505641559);
+\draw[line width=1.2pt,color=qqwuqq] (7.529998967908631,0.9940099505641559) -- (7.537498962797155,0.9906562039954061);
+\draw[line width=1.2pt,color=qqwuqq] (7.537498962797155,0.9906562039954061) -- (7.544998957685679,0.9865725209448627);
+\draw[line width=1.2pt,color=qqwuqq] (7.544998957685679,0.9865725209448627) -- (7.552498952574203,0.9817680295840355);
+\draw[line width=1.2pt,color=qqwuqq] (7.552498952574203,0.9817680295840355) -- (7.559998947462726,0.9762534367953358);
+\draw[line width=1.2pt,color=qqwuqq] (7.559998947462726,0.9762534367953358) -- (7.56749894235125,0.9700409884163202);
+\draw[line width=1.2pt,color=qqwuqq] (7.56749894235125,0.9700409884163202) -- (7.574998937239774,0.9631444239322292);
+\draw[line width=1.2pt,color=qqwuqq] (7.574998937239774,0.9631444239322292) -- (7.582498932128297,0.9555789258514265);
+\draw[line width=1.2pt,color=qqwuqq] (7.582498932128297,0.9555789258514265) -- (7.589998927016821,0.9473610640247816);
+\draw[line width=1.2pt,color=qqwuqq] (7.589998927016821,0.9473610640247816) -- (7.597498921905345,0.938508735194749);
+\draw[line width=1.2pt,color=qqwuqq] (7.597498921905345,0.938508735194749) -- (7.6049989167938685,0.9290410980827231);
+\draw[line width=1.2pt,color=qqwuqq] (7.6049989167938685,0.9290410980827231) -- (7.612498911682392,0.9189785043440458);
+\draw[line width=1.2pt,color=qqwuqq] (7.612498911682392,0.9189785043440458) -- (7.619998906570916,0.908342425738703);
+\draw[line width=1.2pt,color=qqwuqq] (7.619998906570916,0.908342425738703) -- (7.62749890145944,0.897155377882139);
+\draw[line width=1.2pt,color=qqwuqq] (7.62749890145944,0.897155377882139) -- (7.634998896347963,0.8854408409546828);
+\draw[line width=1.2pt,color=qqwuqq] (7.634998896347963,0.8854408409546828) -- (7.642498891236487,0.8732231777597256);
+\draw[line width=1.2pt,color=qqwuqq] (7.642498891236487,0.8732231777597256) -- (7.649998886125011,0.860527549529969);
+\draw[line width=1.2pt,color=qqwuqq] (7.649998886125011,0.860527549529969) -- (7.6574988810135345,0.8473798298877593);
+\draw[line width=1.2pt,color=qqwuqq] (7.6574988810135345,0.8473798298877593) -- (7.664998875902058,0.8338065173696984);
+\draw[line width=1.2pt,color=qqwuqq] (7.664998875902058,0.8338065173696984) -- (7.672498870790582,0.8198346469274035);
+\draw[line width=1.2pt,color=qqwuqq] (7.672498870790582,0.8198346469274035) -- (7.679998865679106,0.8054917008154859);
+\draw[line width=1.2pt,color=qqwuqq] (7.679998865679106,0.8054917008154859) -- (7.687498860567629,0.7908055192745828);
+\draw[line width=1.2pt,color=qqwuqq] (7.687498860567629,0.7908055192745828) -- (7.694998855456153,0.7758042114116638);
+\draw[line width=1.2pt,color=qqwuqq] (7.694998855456153,0.7758042114116638) -- (7.702498850344677,0.760516066671922);
+\draw[line width=1.2pt,color=qqwuqq] (7.702498850344677,0.760516066671922) -- (7.7099988452332004,0.7449694672864366);
+\draw[line width=1.2pt,color=qqwuqq] (7.7099988452332004,0.7449694672864366) -- (7.717498840121724,0.7291928020675758);
+\draw[line width=1.2pt,color=qqwuqq] (7.717498840121724,0.7291928020675758) -- (7.724998835010248,0.7132143819099062);
+\draw[line width=1.2pt,color=qqwuqq] (7.724998835010248,0.7132143819099062) -- (7.732498829898772,0.6970623573383329);
+\draw[line width=1.2pt,color=qqwuqq] (7.732498829898772,0.6970623573383329) -- (7.739998824787295,0.6807646384274372);
+\draw[line width=1.2pt,color=qqwuqq] (7.739998824787295,0.6807646384274372) -- (7.747498819675819,0.6643488173966914);
+\draw[line width=1.2pt,color=qqwuqq] (7.747498819675819,0.6643488173966914) -- (7.754998814564343,0.6478420941655385);
+\draw[line width=1.2pt,color=qqwuqq] (7.754998814564343,0.6478420941655385) -- (7.762498809452866,0.6312712051304324);
+\draw[line width=1.2pt,color=qqwuqq] (7.762498809452866,0.6312712051304324) -- (7.76999880434139,0.6146623554029841);
+\draw[line width=1.2pt,color=qqwuqq] (7.76999880434139,0.6146623554029841) -- (7.777498799229914,0.598041154724557);
+\draw[line width=1.2pt,color=qqwuqq] (7.777498799229914,0.598041154724557) -- (7.7849987941184375,0.5814325572481589);
+\draw[line width=1.2pt,color=qqwuqq] (7.7849987941184375,0.5814325572481589) -- (7.792498789006961,0.5648608053534799);
+\draw[line width=1.2pt,color=qqwuqq] (7.792498789006961,0.5648608053534799) -- (7.799998783895485,0.5483493776356061);
+\draw[line width=1.2pt,color=qqwuqq] (7.799998783895485,0.5483493776356061) -- (7.807498778784009,0.5319209411824634);
+\draw[line width=1.2pt,color=qqwuqq] (7.807498778784009,0.5319209411824634) -- (7.814998773672532,0.5155973082306081);
+\draw[line width=1.2pt,color=qqwuqq] (7.814998773672532,0.5155973082306081) -- (7.822498768561056,0.4993993972637273);
+\draw[line width=1.2pt,color=qqwuqq] (7.822498768561056,0.4993993972637273) -- (7.82999876344958,0.48334719859331793);
+\draw[line width=1.2pt,color=qqwuqq] (7.82999876344958,0.48334719859331793) -- (7.8374987583381035,0.46745974443664057);
+\draw[line width=1.2pt,color=qqwuqq] (7.8374987583381035,0.46745974443664057) -- (7.844998753226627,0.4517550834833133);
+\draw[line width=1.2pt,color=qqwuqq] (7.844998753226627,0.4517550834833133) -- (7.852498748115151,0.43625025991899147);
+\draw[line width=1.2pt,color=qqwuqq] (7.852498748115151,0.43625025991899147) -- (7.859998743003675,0.4209612968525735);
+\draw[line width=1.2pt,color=qqwuqq] (7.859998743003675,0.4209612968525735) -- (7.867498737892198,0.40590318407240933);
+\draw[line width=1.2pt,color=qqwuqq] (7.867498737892198,0.40590318407240933) -- (7.874998732780722,0.39108987003716805);
+\draw[line width=1.2pt,color=qqwuqq] (7.874998732780722,0.39108987003716805) -- (7.882498727669246,0.37653425798843815);
+\draw[line width=1.2pt,color=qqwuqq] (7.882498727669246,0.37653425798843815) -- (7.8899987225577695,0.3622482060548649);
+\draw[line width=1.2pt,color=qqwuqq] (7.8899987225577695,0.3622482060548649) -- (7.897498717446293,0.34824253120174903);
+\draw[line width=1.2pt,color=qqwuqq] (7.897498717446293,0.34824253120174903) -- (7.904998712334817,0.3345270168655878);
+\draw[line width=1.2pt,color=qqwuqq] (7.904998712334817,0.3345270168655878) -- (7.912498707223341,0.32111042410008017);
+\draw[line width=1.2pt,color=qqwuqq] (7.912498707223341,0.32111042410008017) -- (7.919998702111864,0.30800050604866974);
+\draw[line width=1.2pt,color=qqwuqq] (7.919998702111864,0.30800050604866974) -- (7.927498697000388,0.2952040255487868);
+\draw[line width=1.2pt,color=qqwuqq] (7.927498697000388,0.2952040255487868) -- (7.934998691888912,0.2827267756645647);
+\draw[line width=1.2pt,color=qqwuqq] (7.934998691888912,0.2827267756645647) -- (7.942498686777435,0.27057360293796623);
+\draw[line width=1.2pt,color=qqwuqq] (7.942498686777435,0.27057360293796623) -- (7.949998681665959,0.25874843314291207);
+\draw[line width=1.2pt,color=qqwuqq] (7.949998681665959,0.25874843314291207) -- (7.957498676554483,0.2472542993231661);
+\draw[line width=1.2pt,color=qqwuqq] (7.957498676554483,0.2472542993231661) -- (7.9649986714430066,0.23609337189232682);
+\draw[line width=1.2pt,color=qqwuqq] (7.9649986714430066,0.23609337189232682) -- (7.97249866633153,0.22526699057329214);
+\draw[line width=1.2pt,color=qqwuqq] (7.97249866633153,0.22526699057329214) -- (7.979998661220054,0.21477569795491383);
+\draw[line width=1.2pt,color=qqwuqq] (7.979998661220054,0.21477569795491383) -- (7.987498656108578,0.20461927444521225);
+\draw[line width=1.2pt,color=qqwuqq] (7.987498656108578,0.20461927444521225) -- (7.994998650997101,0.19479677440338508);
+\draw[line width=1.2pt,color=qqwuqq] (7.994998650997101,0.19479677440338508) -- (8.002498645885625,0.18530656323685554);
+\draw[line width=1.2pt,color=qqwuqq] (8.002498645885625,0.18530656323685554) -- (8.009998640774148,0.17614635525468797);
+\draw[line width=1.2pt,color=qqwuqq] (8.009998640774148,0.17614635525468797) -- (8.01749863566267,0.16731325207474895);
+\draw[line width=1.2pt,color=qqwuqq] (8.01749863566267,0.16731325207474895) -- (8.024998630551194,0.15880378138897028);
+\draw[line width=1.2pt,color=qqwuqq] (8.024998630551194,0.15880378138897028) -- (8.032498625439716,0.15061393589880562);
+\draw[line width=1.2pt,color=qqwuqq] (8.032498625439716,0.15061393589880562) -- (8.03999862032824,0.1427392122414754);
+\draw[line width=1.2pt,color=qqwuqq] (8.03999862032824,0.1427392122414754) -- (8.047498615216762,0.13517464973668658);
+\draw[line width=1.2pt,color=qqwuqq] (8.047498615216762,0.13517464973668658) -- (8.054998610105285,0.12791486879315578);
+\draw[line width=1.2pt,color=qqwuqq] (8.054998610105285,0.12791486879315578) -- (8.062498604993808,0.12095410882434357);
+\draw[line width=1.2pt,color=qqwuqq] (8.062498604993808,0.12095410882434357) -- (8.06999859988233,0.11428626553323977);
+\draw[line width=1.2pt,color=qqwuqq] (8.06999859988233,0.11428626553323977) -- (8.077498594770853,0.10790492743674035);
+\draw[line width=1.2pt,color=qqwuqq] (8.077498594770853,0.10790492743674035) -- (8.084998589659376,0.10180341151103688);
+\draw[line width=1.2pt,color=qqwuqq] (8.084998589659376,0.10180341151103688) -- (8.092498584547899,0.09597479785042115);
+\draw[line width=1.2pt,color=qqwuqq] (8.092498584547899,0.09597479785042115) -- (8.099998579436422,0.09041196324291108);
+\draw[line width=1.2pt,color=qqwuqq] (8.099998579436422,0.09041196324291108) -- (8.107498574324945,0.0851076135770582);
+\draw[line width=1.2pt,color=qqwuqq] (8.107498574324945,0.0851076135770582) -- (8.114998569213467,0.08005431500513017);
+\draw[line width=1.2pt,color=qqwuqq] (8.114998569213467,0.08005431500513017) -- (8.12249856410199,0.07524452379851204);
+\draw[line width=1.2pt,color=qqwuqq] (8.12249856410199,0.07524452379851204) -- (8.129998558990513,0.07067061484157589);
+\draw[line width=1.2pt,color=qqwuqq] (8.129998558990513,0.07067061484157589) -- (8.137498553879036,0.06632490872037869);
+\draw[line width=1.2pt,color=qqwuqq] (8.137498553879036,0.06632490872037869) -- (8.144998548767559,0.062199697372310785);
+\draw[line width=1.2pt,color=qqwuqq] (8.144998548767559,0.062199697372310785) -- (8.152498543656082,0.05828726827219306);
+\draw[line width=1.2pt,color=qqwuqq] (8.152498543656082,0.05828726827219306) -- (8.159998538544604,0.05457992713926701);
+\draw[line width=1.2pt,color=qqwuqq] (8.159998538544604,0.05457992713926701) -- (8.167498533433127,0.0510700191580099);
+\draw[line width=1.2pt,color=qqwuqq] (8.167498533433127,0.0510700191580099) -- (8.17499852832165,0.047749948713710286);
+\draw[line width=1.2pt,color=qqwuqq] (8.17499852832165,0.047749948713710286) -- (8.182498523210173,0.044612197651228855);
+\draw[line width=1.2pt,color=qqwuqq] (8.182498523210173,0.044612197651228855) -- (8.189998518098696,0.04164934207234025);
+\draw[line width=1.2pt,color=qqwuqq] (8.189998518098696,0.04164934207234025) -- (8.197498512987218,0.03885406769347994);
+\draw[line width=1.2pt,color=qqwuqq] (8.197498512987218,0.03885406769347994) -- (8.204998507875741,0.03621918379160615);
+\draw[line width=1.2pt,color=qqwuqq] (8.204998507875741,0.03621918379160615) -- (8.212498502764264,0.0337376357712264);
+\draw[line width=1.2pt,color=qqwuqq] (8.212498502764264,0.0337376357712264) -- (8.219998497652787,0.031402516390428833);
+\draw[line width=1.2pt,color=qqwuqq] (8.219998497652787,0.031402516390428833) -- (8.22749849254131,0.029207075688011556);
+\draw[line width=1.2pt,color=qqwuqq] (8.22749849254131,0.029207075688011556) -- (8.234998487429833,0.027144729657521363);
+\draw[line width=1.2pt,color=qqwuqq] (8.234998487429833,0.027144729657521363) -- (8.242498482318355,0.025209067717212763);
+\draw[line width=1.2pt,color=qqwuqq] (8.242498482318355,0.025209067717212763) -- (8.249998477206878,0.023393859027632382);
+\draw[line width=1.2pt,color=qqwuqq] (8.249998477206878,0.023393859027632382) -- (8.257498472095401,0.021693057710739663);
+\draw[line width=1.2pt,color=qqwuqq] (8.257498472095401,0.021693057710739663) -- (8.264998466983924,0.02010080702621393);
+\draw[line width=1.2pt,color=qqwuqq] (8.264998466983924,0.02010080702621393) -- (8.272498461872447,0.018611442561889954);
+\draw[line width=1.2pt,color=qqwuqq] (8.272498461872447,0.018611442561889954) -- (8.27999845676097,0.017219494496135235);
+\draw[line width=1.2pt,color=qqwuqq] (8.27999845676097,0.017219494496135235) -- (8.287498451649492,0.01591968899045448);
+\draw[line width=1.2pt,color=qqwuqq] (8.287498451649492,0.01591968899045448) -- (8.294998446538015,0.014706948770708305);
+\draw[line width=1.2pt,color=qqwuqq] (8.294998446538015,0.014706948770708305) -- (8.302498441426538,0.013576392955090055);
+\draw[line width=1.2pt,color=qqwuqq] (8.302498441426538,0.013576392955090055) -- (8.30999843631506,0.012523336186442946);
+\draw[line width=1.2pt,color=qqwuqq] (8.30999843631506,0.012523336186442946) -- (8.317498431203584,0.011543287125649304);
+\draw[line width=1.2pt,color=qqwuqq] (8.317498431203584,0.011543287125649304) -- (8.324998426092106,0.010631946361709372);
+\draw[line width=1.2pt,color=qqwuqq] (8.324998426092106,0.010631946361709372) -- (8.33249842098063,0.009785203792778868);
+\draw[line width=1.2pt,color=qqwuqq] (8.33249842098063,0.009785203792778868) -- (8.339998415869152,0.008999135530876534);
+\draw[line width=1.2pt,color=qqwuqq] (8.339998415869152,0.008999135530876534) -- (8.347498410757675,0.008270000381234172);
+\draw[line width=1.2pt,color=qqwuqq] (8.347498410757675,0.008270000381234172) -- (8.354998405646198,0.007594235945365511);
+\draw[line width=1.2pt,color=qqwuqq] (8.354998405646198,0.007594235945365511) -- (8.36249840053472,0.0069684543949029565);
+\draw[line width=1.2pt,color=qqwuqq] (8.36249840053472,0.0069684543949029565) -- (8.369998395423243,0.006389437961115448);
+\draw[line width=1.2pt,color=qqwuqq] (8.369998395423243,0.006389437961115448) -- (8.377498390311766,0.005854134182799767);
+\draw[line width=1.2pt,color=qqwuqq] (8.377498390311766,0.005854134182799767) -- (8.384998385200289,0.005359650952951815);
+\draw[line width=1.2pt,color=qqwuqq] (8.384998385200289,0.005359650952951815) -- (8.392498380088812,0.004903251402295309);
+\draw[line width=1.2pt,color=qqwuqq] (8.392498380088812,0.004903251402295309) -- (8.399998374977335,0.004482348655389907);
+\draw[line width=1.2pt,color=qqwuqq] (8.399998374977335,0.004482348655389907) -- (8.407498369865857,0.00409450049267795);
+\draw[line width=1.2pt,color=qqwuqq] (8.407498369865857,0.00409450049267795) -- (8.41499836475438,0.003737403949473726);
+\draw[line width=1.2pt,color=qqwuqq] (8.41499836475438,0.003737403949473726) -- (8.422498359642903,0.003408889880566238);
+\draw[line width=1.2pt,color=qqwuqq] (8.422498359642903,0.003408889880566238) -- (8.429998354531426,0.0031069175168093165);
+\draw[line width=1.2pt,color=qqwuqq] (8.429998354531426,0.0031069175168093165) -- (8.437498349419949,0.002829569037822908);
+\draw[line width=1.2pt,color=qqwuqq] (8.437498349419949,0.002829569037822908) -- (8.444998344308472,0.002575044182737304);
+\draw[line width=1.2pt,color=qqwuqq] (8.444998344308472,0.002575044182737304) -- (8.452498339196994,0.0023416549187865723);
+\draw[line width=1.2pt,color=qqwuqq] (8.452498339196994,0.0023416549187865723) -- (8.459998334085517,0.00212782018550689);
+\draw[line width=1.2pt,color=qqwuqq] (8.459998334085517,0.00212782018550689) -- (8.46749832897404,0.0019320607303259067);
+\draw[line width=1.2pt,color=qqwuqq] (8.46749832897404,0.0019320607303259067) -- (8.474998323862563,0.001752994049446566);
+\draw[line width=1.2pt,color=qqwuqq] (8.474998323862563,0.001752994049446566) -- (8.482498318751086,0.0015893294461367992);
+\draw[line width=1.2pt,color=qqwuqq] (8.482498318751086,0.0015893294461367992) -- (8.489998313639608,0.0014398632168390094);
+\draw[line width=1.2pt,color=qqwuqq] (8.489998313639608,0.0014398632168390094) -- (8.497498308528131,0.0013034739739120887);
+\draw[line width=1.2pt,color=qqwuqq] (8.497498308528131,0.0013034739739120887) -- (8.504998303416654,0.0011791181123155055);
+\draw[line width=1.2pt,color=qqwuqq] (8.504998303416654,0.0011791181123155055) -- (8.512498298305177,0.001065825426140346);
+\draw[line width=1.2pt,color=qqwuqq] (8.512498298305177,0.001065825426140346) -- (8.5199982931937,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.5199982931937,0.0) -- (8.527498288082223,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.527498288082223,0.0) -- (8.534998282970745,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.534998282970745,0.0) -- (8.542498277859268,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.542498277859268,0.0) -- (8.549998272747791,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.549998272747791,0.0) -- (8.557498267636314,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.557498267636314,0.0) -- (8.564998262524837,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.564998262524837,0.0) -- (8.57249825741336,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.57249825741336,0.0) -- (8.579998252301882,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.579998252301882,0.0) -- (8.587498247190405,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.587498247190405,0.0) -- (8.594998242078928,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.594998242078928,0.0) -- (8.60249823696745,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.60249823696745,0.0) -- (8.609998231855974,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.609998231855974,0.0) -- (8.617498226744496,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.617498226744496,0.0) -- (8.62499822163302,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.62499822163302,0.0) -- (8.632498216521542,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.632498216521542,0.0) -- (8.639998211410065,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.639998211410065,0.0) -- (8.647498206298588,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.647498206298588,0.0) -- (8.65499820118711,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.65499820118711,0.0) -- (8.662498196075633,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.662498196075633,0.0) -- (8.669998190964156,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.669998190964156,0.0) -- (8.677498185852679,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.677498185852679,0.0) -- (8.684998180741202,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.684998180741202,0.0) -- (8.692498175629725,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.692498175629725,0.0) -- (8.699998170518247,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.699998170518247,0.0) -- (8.70749816540677,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.70749816540677,0.0) -- (8.714998160295293,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.714998160295293,0.0) -- (8.722498155183816,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.722498155183816,0.0) -- (8.729998150072339,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.729998150072339,0.0) -- (8.737498144960862,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.737498144960862,0.0) -- (8.744998139849384,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.744998139849384,0.0) -- (8.752498134737907,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.752498134737907,0.0) -- (8.75999812962643,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.75999812962643,0.0) -- (8.767498124514953,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.767498124514953,0.0) -- (8.774998119403476,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.774998119403476,0.0) -- (8.782498114291998,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.782498114291998,0.0) -- (8.789998109180521,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.789998109180521,0.0) -- (8.797498104069044,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.797498104069044,0.0) -- (8.804998098957567,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.804998098957567,0.0) -- (8.81249809384609,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.81249809384609,0.0) -- (8.819998088734613,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.819998088734613,0.0) -- (8.827498083623135,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.827498083623135,0.0) -- (8.834998078511658,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.834998078511658,0.0) -- (8.842498073400181,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.842498073400181,0.0) -- (8.849998068288704,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.849998068288704,0.0) -- (8.857498063177227,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.857498063177227,0.0) -- (8.86499805806575,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.86499805806575,0.0) -- (8.872498052954272,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.872498052954272,0.0) -- (8.879998047842795,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.879998047842795,0.0) -- (8.887498042731318,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.887498042731318,0.0) -- (8.89499803761984,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.89499803761984,0.0) -- (8.902498032508364,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.902498032508364,0.0) -- (8.909998027396886,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.909998027396886,0.0) -- (8.91749802228541,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.91749802228541,0.0) -- (8.924998017173932,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.924998017173932,0.0) -- (8.932498012062455,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.932498012062455,0.0) -- (8.939998006950978,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.939998006950978,0.0) -- (8.9474980018395,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.9474980018395,0.0) -- (8.954997996728023,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.954997996728023,0.0) -- (8.962497991616546,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.962497991616546,0.0) -- (8.969997986505069,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.969997986505069,0.0) -- (8.977497981393592,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.977497981393592,0.0) -- (8.984997976282115,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.984997976282115,0.0) -- (8.992497971170637,0.0);
+\draw[line width=1.2pt,color=qqwuqq] (8.992497971170637,0.0) -- (8.99999796605916,0.0);
+\draw (-0.3,0.4) node[anchor=north west] {$\mathbf{\PP}$};
+\draw (7.107677077490772,0.30711709971790385) node[anchor=north west] {$\mathbf{\PP_X}$};
+\draw [rotate around={10.504137202588192:(-0.6752481070110704,-0.42018575557093363)}] (-0.6752481070110704,-0.42018575557093363) ellipse (0.6cm and 0.4cm);
+\draw (-1.3,-0.2) node[anchor=north west] {\tiny {$X^{-1}(B)$}};
+\draw [rotate around={12.543781230119116:(6.39070457564575,-0.44852223045231765)}] (6.39070457564575,-0.44852223045231765) ellipse (0.46170324209067304cm and 0.30351147243367915cm);
+\draw (6.1,-0.2) node[anchor=north west] {\small{$B$}};
+\begin{scriptsize}
+\draw [fill=black] (1.8813248929889286,0.5149179155147146) circle (1.5pt);
+\draw [fill=black] (5.503922797047967,0.36379004948067045) circle (1.5pt);
+\end{scriptsize}
+\end{tikzpicture}
+\end{center}
+
+Мера $\PP$ задана на элементах сигма-алгебры $\F$. Случайная величина $X$, отображая пространство $\Om$ на множество $\R$ каким-то определённым образом искажает эту меру. 
+
+\begin{myex}
+Пусть $\Om = \{a,b,c\}$ и $\F = 2^{\Om}$. Пусть случайная величина $X$ принимает значение 1, если $\om = a$ и 0 для любого другого элементарного исхода. Тогда  
+
+\begin{multicols}{2}
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+$\Om$ & $a$ & $b$ & $c$  \\
+\hline
+$\PP$ & 0.5 & 0.4 & 0.1  \\
+\hline
+\end{tabular}
+\end{center}
+\end{table} 
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+$X$ & 0 & 1   \\
+\hline
+$\PP_X$ & 0.5 & 0.5  \\
+\hline
+\end{tabular}
+\end{center}
+\end{table} 
+\end{multicols}
+\end{myex}
+
+Мы умеем сопоставлять вероятности событиям. Если случайная величина $X$ измерима относительно сигма-алгебры $\F$, то на множестве значений случайной величины есть запас множеств, вероятности которых мы знаем. Все такие множества входят в сигма-алгебру $X^{-1}(B)$.
+
+Получается, что случайная величина $X$ индуцирует вероятностную меру $\PP_X$ на пространстве своих значений $\R$ следующим образом: $\PP_X(B) = \PP(X^{-1}(B))$ для любого события $B$ из сигма-алгебры $\B$. Мера $P_X$ при этом называется распределением случайной величины $X$. 
+
+
+
+
+
+
+\subsubsection{Задачи}
+\begin{problem}
+Пусть $(\Om,\F,\PP)$ --- вероятностное пространство, $B$ --- событие с $\PP(B) > 0$. Для $A \in \F$ определим $P_{B}(A) = \PP(A|B)$. Докажите, что $(\Om, \F, P_{B})$--- вероятностное пространство.
+\begin{sol}
+
+\end{sol}
+\end{problem}
+
+
+
+
+
+
+\subsection{Почти наверное и пополнение вероятностного пространства!}
+\todo{Что ББ хотел тут написать? Я мог написать бреда!}
+
+Иногда вероятностное пространство можно пополнить по мере! 
+
+\begin{myex}
+$\Om = {a,b,c,d}$, $\F = \{\Om,\varnothing,\{a\},\{b,c\},\{d\}\}$. Пусть вероятность $\PP$ ставит в соответствие каждому элементу сигма-алгебры $\F$ элемент отрезка $[0;1]$ следующим образом: 
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+$\F$ & $\{a\}$ & $\{b,c\}$ & $\{d\}$ & $\Om$ & $\varnothing$ \\
+\hline
+$\PP$ & 0.8 & 0 & 0.2 & 1 & 0 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table} 
+
+Множество $\{c\}$ не входит в \s-алгебру $\F$, то есть является неизмеримым. Как уже было отмечено выше, вероятность определена только для измеримых множеств. Однако, пользуясь свойством вероятность PP5, можно получить что 
+
+\[0 \le \PP(\{c\}) \le \PP(\{b,c\}) = 0\]
+
+несмотря на то, что вероятность для множества $\{c\}$ не определена. 
+\end{myex}
+
+В таких странных ситуациях мы можем доопределить вероятность для части неизмеримых множеств. Такое доопределение называется \indef{пополнением вероятностного пространства по мере $\PP$}, \index{пополнение вероятностного пространства} а такие множества называются неборелевскими. 
+
+Рассмотрим другую ситуацию.
+
+
+\begin{myex}
+
+\mbox{ }
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+$\F$ & $\{a\}$ & $\{b,c\}$ & $\{d\}$ & $\Om$ & $\varnothing$ \\
+\hline
+$\tilde(\PP)$ & 0.7 & 0.1 & 0.2 & 1 & 0 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table} 
+
+В этом случае $0 \le \PP(\{c\}) \le \PP(\{b,c\}) = 0.1$, что не даёт нам сделать никаких однозначных выводов о природе меры $\tilde(\PP)$ на множестве $\{c\}$.
+Множество $\{c\}$ в данном случае говорят, что множество $\{c\}$ не лебеговское или не измеримо по Лебегу.
+\end{myex}
+
+\begin{mydef}
+Множество $A$ называется \indef{неборелевским}, \index{ неборелевское множество} если оно не лежит в сигма-алгебре $\mathcal{B}$. Множество $A$ называется \indef{неизмеримым }, а точнее \indef{неизмеримым по Лебегу}, если оно не лежит в пополнении  $\mathcal{B}$. \index{Неизмеримое по Лебегу множество}
+\end{mydef}
+
+
+
+
+
+
+
+Если вероятность некоторого события равна единице, то такое событие называют достоверным. Если вероятность некоторого события равна нулю, то такое событие называют невозможным. 
+
+\textbf{Очень важно} понимать тонкую разницу между событием, которое не произойдёт никогда и тем вероятность которого равна нулю.  Нулевая вероятность события вовсе не означает того, что это событие никогда не наступит. Чисто теоретически наступление такого события возможно, но вероятность этого события равна нулю. Например, вероятность того, что непрерывная случайная величина попадёт в какую-то конкретную точку равна нулю. Тем не менее, сгенерировав такую случайную величину на компьютере, мы увидим, что она приняла конкретное значение, то есть попала в некоторую точку. Удивительно, но при каждой реализации случайной величины мы наблюдаем невозможное событие! 
+
+Точно также важно понимать разницу между утверждением верным всегда и почти наверное!
+
+\begin{mydef}
+Пусть некоторое утверждение выполняется для всех точек множества $A$, кроме точек некоторого подмножества $A_0 \subset A$. Если $\mu(A_0)=0$, то говорят, что \indef{утверждение определено почти всюду (almost everywhere, a.e.) на множестве $A$}. \index{почти всюду}  
+\end{mydef}
+
+\begin{myex}
+Если функция $f \colon \R \to \R$ интегрируема по Риману и $f(x) \ge 0 \quad (a.e.)$, тогда \[\displaystyle \int_{a}^{b} f(x) dx \ge 0 \quad (a.e.)\] для всех действительных чисел $a < b$.
+\end{myex}
+
+Если мера является вероятностью, то вместо слов  <<почти всюду>> употребляют <<почти наверное>>. Иными словами:
+
+\begin{mydef}
+Пусть $(\Om, \F, \PP)$ --- вероятностное пространство. Говорят, что событие $A \in \F$ наступило \indef{<<почти наверное>> (almost surely, a.s.)}  \index{почти наверное}, если $\PP(A) = 1$.
+\end{mydef}
+
+
+\todo{Пример взял с англоязычной википедии. Это преступление? Там был квадрат, у меня мишень. Норм ли про хорду?}
+\begin{myex}
+Представим себе как игрок в дартс бросает в мишень дротик. Пусть как бы игрок не метнул дротик, он всегда попадает в мишень. Вероятность того, что дротик попадёт в какой-то конкретный регион мишени равна отношению площади этого региона к общей площади мишени. Например, вероятность того, что дротик попадет в правую половину мишени равна $0.5$. 
+
+Рассмотрим событие <<дротик попадает в конкретную хорду мишени>>. Площадь хорды равна нулю. То есть дротик не попадет в хорду (a.s.).
+
+Тем не менее множество точек на хорде не пусто и попадание в неё является чисто теоретически возможным. То же самое можно сказать и о любой другое точке на мишени. Так как любая точка будет иметь нулевую площадь, дротик не попадет в неё почти наверное. Однако дротик точно должен попасть в какую-то точку мишени! Таким образом при каждом бросании дротика происходит событие, имеющее нулевую вероятность.
+\end{myex}
+
+
+\subsubsection*{Задачи}
+
+\begin{problem}
+Монетка, имеющая две равновероятно выпадающие грани, подкидывается до появления первого орла. 
+
+\begin{enumerate}
+\item Как в данном случае будет выглядеть вероятностное пространство?
+\item Правда ли, что приведённые ниже утверждения верны?
+\begin{itemize}
+\item Событие <<Выпало бесконечное число решек>> никогда не произойдёт.
+
+\item Событие <<Выпало бесконечное число решек>> почти наверное не произойдёт.
+
+\item Событие <<Выпало конечное число орлов>> почти наверное произойдёт.
+
+\todo{Какие ещё вопросы добавить?}
+
+\end{itemize}
+\end{enumerate} 
+
+\begin{sol}
+\begin{enumerate}
+\item Вероятностное пространство имеет вид $(\{O,P\}, 2^{\{O,P\}}, \PP)$, где $\PP(\{O\}) = 0.5$ и $\PP(\{P\})=0.5$. 
+
+\item Проанализируем все описанные выше утверждения!
+\begin{itemize}
+\item  Это наглая ложь! Это событие вполне может произойти.
+
+\item  Действительно, Вероятность того, что решка выпала $n$ раз составит $\PP(\{P, P, P, P, \ldots P\}) = (0.5)^{n}$. Тогда $\displaystyle \lim_{n \to \infty} 0.5^{n} = 0$, то есть вероятность того, что решка выпадет бесконечное число раз равна нулю. И Решка не выпадет бесконечное число раз $(a.s.)$   
+
+\item $\displaystyle \lim_{n \to \infty} (1 - 0.5^n) = 1$, то есть Решка выпадет конечное число раз $(a.s.)$
+\end{itemize}
+\end{enumerate}
+\end{sol}
+\end{problem}
+
+
+
+\begin{problem}
+Пусть $X=Y (a.e.)$ и $Y = Z (a.e.)$. Верно ли, что $X = Z (a.e.)$?
+\begin{sol}
+
+\end{sol}
+\end{problem}
+
+\begin{problem}
+Пусть $f$ и $g$ обычные действительный функции.
+\begin{enumerate}
+\item Приведите пример таких $f$ и $g$, что $f$ --- непрерывна, $g$ --- непрерывна почти наверное (относительно классической меры Лебега $\lambda$), $f=g$ почти наверное.
+\item Приведите примеры таких $f$ и $g$, что $f=g$ почти наверное, $f$ --- непрерывна, $g$ не является непрерывной даже почти наверное.
+\item Приведите пример такой $f$, непрерывной почти наверное, что ни одна $g$ почти наверное равная $f$, не является непрерывной.
+\end{enumerate}
+\begin{sol}
+
+\end{sol}
+\end{problem}
+
+\begin{problem}
+Известно, что $\PP(X > c \cap Y >c) = 0$ для любой константы $c$. Верно ли, что $X=Y$ почти наверное?
+\begin{sol}
+Да. Рассмотрим множество $X-Y >c$. Его можно представить в виде $\{X-Y >c \} = \cup_{q} \{X > q \cap Y < q-c \}$. Далее замечаем, что $\PP(X>q \cap Y <q-c) = \PP(Y > q \cap Y < q-c) = 0$ для $c >0$. Т.е. $\PP(X-Y > c) = 0$ для $c > 0$. В силу непрерывности вероятности получаем $\PP(X-Y > 0) = 0$. Далее используем симметрию и получаем $\PP(Y-X >0) = 0.$ Значит $\PP(X=Y) = 1$ или $X = Y (a.e.)$.
+\todo{a.e. или a.s.?}
+\end{sol}
+\end{problem}
+
+
+
+
+\subsection{Еще задачи}
+
+
+\begin{problem}
+Можно ли придумать последовательность $\sigma$-алгебр $\mathcal{F}_{1}$, $\mathcal{F}_{2}$, $\mathcal{F}_{3}$, \ldots , такую, что одновременно выполнены два условия: 1) для любого $i$: $\mathcal{F}_{i}\subset \mathcal{F}_{i+1}$; 2) $\cup \mathcal{F}_{i}$ - не $\sigma$-алгебра.
+\begin{sol}
+да
+\end{sol}
+\end{problem}
+
+
+
+
+
+
+
+\begin{problem}
+Верно ли, что свойство сигма-аддитивности в определении меры можно заменить свойством непрерывности, которое состоит в следующем. 
+
+\end{problem}
+
+
+\Closesolutionfile{sols_chap_04}
+
+\input{sols_chap_04}
+
+\printbibliography
+
+
+\end{document}
